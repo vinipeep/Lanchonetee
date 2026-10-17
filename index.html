@@ -1,192 +1,207 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cardápio - Pai & Filho</title>
+    <meta name="theme-color" content="#b6381c">
+    <meta name="description" content="Confira o cardápio da Lanchonete Pai & Filho e faça seu pedido pelo WhatsApp.">
+    <title>Lanchonete Pai & Filho | Cardápio</title>
 
-    <link rel="icon" type="image/png" href="logo.png?v=6">
+    <!-- Favicon: deixe logo.png na mesma pasta deste arquivo -->
+    <link rel="icon" type="image/png" href="./logo.png?v=13">
 
-    <!-- ?v=12 força o navegador a baixar a versão nova -->
-    <link rel="stylesheet" href="style.css?v=12">
+    <link rel="stylesheet" href="./style.css?v=13">
+    <script src="./script.js?v=13" defer></script>
 </head>
-<body>
 
-    <!-- HERO / CABEÇALHO -->
+<body>
     <header class="hero">
         <div class="hero-conteudo">
-            <span class="logo">PAI & FILHO</span>
-            <h1>Cardápio</h1>
-            <p>Lanches feitos na hora, do nosso jeito.</p>
-            <div class="hero-info">
-                <span>📍 Forjos</span>
-                <span>📅 Sex • Sáb • Dom</span>
-            </div>
+            <img src="./logo.png" alt="Logo da Lanchonete Pai & Filho"
+                 class="logo" onerror="this.style.display='none'">
+
+            <p class="subtitulo">LANCHONETE PAI & FILHO</p>
+            <h1>Nosso cardápio</h1>
+            <p class="frase">Lanches feitos na hora, do nosso jeito.</p>
+            <span class="localizacao">📍 Forjos</span>
         </div>
     </header>
 
-    <!-- INFORMAÇÕES DE CONTATO -->
-    <section class="info">
-        <div class="info-item">
-            <span class="info-icone">📞</span>
-            <div>
-                <strong>Delivery</strong>
-                <p>(35) 98832-0463</p>
-            </div>
-        </div>
-        <div class="info-item">
-            <span class="info-icone">📍</span>
-            <div>
-                <strong>Endereço</strong>
-                <p>Rua Jabuticabeira - Forjos</p>
-            </div>
-        </div>
-        <div class="info-item">
-            <span class="info-icone">⏰</span>
-            <div>
-                <strong>Funcionamento</strong>
-                <p>Sexta, sábado e domingo</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- FILTRO DE CATEGORIAS -->
-    <nav class="categorias">
-        <button class="categoria-btn ativo" data-categoria="todos">Todos</button>
-        <button class="categoria-btn" data-categoria="lanches">🍔 Lanches</button>
-        <button class="categoria-btn" data-categoria="pasteis">🥟 Pastéis</button>
-        <button class="categoria-btn" data-categoria="porcoes">🍟 Porções</button>
-        <button class="categoria-btn" data-categoria="pizzas_salgadas">🍕 Pizzas Pequenas</button>
-        <button class="categoria-btn" data-categoria="pizzas_grandes">🍕 Pizzas Grandes</button>
-        <button class="categoria-btn" data-categoria="pizzas_doces">🍫 Pizzas Doces</button>
-    </nav>
-
-    <!-- SEÇÕES DO CARDÁPIO -->
     <main class="container">
-        <section class="secao" data-secao="lanches">
-            <div class="titulo-secao">
-                <span>LANCHES</span>
-                <h2>Hambúrgueres & Lanches</h2>
-                <p>Escolha seu favorito.</p>
-            </div>
-            <div class="produtos" id="lista-lanches"></div>
+        <section class="informacoes">
+            <article class="info-card">
+                <span class="info-icone">📱</span>
+                <div>
+                    <h2>Faça seu pedido</h2>
+                    <p>Direto pelo WhatsApp</p>
+                    <a href="https://wa.me/5535988320463" target="_blank"
+                       rel="noopener noreferrer">(35) 98832-0463</a>
+                </div>
+            </article>
+
+            <article class="info-card">
+                <span class="info-icone">📍</span>
+                <div>
+                    <h2>Localização</h2>
+                    <p>Rua Jabuticabeira</p>
+                    <p>Forjos</p>
+                </div>
+            </article>
+
+            <article class="info-card">
+                <span class="info-icone">🕒</span>
+                <div>
+                    <h2>Funcionamento</h2>
+                    <p>Sexta, sábado e domingo</p>
+                </div>
+            </article>
         </section>
 
-        <section class="secao" data-secao="pasteis">
+        <section class="cardapio">
             <div class="titulo-secao">
-                <span>PASTÉIS</span>
-                <h2>Pastéis Fritos na Hora</h2>
-                <p>Crocantes e recheados.</p>
+                <span class="subtitulo">ESCOLHA SEU FAVORITO</span>
+                <h2>Cardápio</h2>
+                <p>Confira nossas opções e monte seu pedido.</p>
             </div>
-            <div class="produtos" id="lista-pasteis"></div>
-        </section>
 
-        <section class="secao" data-secao="porcoes">
-            <div class="titulo-secao">
-                <span>PORÇÕES</span>
-                <h2>Porções Especiais</h2>
-                <p>Perfeitas para compartilhar.</p>
-            </div>
-            <div class="produtos" id="lista-porcoes"></div>
-        </section>
+            <nav class="filtros" aria-label="Categorias do cardápio">
+                <button class="filtro ativo" data-categoria="todos">Todos</button>
+                <button class="filtro" data-categoria="lanches">Lanches</button>
+                <button class="filtro" data-categoria="pasteis">Pastéis</button>
+                <button class="filtro" data-categoria="porcoes">Porções</button>
+                <button class="filtro" data-categoria="pizzas_salgadas">Pizzas pequenas</button>
+                <button class="filtro" data-categoria="pizzas_grandes">Pizzas grandes</button>
+                <button class="filtro" data-categoria="pizzas_doces">Pizzas doces</button>
+            </nav>
 
-        <section class="secao" data-secao="pizzas_salgadas">
-            <div class="titulo-secao">
-                <span>PIZZAS PEQUENAS</span>
-                <h2>Pizzas Salgadas (25cm • 4 Pedaços)</h2>
-                <p>Massa crocante com recheios caprichados.</p>
-            </div>
-            <div class="produtos" id="lista-pizzas_salgadas"></div>
-        </section>
+            <p id="status-cardapio" class="status-cardapio" aria-live="polite">
+                Carregando cardápio...
+            </p>
 
-        <section class="secao" data-secao="pizzas_grandes">
-            <div class="titulo-secao">
-                <span>PIZZAS GRANDES</span>
-                <h2>Pizzas Grandes (8 Pedaços)</h2>
-                <p>Ideais para a família toda.</p>
-            </div>
-            <div class="produtos" id="lista-pizzas_grandes"></div>
-        </section>
+            <section class="grupo-produtos" data-secao="lanches">
+                <h3>Lanches</h3>
+                <div class="grade-produtos" id="lista-lanches"></div>
+            </section>
 
-        <section class="secao" data-secao="pizzas_doces">
-            <div class="titulo-secao">
-                <span>PIZZAS DOCES</span>
-                <h2>Pizzas Doces (25cm • 4 Pedaços)</h2>
-                <p>Para fechar com chave de ouro.</p>
-            </div>
-            <div class="produtos" id="lista-pizzas_doces"></div>
+            <section class="grupo-produtos" data-secao="pasteis">
+                <h3>Pastéis</h3>
+                <div class="grade-produtos" id="lista-pasteis"></div>
+            </section>
+
+            <section class="grupo-produtos" data-secao="porcoes">
+                <h3>Porções</h3>
+                <div class="grade-produtos" id="lista-porcoes"></div>
+            </section>
+
+            <section class="grupo-produtos" data-secao="pizzas_salgadas">
+                <h3>Pizzas salgadas — pequenas</h3>
+                <p class="descricao-grupo">4 pedaços — 25 cm</p>
+                <div class="grade-produtos" id="lista-pizzas_salgadas"></div>
+            </section>
+
+            <section class="grupo-produtos" data-secao="pizzas_grandes">
+                <h3>Pizzas salgadas — grandes</h3>
+                <div class="grade-produtos" id="lista-pizzas_grandes"></div>
+            </section>
+
+            <section class="grupo-produtos" data-secao="pizzas_doces">
+                <h3>Pizzas doces</h3>
+                <p class="descricao-grupo">4 pedaços — 25 cm</p>
+                <div class="grade-produtos" id="lista-pizzas_doces"></div>
+            </section>
         </section>
     </main>
 
-    <!-- BARRA FIXA DO CARRINHO -->
-    <div id="carrinho-bar" class="carrinho-bar escondido">
-        <div class="carrinho-bar-info">
-            <span id="carrinho-qtd">0 itens</span>
+    <footer>
+        <h2>Lanchonete Pai & Filho</h2>
+        <p>Lanches feitos na hora, do nosso jeito.</p>
+        <p>Forjos · Sexta, sábado e domingo</p>
+        <small>© <span id="ano"></span> Lanchonete Pai & Filho</small>
+    </footer>
+
+    <!-- Barra fixa do carrinho -->
+    <div class="barra-carrinho escondido" id="carrinho-bar">
+        <button id="btn-abrir-carrinho" class="botao-carrinho">
+            <span>
+                🛒 Meu pedido
+                <small id="carrinho-qtd">0 itens</small>
+            </span>
             <strong id="carrinho-total">R$ 0,00</strong>
-        </div>
-        <button id="btn-abrir-carrinho" class="btn-ver-pedido">Ver Pedido 🛒</button>
+        </button>
     </div>
 
-    <!-- MODAL DO CARRINHO -->
-    <div id="carrinho-modal" class="modal escondido">
-        <div class="modal-conteudo">
-            <div class="modal-header">
-                <h2>Seu Pedido</h2>
-                <button id="btn-fechar-modal" class="btn-fechar">&times;</button>
-            </div>
+    <!-- Modal do carrinho -->
+    <div class="modal-overlay escondido" id="carrinho-modal">
+        <section class="modal" role="dialog" aria-modal="true"
+                 aria-labelledby="titulo-modal">
+            <header class="modal-header">
+                <div>
+                    <span class="subtitulo">SEU PEDIDO</span>
+                    <h2 id="titulo-modal">Meu carrinho</h2>
+                </div>
+                <button type="button" id="btn-fechar-modal"
+                        class="botao-fechar" aria-label="Fechar">×</button>
+            </header>
 
             <div id="carrinho-itens" class="carrinho-itens"></div>
 
-            <div class="modal-footer">
-                <div class="total-container">
-                    <span>Total:</span>
-                    <strong id="modal-total">R$ 0,00</strong>
-                </div>
-
-                <div class="campo-obs">
-                    <label for="obs-pedido">Observações (opcional):</label>
-                    <input type="text" id="obs-pedido" placeholder="Ex: Sem tomate, troco para 50...">
-                </div>
-
-                <!-- ENDEREÇO DE ENTREGA -->
-                <div class="endereco-box">
-                    <h3>📍 Endereço de entrega</h3>
-
-                    <div class="campo-end">
-                        <label for="end-bairro">Bairro <span class="obrigatorio">*obrigatório</span></label>
-                        <input type="text" id="end-bairro" placeholder="Ex: Forjos" autocomplete="off">
-                        <small id="erro-bairro" class="erro-campo escondido">Por favor, informe o bairro.</small>
-                    </div>
-
-                    <div class="campo-end">
-                        <label for="end-rua">Rua (opcional)</label>
-                        <input type="text" id="end-rua" placeholder="Ex: Rua Jabuticabeira" autocomplete="off">
-                    </div>
-
-                    <div class="campo-end">
-                        <label for="end-numero">Número (opcional)</label>
-                        <input type="text" id="end-numero" placeholder="Ex: 120" inputmode="numeric" autocomplete="off">
-                    </div>
-
-                    <div class="campo-end">
-                        <label for="end-ref">Ponto de referência (opcional)</label>
-                        <input type="text" id="end-ref" placeholder="Ex: Perto da igreja, portão azul" autocomplete="off">
-                    </div>
-                </div>
-
-                <button id="btn-enviar-whats" class="btn-whatsapp">Enviar Pedido no WhatsApp 🚀</button>
+            <div class="total-linha">
+                <span>Total dos produtos</span>
+                <strong id="modal-total">R$ 0,00</strong>
             </div>
-        </div>
+
+            <p class="aviso-entrega">
+                A taxa de entrega será confirmada pelo WhatsApp.
+            </p>
+
+            <div class="campo">
+                <label for="obs-pedido">Observações do pedido</label>
+                <textarea id="obs-pedido" rows="3"
+                          placeholder="Ex.: tirar cebola, ponto da carne..."></textarea>
+            </div>
+
+            <div class="endereco">
+                <h3>Endereço de entrega</h3>
+
+                <div class="campo">
+                    <label for="end-bairro">Bairro *</label>
+                    <input id="end-bairro" type="text"
+                           placeholder="Digite seu bairro" required>
+                    <small id="erro-bairro" class="erro escondido">
+                        Informe seu bairro para continuar.
+                    </small>
+                </div>
+
+                <div class="campo">
+                    <label for="end-rua">Rua</label>
+                    <input id="end-rua" type="text"
+                           placeholder="Nome da rua">
+                </div>
+
+                <div class="campos-duplos">
+                    <div class="campo">
+                        <label for="end-numero">Número</label>
+                        <input id="end-numero" type="text" placeholder="Nº">
+                    </div>
+
+                    <div class="campo">
+                        <label for="end-ref">Referência</label>
+                        <input id="end-ref" type="text"
+                               placeholder="Perto de...">
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" id="btn-enviar-whats"
+                    class="botao-whatsapp">
+                Enviar pedido pelo WhatsApp
+            </button>
+
+            <p class="texto-final">
+                Você poderá conferir a mensagem antes de enviá-la.
+            </p>
+        </section>
     </div>
-
-    <!-- RODAPÉ -->
-    <footer>
-        <div class="footer-logo">PAI & FILHO</div>
-        <p>Lanches feitos na hora, do nosso jeito.</p>
-        <p>📍 Rua Jabuticabeira - Forjos</p>
-        <small>&copy; Lanchonete Pai & Filho. Todos os direitos reservados.</small>
-    </footer>
-
-    <script src="script.js?v=12"></script>
 </body>
 </html>

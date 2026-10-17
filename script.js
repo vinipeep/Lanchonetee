@@ -1,363 +1,669 @@
-/* ========================================= */
-/* CONFIGURAÇÕES                             */
-/* ========================================= */
+
+'use strict';
+
+/* =========================================
+   CONFIGURAÇÕES
+========================================= */
+
 const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQWhv3boH7Ps-Sjil1GPXZQviqaMf-MYBgvEbq36MAu-lMtiSJtcZFhkda1UjV_DNpOAfB_SlC38BdL/pub?gid=0&single=true&output=csv';
 
-const WHATSAPP_NUMERO = '5535988320463'; // 55 + DDD + número
+const WHATSAPP_NUMERO = '5535988320463';
 
-/* ========================================= */
-/* LISTA RESERVA                             */
-/* (só é usada se a planilha não carregar)   */
-/* ========================================= */
-const produtosReserva = [
-    { categoria: "lanches", nome: "X-Burguer", descricao: "Hambúrguer, presunto e mussarela", preco: "R$ 8,50", destaque: "nao" },
-    { categoria: "lanches", nome: "X-Salada", descricao: "Alface, tomate, hambúrguer, presunto e mussarela", preco: "R$ 9,50", destaque: "nao" },
-    { categoria: "lanches", nome: "X-Frango", descricao: "Frango, mussarela, alface e tomate", preco: "R$ 12,50", destaque: "nao" },
-    { categoria: "lanches", nome: "X-Burguer G", descricao: "2 hambúrgueres, presunto e mussarela", preco: "R$ 12,50", destaque: "nao" },
-    { categoria: "lanches", nome: "X-Salada G", descricao: "Alface, tomate, 2 hambúrgueres, presunto e mussarela", preco: "R$ 13,50", destaque: "nao" },
-    { categoria: "lanches", nome: "X-Burguer Bacon", descricao: "Hambúrguer, presunto, mussarela e bacon", preco: "R$ 11,50", destaque: "nao" },
-    { categoria: "lanches", nome: "X-Salada Bacon", descricao: "Tomate, alface, hambúrguer, presunto, mussarela e bacon", preco: "R$ 12,50", destaque: "nao" },
-    { categoria: "lanches", nome: "X-Burguer G Bacon", descricao: "2 hambúrgueres, presunto, mussarela e bacon", preco: "R$ 15,50", destaque: "nao" },
-    { categoria: "lanches", nome: "X-Salada G Bacon", descricao: "Tomate, alface, 2 hambúrgueres, presunto, mussarela e bacon", preco: "R$ 16,50", destaque: "nao" },
-    { categoria: "lanches", nome: "X-Frango Bacon", descricao: "Frango, mussarela, tomate, alface e bacon", preco: "R$ 15,50", destaque: "nao" },
-    { categoria: "lanches", nome: "Cachorro Quente na Chapa", descricao: "2 salsichas, mussarela, tomate, alface, milho, bacon e batata palha", preco: "R$ 17,50", destaque: "nao" },
-    { categoria: "lanches", nome: "Cachorro Quente", descricao: "2 salsichas, vinagrete, milho, purê de batata e batata palha", preco: "R$ 13,00", destaque: "nao" },
+/*
+  Os valores abaixo seguem as fotos enviadas.
+  Confirme os preços e os tamanhos com a lanchonete.
+*/
 
-    { categoria: "pasteis", nome: "Pastel de Carne", descricao: "Pastel tradicional de carne", preco: "R$ 8,00", destaque: "nao" },
-    { categoria: "pasteis", nome: "Pastel de Frango", descricao: "Pastel tradicional de frango", preco: "R$ 8,00", destaque: "nao" },
-    { categoria: "pasteis", nome: "Pastel Frango c/ Queijo", descricao: "Frango com queijo", preco: "R$ 8,00", destaque: "nao" },
-    { categoria: "pasteis", nome: "Pastel Frango c/ Catupiry", descricao: "Frango com catupiry", preco: "R$ 8,00", destaque: "nao" },
-    { categoria: "pasteis", nome: "Pastel Presunto e Mussarela", descricao: "Presunto e mussarela", preco: "R$ 8,00", destaque: "nao" },
-    { categoria: "pasteis", nome: "Pastel de Pizza", descricao: "Queijo, presunto, tomate e orégano", preco: "R$ 8,00", destaque: "nao" },
-    { categoria: "pasteis", nome: "Pastel de Queijo", descricao: "Mussarela", preco: "R$ 8,00", destaque: "nao" },
+const adicionaisPorCategoria = {
+    pizzas_salgadas: [
+        { nome: 'Catupiry', preco: 3 },
+        { nome: 'Cheddar', preco: 3 },
+        { nome: 'Mussarela extra', preco: 3 },
+        { nome: 'Batata palha', preco: 2 },
+        { nome: 'Milho', preco: 1 }
+    ],
 
-    { categoria: "porcoes", nome: "Porção Batata Grande", descricao: "Batata frita com cheddar e bacon", preco: "R$ 30,00", destaque: "sim" },
-    { categoria: "porcoes", nome: "Porção Batata Média", descricao: "Batata frita com cheddar e bacon", preco: "R$ 20,00", destaque: "nao" },
-    { categoria: "porcoes", nome: "Porção Batata Pequena", descricao: "Batata frita com cheddar e bacon", preco: "R$ 10,00", destaque: "nao" },
+    pizzas_grandes: [
+        { nome: 'Catupiry', preco: 5 },
+        { nome: 'Cheddar', preco: 5 },
+        { nome: 'Mussarela extra', preco: 5.5 },
+        { nome: 'Milho', preco: 2 },
+        { nome: 'Batata palha', preco: 3 }
+    ],
 
-    { categoria: "pizzas_doces", nome: "Pizza Brigadeiro", descricao: "Chocolate e granulado", preco: "R$ 25,00", destaque: "nao" },
-    { categoria: "pizzas_doces", nome: "Pizza Prestígio", descricao: "Chocolate, coco ralado e leite condensado", preco: "R$ 25,00", destaque: "nao" },
-    { categoria: "pizzas_doces", nome: "Pizza M&M", descricao: "Chocolate e M&M", preco: "R$ 25,00", destaque: "nao" },
-    { categoria: "pizzas_doces", nome: "Pizza Tubin", descricao: "Chocolate e tubin", preco: "R$ 25,00", destaque: "nao" },
-    { categoria: "pizzas_doces", nome: "Pizza Ouro Branco", descricao: "Chocolate e ouro branco", preco: "R$ 25,00", destaque: "nao" },
-    { categoria: "pizzas_doces", nome: "Pizza Bis", descricao: "Chocolate e bis", preco: "R$ 25,00", destaque: "nao" },
-    { categoria: "pizzas_doces", nome: "Pizza Choc Leite & Branco", descricao: "Chocolate ao leite e chocolate branco", preco: "R$ 25,00", destaque: "nao" },
-
-    { categoria: "pizzas_salgadas", nome: "Pizza Presunto e Mussarela (Pequena)", descricao: "Presunto, mussarela, tomate e azeitona", preco: "R$ 20,00", destaque: "nao" },
-    { categoria: "pizzas_salgadas", nome: "Pizza Calabresa (Pequena)", descricao: "Calabresa, bacon, cebola, mussarela e azeitona", preco: "R$ 20,00", destaque: "nao" },
-    { categoria: "pizzas_salgadas", nome: "Pizza Portuguesa (Pequena)", descricao: "Presunto, mussarela, ovos cozidos, batata palha e azeitona", preco: "R$ 20,00", destaque: "nao" },
-    { categoria: "pizzas_salgadas", nome: "Pizza Frango com Catupiry (Pequena)", descricao: "Frango, catupiry e azeitona", preco: "R$ 18,00", destaque: "nao" },
-    { categoria: "pizzas_salgadas", nome: "Pizza Mussarela (Pequena)", descricao: "Mussarela e azeitona", preco: "R$ 20,00", destaque: "nao" },
-    { categoria: "pizzas_salgadas", nome: "Pizza 3 Queijos (Pequena)", descricao: "Mussarela, provolone, parmesão e azeitona", preco: "R$ 20,00", destaque: "nao" },
-    { categoria: "pizzas_salgadas", nome: "Pizza Brócolis (Pequena)", descricao: "Brócolis, mussarela e azeitona", preco: "R$ 20,00", destaque: "nao" },
-    { categoria: "pizzas_salgadas", nome: "Pizza Batata Frita (Pequena)", descricao: "Batata frita, bacon, mussarela e azeitona", preco: "R$ 20,00", destaque: "nao" },
-
-    { categoria: "pizzas_grandes", nome: "Pizza Presunto e Mussarela (Grande)", descricao: "Presunto, mussarela e tomate", preco: "R$ 40,00", destaque: "nao" },
-    { categoria: "pizzas_grandes", nome: "Pizza Mussarela (Grande)", descricao: "Mussarela", preco: "R$ 40,00", destaque: "nao" },
-    { categoria: "pizzas_grandes", nome: "Pizza Calabresa (Grande)", descricao: "Mussarela, calabresa, bacon, cebola e azeitona", preco: "R$ 40,00", destaque: "nao" },
-    { categoria: "pizzas_grandes", nome: "Pizza Portuguesa (Grande)", descricao: "Mussarela, presunto, ovo, batata palha e azeitona", preco: "R$ 40,00", destaque: "nao" },
-    { categoria: "pizzas_grandes", nome: "Pizza Frango com Catupiry (Grande)", descricao: "Frango, catupiry e azeitona", preco: "R$ 35,00", destaque: "nao" },
-    { categoria: "pizzas_grandes", nome: "Pizza Batata Frita (Grande)", descricao: "Batata frita, queijo, mussarela, bacon e azeitona", preco: "R$ 40,00", destaque: "nao" },
-    { categoria: "pizzas_grandes", nome: "Pizza 3 Queijos (Grande)", descricao: "Mussarela, provolone, parmesão e azeitona", preco: "R$ 40,00", destaque: "nao" },
-    { categoria: "pizzas_grandes", nome: "Pizza Brócolis (Grande)", descricao: "Mussarela, brócolis e azeitona", preco: "R$ 40,00", destaque: "nao" }
-];
-
-/* Aceita várias formas de escrever a categoria na planilha */
-const MAPPING = {
-    'lanches': 'lista-lanches',
-    'lanche': 'lista-lanches',
-    'pasteis': 'lista-pasteis',
-    'pastel': 'lista-pasteis',
-    'porcoes': 'lista-porcoes',
-    'porcao': 'lista-porcoes',
-    'pizzas_salgadas': 'lista-pizzas_salgadas',
-    'pizza_salgada': 'lista-pizzas_salgadas',
-    'pizzas_pequenas': 'lista-pizzas_salgadas',
-    'pizza_pequena': 'lista-pizzas_salgadas',
-    'pizzas_grandes': 'lista-pizzas_grandes',
-    'pizza_grande': 'lista-pizzas_grandes',
-    'pizzas_doces': 'lista-pizzas_doces',
-    'pizza_doce': 'lista-pizzas_doces',
-    'pizzas': 'lista-pizzas_doces'
+    pizzas_doces: [
+        { nome: 'Chocolate branco', preco: 5 }
+    ]
 };
 
+/* =========================================
+   PRODUTOS DE RESERVA
+   Usados somente se a planilha falhar.
+========================================= */
+
+const produtosReserva = [
+    { categoria: 'lanches', nome: 'X-Burguer', descricao: 'Hambúrguer, presunto e mussarela.', preco: '8,50' },
+    { categoria: 'lanches', nome: 'X-Salada', descricao: 'Alface, tomate, hambúrguer, presunto e mussarela.', preco: '9,50' },
+    { categoria: 'lanches', nome: 'X-Frango', descricao: 'Frango, mussarela, alface e tomate.', preco: '12,50' },
+    { categoria: 'lanches', nome: 'X-Burguer Bacon', descricao: 'Hambúrguer, presunto, mussarela e bacon.', preco: '11,50' },
+    { categoria: 'lanches', nome: 'Cachorro Quente', descricao: 'Salsicha, vinagrete, milho e batata palha.', preco: '13,00' },
+
+    { categoria: 'pasteis', nome: 'Pastel de Carne', descricao: 'Pastel tradicional de carne.', preco: '8,00' },
+    { categoria: 'pasteis', nome: 'Pastel de Frango', descricao: 'Pastel tradicional de frango.', preco: '8,00' },
+    { categoria: 'pasteis', nome: 'Pastel de Queijo', descricao: 'Pastel de mussarela.', preco: '8,00' },
+    { categoria: 'pasteis', nome: 'Pastel de Pizza', descricao: 'Queijo, presunto, tomate e orégano.', preco: '8,00' },
+
+    { categoria: 'porcoes', nome: 'Batata frita pequena', descricao: 'Porção de batata frita.', preco: '10,00' },
+    { categoria: 'porcoes', nome: 'Batata frita média', descricao: 'Porção de batata frita.', preco: '20,00' },
+    { categoria: 'porcoes', nome: 'Batata frita grande', descricao: 'Porção de batata frita.', preco: '30,00' },
+
+    { categoria: 'pizzas_salgadas', nome: 'Pizza de Mussarela', descricao: 'Mussarela e azeitona.', preco: '20,00' },
+    { categoria: 'pizzas_salgadas', nome: 'Pizza de Calabresa', descricao: 'Calabresa, cebola, mussarela e azeitona.', preco: '20,00' },
+    { categoria: 'pizzas_salgadas', nome: 'Pizza Portuguesa', descricao: 'Presunto, mussarela, ovos e azeitona.', preco: '20,00' },
+    { categoria: 'pizzas_salgadas', nome: 'Pizza de Frango com Catupiry', descricao: 'Frango, catupiry e azeitona.', preco: '18,00' },
+    { categoria: 'pizzas_salgadas', nome: 'Pizza de Três Queijos', descricao: 'Mussarela, provolone e parmesão.', preco: '20,00' },
+
+    { categoria: 'pizzas_grandes', nome: 'Pizza de Mussarela Grande', descricao: 'Mussarela e azeitona.', preco: '40,00' },
+    { categoria: 'pizzas_grandes', nome: 'Pizza de Calabresa Grande', descricao: 'Calabresa, cebola, mussarela e azeitona.', preco: '40,00' },
+    { categoria: 'pizzas_grandes', nome: 'Pizza Portuguesa Grande', descricao: 'Presunto, mussarela, ovos e azeitona.', preco: '40,00' },
+    { categoria: 'pizzas_grandes', nome: 'Pizza de Frango com Catupiry Grande', descricao: 'Frango, catupiry e azeitona.', preco: '35,00' },
+
+    { categoria: 'pizzas_doces', nome: 'Pizza Brigadeiro', descricao: 'Chocolate e granulado.', preco: '25,00' },
+    { categoria: 'pizzas_doces', nome: 'Pizza Prestígio', descricao: 'Chocolate, coco ralado e leite condensado.', preco: '25,00' },
+    { categoria: 'pizzas_doces', nome: 'Pizza de M&M', descricao: 'Chocolate e M&M.', preco: '25,00' },
+    { categoria: 'pizzas_doces', nome: 'Pizza de Chocolate Branco', descricao: 'Chocolate branco.', preco: '25,00' }
+];
+
+/* =========================================
+   ESTADO
+========================================= */
+
+const containers = {
+    lanches: 'lista-lanches',
+    pasteis: 'lista-pasteis',
+    porcoes: 'lista-porcoes',
+    pizzas_salgadas: 'lista-pizzas_salgadas',
+    pizzas_grandes: 'lista-pizzas_grandes',
+    pizzas_doces: 'lista-pizzas_doces'
+};
+
+let produtosCarregados = [];
 let carrinho = [];
 
-/* ========================================= */
-/* UTILITÁRIOS                               */
-/* ========================================= */
-function normalizarCategoria(txt) {
-    return String(txt || '')
+/* =========================================
+   FUNÇÕES AUXILIARES
+========================================= */
+
+function normalizarTexto(valor) {
+    return String(valor || '')
         .toLowerCase()
-        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // tira acentos
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
         .trim()
-        .replace(/[\s-]+/g, '_');                          // espaço/hífen vira _
+        .replace(/[\s-]+/g, '_');
 }
 
-function escapar(txt) {
-    return String(txt ?? '').replace(/[&<>"']/g, m => ({
-        '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-    }[m]));
+function escaparHTML(valor) {
+    return String(valor ?? '').replace(/[&<>"']/g, caractere => ({
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;'
+    })[caractere]);
 }
 
-function precoParaNumero(preco) {
-    const limpo = String(preco).replace(/[^\d,.-]/g, '');
-    const normal = limpo.includes(',') ? limpo.replace(/\./g, '').replace(',', '.') : limpo;
-    return parseFloat(normal) || 0;
+function precoParaNumero(valor) {
+    let texto = String(valor ?? '').trim()
+        .replace(/R\$/gi, '')
+        .replace(/\s/g, '');
+
+    if (texto.includes(',')) {
+        texto = texto.replace(/\./g, '').replace(',', '.');
+    }
+
+    const numero = Number(texto);
+    return Number.isFinite(numero) ? numero : 0;
 }
 
 function formatarPreco(valor) {
-    return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    return Number(valor).toLocaleString('pt-BR', {
+        style: 'currency',
+        currency: 'BRL'
+    });
 }
 
-/* ========================================= */
-/* LER A PLANILHA (CSV)                      */
-/* ========================================= */
-function parseCSV(texto) {
+function obterCategoria(valor) {
+    const categoria = normalizarTexto(valor);
+
+    const aliases = {
+        lanche: 'lanches',
+        pastel: 'pasteis',
+        porcao: 'porcoes',
+        pizza_pequena: 'pizzas_salgadas',
+        pizzas_pequenas: 'pizzas_salgadas',
+        pizza_salgada: 'pizzas_salgadas',
+        pizza_grande: 'pizzas_grandes',
+        pizza_doce: 'pizzas_doces'
+    };
+
+    return aliases[categoria] || categoria;
+}
+
+function obterId(produto, indice) {
+    return String(produto.id || `${produto.categoria}-${produto.nome}-${indice}`);
+}
+
+/* =========================================
+   IMPORTAÇÃO DA PLANILHA CSV
+   Cabeçalho esperado:
+   id,categoria,nome,descricao,preco,destaque
+========================================= */
+
+function analisarCSV(texto) {
     const linhas = [];
-    let linha = [], campo = '', aspas = false;
+    let linha = [];
+    let campo = '';
+    let dentroDeAspas = false;
 
     for (let i = 0; i < texto.length; i++) {
-        const c = texto[i];
-        if (aspas) {
-            if (c === '"' && texto[i + 1] === '"') { campo += '"'; i++; }
-            else if (c === '"') aspas = false;
-            else campo += c;
+        const caractere = texto[i];
+
+        if (dentroDeAspas) {
+            if (caractere === '"' && texto[i + 1] === '"') {
+                campo += '"';
+                i++;
+            } else if (caractere === '"') {
+                dentroDeAspas = false;
+            } else {
+                campo += caractere;
+            }
+        } else if (caractere === '"') {
+            dentroDeAspas = true;
+        } else if (caractere === ',') {
+            linha.push(campo);
+            campo = '';
+        } else if (caractere === '\n' || caractere === '\r') {
+            if (caractere === '\r' && texto[i + 1] === '\n') i++;
+
+            linha.push(campo);
+            campo = '';
+
+            if (linha.some(c => c.trim())) linhas.push(linha);
+            linha = [];
         } else {
-            if (c === '"') aspas = true;
-            else if (c === ',') { linha.push(campo); campo = ''; }
-            else if (c === '\n' || c === '\r') {
-                if (c === '\r' && texto[i + 1] === '\n') i++;
-                linha.push(campo); campo = '';
-                if (linha.some(x => x.trim() !== '')) linhas.push(linha);
-                linha = [];
-            } else campo += c;
+            campo += caractere;
         }
     }
+
     linha.push(campo);
-    if (linha.some(x => x.trim() !== '')) linhas.push(linha);
-    return linhas;
-}
+    if (linha.some(c => c.trim())) linhas.push(linha);
 
-async function carregarDaPlanilha() {
-    const resposta = await fetch(`${CSV_URL}&t=${Date.now()}`);
-    if (!resposta.ok) throw new Error('Erro HTTP ' + resposta.status);
-
-    const texto = await resposta.text();
-    if (texto.trim().toLowerCase().startsWith('<!doctype') || texto.includes('<html')) {
-        throw new Error('A planilha não está publicada como CSV');
+    if (linhas.length < 2) {
+        throw new Error('A planilha está vazia ou sem produtos.');
     }
 
-    const linhas = parseCSV(texto);
-    const produtos = [];
+    const cabecalhos = linhas[0].map(c => normalizarTexto(c));
+    const procurarColuna = nomes => cabecalhos.findIndex(c => nomes.includes(c));
 
-    // Colunas: id, categoria, nome, descricao, preco, destaque
-    for (let i = 1; i < linhas.length; i++) {
-        const [id, categoria, nome, descricao, preco, destaque] = linhas[i].map(c => c.trim());
-        if (!nome) continue;
-        produtos.push({
-            id,
-            categoria: normalizarCategoria(categoria),
-            nome,
-            descricao: descricao || '',
-            preco: preco || '',
-            destaque: (destaque || '').toLowerCase()
-        });
+    const colunas = {
+        id: procurarColuna(['id', 'codigo', 'cod']),
+        categoria: procurarColuna(['categoria', 'tipo']),
+        nome: procurarColuna(['nome', 'produto', 'lanche']),
+        descricao: procurarColuna(['descricao', 'descrição']),
+        preco: procurarColuna(['preco', 'valor', 'preco_venda']),
+        destaque: procurarColuna(['destaque'])
+    };
+
+    if (colunas.categoria < 0 || colunas.nome < 0 || colunas.preco < 0) {
+        throw new Error('Confira as colunas categoria, nome e preco na planilha.');
     }
 
-    if (produtos.length === 0) throw new Error('Planilha sem produtos');
-    return produtos;
+    return linhas.slice(1).map(celulas => {
+        const ler = coluna => coluna < 0 ? '' : (celulas[coluna] || '').trim();
+
+        return {
+            id: ler(colunas.id),
+            categoria: obterCategoria(ler(colunas.categoria)),
+            nome: ler(colunas.nome),
+            descricao: ler(colunas.descricao),
+            preco: ler(colunas.preco),
+            destaque: ler(colunas.destaque).toLowerCase()
+        };
+    }).filter(p => p.nome && p.categoria);
 }
 
 async function carregarProdutos() {
+    const status = document.getElementById('status-cardapio');
+
     try {
-        const produtos = await carregarDaPlanilha();
-        console.log(`✅ ${produtos.length} produtos carregados da PLANILHA.`);
-        renderizarProdutos(produtos);
+        const resposta = await fetch(CSV_URL);
+
+        if (!resposta.ok) {
+            throw new Error(`Falha ao acessar a planilha: ${resposta.status}`);
+        }
+
+        const texto = await resposta.text();
+
+        if (/<html|<!doctype/i.test(texto.slice(0, 500))) {
+            throw new Error('O link não retornou um arquivo CSV.');
+        }
+
+        produtosCarregados = analisarCSV(texto);
+
+        if (!produtosCarregados.length) {
+            throw new Error('Não foram encontrados produtos válidos.');
+        }
+
+        status.textContent = '';
     } catch (erro) {
-        console.warn('⚠️ Usando a lista reserva porque a planilha falhou:', erro.message);
-        renderizarProdutos(produtosReserva.map(p => ({ ...p, categoria: normalizarCategoria(p.categoria) })));
+        console.error(erro);
+        produtosCarregados = produtosReserva.map(p => ({
+            ...p,
+            categoria: obterCategoria(p.categoria)
+        }));
+
+        status.textContent =
+            'Não foi possível carregar a planilha. Exibindo produtos de demonstração.';
     }
+
+    renderizarProdutos();
 }
 
-/* ========================================= */
-/* RENDERIZAR PRODUTOS                       */
-/* ========================================= */
-function renderizarProdutos(produtos) {
-    Object.values(MAPPING).forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.innerHTML = '';
+/* =========================================
+   ADICIONAIS
+========================================= */
+
+function obterAdicionais(produto) {
+    return adicionaisPorCategoria[produto.categoria] || [];
+}
+
+function criarHTMLAdicionais(produto, idSeguro) {
+    const adicionais = obterAdicionais(produto);
+
+    if (!adicionais.length) return '';
+
+    return `
+        <div class="adicionais-produto">
+            <h4>Quer adicionar algo?</h4>
+
+            ${adicionais.map((adicional, indice) => `
+                <div class="adicional-opcao">
+                    <label for="extra-${idSeguro}-${indice}">
+                        <input
+                            type="checkbox"
+                            id="extra-${idSeguro}-${indice}"
+                            data-extra-indice="${indice}"
+                        >
+                        <span>${escaparHTML(adicional.nome)}</span>
+                    </label>
+                    <span class="adicional-preco">
+                        + ${formatarPreco(adicional.preco)}
+                    </span>
+                </div>
+            `).join('')}
+
+            <p class="adicionais-aviso">
+                Marque os adicionais antes de adicionar ao pedido.
+            </p>
+        </div>
+    `;
+}
+
+/* =========================================
+   RENDERIZAR CARDÁPIO
+========================================= */
+
+function renderizarProdutos() {
+    Object.values(containers).forEach(id => {
+        document.getElementById(id).innerHTML = '';
     });
 
-    produtos.forEach(item => {
-        const container = document.getElementById(MAPPING[item.categoria]);
-        if (!container || !item.nome) {
-            console.warn('Categoria não reconhecida:', `"${item.categoria}"`, '→', item.nome);
+    let quantidadeExibida = 0;
+
+    produtosCarregados.forEach((produto, indice) => {
+        produto.categoria = obterCategoria(produto.categoria);
+
+        const idContainer = containers[produto.categoria];
+        const container = idContainer
+            ? document.getElementById(idContainer)
+            : null;
+
+        if (!container) {
+            console.warn('Categoria não reconhecida:', produto.categoria);
             return;
         }
 
-        const card = document.createElement('div');
-        card.className = 'produto' + (item.destaque === 'sim' ? ' destaque' : '');
+        quantidadeExibida++;
+
+        const idSeguro = `produto-${indice}`;
+        const card = document.createElement('article');
+        card.className = 'produto';
+
         card.innerHTML = `
             <div class="produto-conteudo">
-                <span class="produto-categoria">${escapar(item.categoria.replace(/_/g, ' '))}</span>
-                <h3>${escapar(item.nome)}</h3>
-                <p>${escapar(item.descricao)}</p>
+                <span class="produto-categoria">
+                    ${escaparHTML(produto.categoria.replace(/_/g, ' '))}
+                </span>
+
+                <h3>${escaparHTML(produto.nome)}</h3>
+                <p>${escaparHTML(produto.descricao)}</p>
+
                 <div class="produto-rodape">
-                    <strong class="preco">${escapar(item.preco)}</strong>
-                    <button class="btn-add" type="button">+ Adicionar</button>
+                    <strong class="preco">
+                        ${formatarPreco(precoParaNumero(produto.preco))}
+                    </strong>
                 </div>
+
+                ${criarHTMLAdicionais(produto, idSeguro)}
+
+                <button type="button" class="btn-add">
+                    + Adicionar ao pedido
+                </button>
             </div>
         `;
+
         card.querySelector('.btn-add').addEventListener('click', () => {
-            adicionarAoCarrinho(item.nome, item.preco);
+            const adicionais = obterAdicionais(produto);
+            const selecionados = [];
+
+            card.querySelectorAll('[data-extra-indice]:checked')
+                .forEach(input => {
+                    const adicional = adicionais[
+                        Number(input.dataset.extraIndice)
+                    ];
+
+                    if (adicional) selecionados.push({ ...adicional });
+                });
+
+            adicionarAoCarrinho(produto, selecionados, indice);
+
+            card.querySelectorAll('[data-extra-indice]')
+                .forEach(input => input.checked = false);
         });
+
         container.appendChild(card);
     });
+
+    document.querySelectorAll('.grupo-produtos').forEach(secao => {
+        const grade = secao.querySelector('.grade-produtos');
+        secao.hidden = !grade || grade.children.length === 0;
+    });
+
+    if (!quantidadeExibida) {
+        document.getElementById('status-cardapio').textContent =
+            'Nenhum produto disponível no momento.';
+    }
+
+    aplicarFiltro(
+        document.querySelector('.filtro.ativo')?.dataset.categoria || 'todos'
+    );
 }
 
-/* ========================================= */
-/* CARRINHO                                  */
-/* ========================================= */
-function adicionarAoCarrinho(nome, preco) {
-    const existente = carrinho.find(i => i.nome === nome);
-    if (existente) existente.qtd++;
-    else carrinho.push({ nome, preco: precoParaNumero(preco), qtd: 1 });
+/* =========================================
+   CARRINHO
+========================================= */
+
+function adicionarAoCarrinho(produto, adicionais, indice) {
+    const idProduto = obterId(produto, indice);
+
+    const adicionaisOrdenados = [...adicionais]
+        .sort((a, b) => a.nome.localeCompare(b.nome));
+
+    const chaveAdicionais = adicionaisOrdenados
+        .map(a => `${a.nome}:${a.preco}`)
+        .join('|');
+
+    const chave = `${idProduto}::${chaveAdicionais}`;
+
+    const existente = carrinho.find(item => item.chave === chave);
+
+    if (existente) {
+        existente.quantidade++;
+    } else {
+        carrinho.push({
+            chave,
+            nome: produto.nome,
+            precoBase: precoParaNumero(produto.preco),
+            adicionais: adicionaisOrdenados,
+            quantidade: 1
+        });
+    }
+
     atualizarCarrinho();
+
+    const botao = document.getElementById('carrinho-bar');
+    botao.classList.remove('escondido');
 }
 
-function alterarQtd(nome, delta) {
-    const item = carrinho.find(i => i.nome === nome);
+function calcularPrecoUnitario(item) {
+    const totalAdicionais = item.adicionais.reduce(
+        (total, adicional) => total + adicional.preco,
+        0
+    );
+
+    return item.precoBase + totalAdicionais;
+}
+
+function alterarQuantidade(chave, alteracao) {
+    const item = carrinho.find(produto => produto.chave === chave);
     if (!item) return;
-    item.qtd += delta;
-    if (item.qtd <= 0) carrinho = carrinho.filter(i => i.nome !== nome);
+
+    item.quantidade += alteracao;
+
+    if (item.quantidade <= 0) {
+        carrinho = carrinho.filter(produto => produto.chave !== chave);
+    }
+
     atualizarCarrinho();
 }
 
 function atualizarCarrinho() {
-    const bar = document.getElementById('carrinho-bar');
     const lista = document.getElementById('carrinho-itens');
-    const totalItens = carrinho.reduce((s, i) => s + i.qtd, 0);
-    const total = carrinho.reduce((s, i) => s + i.qtd * i.preco, 0);
+    const barra = document.getElementById('carrinho-bar');
 
-    document.getElementById('carrinho-qtd').textContent = `${totalItens} ${totalItens === 1 ? 'item' : 'itens'}`;
-    document.getElementById('carrinho-total').textContent = formatarPreco(total);
-    document.getElementById('modal-total').textContent = formatarPreco(total);
+    const quantidade = carrinho.reduce(
+        (total, item) => total + item.quantidade,
+        0
+    );
 
-    bar.classList.toggle('escondido', totalItens === 0);
+    const total = carrinho.reduce(
+        (soma, item) => soma + calcularPrecoUnitario(item) * item.quantidade,
+        0
+    );
 
+    document.getElementById('carrinho-qtd').textContent =
+        `${quantidade} ${quantidade === 1 ? 'item' : 'itens'}`;
+
+    document.getElementById('carrinho-total').textContent =
+        formatarPreco(total);
+
+    document.getElementById('modal-total').textContent =
+        formatarPreco(total);
+
+    barra.classList.toggle('escondido', quantidade === 0);
     lista.innerHTML = '';
+
     carrinho.forEach(item => {
-        const div = document.createElement('div');
-        div.className = 'item-carrinho';
-        div.innerHTML = `
+        const elemento = document.createElement('article');
+        elemento.className = 'item-carrinho';
+
+        const htmlAdicionais = item.adicionais.length
+            ? `<span class="item-adicionais">
+                Adicionais: ${item.adicionais.map(adicional =>
+                    `${escaparHTML(adicional.nome)} (+${formatarPreco(adicional.preco)})`
+                ).join(', ')}
+               </span>`
+            : '';
+
+        elemento.innerHTML = `
             <div class="item-info">
-                <strong>${escapar(item.nome)}</strong><br>
-                <span>${formatarPreco(item.preco * item.qtd)}</span>
+                <strong>${escaparHTML(item.nome)}</strong>
+                ${htmlAdicionais}
+                <span>
+                    ${formatarPreco(calcularPrecoUnitario(item) * item.quantidade)}
+                </span>
             </div>
+
             <div class="item-qtd-controles">
-                <button class="btn-qtd" type="button">−</button>
-                <strong>${item.qtd}</strong>
-                <button class="btn-qtd" type="button">+</button>
+                <button type="button" class="btn-qtd btn-menos"
+                        aria-label="Diminuir quantidade">−</button>
+                <strong>${item.quantidade}</strong>
+                <button type="button" class="btn-qtd btn-mais"
+                        aria-label="Aumentar quantidade">+</button>
             </div>
         `;
-        const [menos, mais] = div.querySelectorAll('.btn-qtd');
-        menos.addEventListener('click', () => alterarQtd(item.nome, -1));
-        mais.addEventListener('click', () => alterarQtd(item.nome, 1));
-        lista.appendChild(div);
+
+        elemento.querySelector('.btn-menos').addEventListener('click', () => {
+            alterarQuantidade(item.chave, -1);
+        });
+
+        elemento.querySelector('.btn-mais').addEventListener('click', () => {
+            alterarQuantidade(item.chave, 1);
+        });
+
+        lista.appendChild(elemento);
     });
 
-    if (totalItens === 0) {
-        document.getElementById('carrinho-modal').classList.add('escondido');
+    if (quantidade === 0) {
+        document.getElementById('carrinho-modal')
+            .classList.add('escondido');
     }
 }
 
-/* ========================================= */
-/* WHATSAPP + ENDEREÇO                       */
-/* ========================================= */
-function pegarEndereco() {
-    const valor = id => (document.getElementById(id)?.value || '').trim();
-    return {
-        bairro: valor('end-bairro'),
-        rua: valor('end-rua'),
-        numero: valor('end-numero'),
-        ref: valor('end-ref')
-    };
-}
+/* =========================================
+   FILTRO
+========================================= */
 
-function enviarWhatsApp() {
-    if (carrinho.length === 0) return;
+function aplicarFiltro(categoria) {
+    document.querySelectorAll('.grupo-produtos').forEach(secao => {
+        const corresponde =
+            categoria === 'todos' || secao.dataset.secao === categoria;
 
-    // Valida o bairro (único campo obrigatório)
-    const end = pegarEndereco();
-    const campoBairro = document.getElementById('end-bairro');
-    const erroBairro = document.getElementById('erro-bairro');
-
-    if (!end.bairro) {
-        campoBairro.classList.add('invalido');
-        erroBairro.classList.remove('escondido');
-        campoBairro.focus();
-        campoBairro.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        return;
-    }
-
-    const obs = (document.getElementById('obs-pedido')?.value || '').trim();
-    const total = carrinho.reduce((s, i) => s + i.qtd * i.preco, 0);
-
-    // Monta o endereço só com o que foi preenchido
-    const partes = [`Bairro: ${end.bairro}`];
-    if (end.rua) partes.push(`Rua: ${end.rua}`);
-    if (end.numero) partes.push(`Número: ${end.numero}`);
-    if (end.ref) partes.push(`Referência: ${end.ref}`);
-
-    let msg = 'Olá, gostaria de fazer o seguinte pedido:\n\n';
-    carrinho.forEach(i => {
-        msg += `* ${i.qtd}x ${i.nome} - ${formatarPreco(i.qtd * i.preco)}\n`;
+        secao.hidden = !corresponde ||
+            secao.querySelector('.grade-produtos').children.length === 0;
     });
-    msg += `\n*Total:* ${formatarPreco(total)}`;
-    if (obs) msg += `\n*Observações:* ${obs}`;
-    msg += `\n\nMeu endereço é: ${partes.join(', ')}; gostaria de saber quanto ficaria a taxa de entrega.`;
 
-    window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMERO}&text=${encodeURIComponent(msg)}`, '_blank');
+    document.querySelectorAll('.filtro').forEach(botao => {
+        const ativo = botao.dataset.categoria === categoria;
+        botao.classList.toggle('ativo', ativo);
+        botao.setAttribute('aria-pressed', String(ativo));
+    });
 }
 
-/* ========================================= */
-/* FILTRO DE CATEGORIAS                      */
-/* ========================================= */
-function configurarFiltro() {
-    const botoes = document.querySelectorAll('.categoria-btn');
-    const secoes = document.querySelectorAll('.secao');
-
-    botoes.forEach(btn => {
-        btn.addEventListener('click', () => {
-            botoes.forEach(b => b.classList.remove('ativo'));
-            btn.classList.add('ativo');
-            const cat = btn.dataset.categoria;
-            secoes.forEach(s => {
-                s.style.display = (cat === 'todos' || s.dataset.secao === cat) ? 'block' : 'none';
-            });
+function configurarFiltros() {
+    document.querySelectorAll('.filtro').forEach(botao => {
+        botao.addEventListener('click', () => {
+            aplicarFiltro(botao.dataset.categoria);
         });
     });
 }
 
-/* ========================================= */
-/* INICIALIZAÇÃO                             */
-/* ========================================= */
-document.addEventListener('DOMContentLoaded', () => {
-    carregarProdutos();
-    configurarFiltro();
+/* =========================================
+   ENVIO PELO WHATSAPP
+========================================= */
 
-    const modal = document.getElementById('carrinho-modal');
-    document.getElementById('btn-abrir-carrinho').addEventListener('click', () => modal.classList.remove('escondido'));
-    document.getElementById('btn-fechar-modal').addEventListener('click', () => modal.classList.add('escondido'));
-    modal.addEventListener('click', e => { if (e.target === modal) modal.classList.add('escondido'); });
-    document.getElementById('btn-enviar-whats').addEventListener('click', enviarWhatsApp);
+function enviarPedidoWhatsApp() {
+    if (!carrinho.length) {
+        alert('Adicione pelo menos um produto ao pedido.');
+        return;
+    }
 
-    // Tira o aviso de erro assim que a pessoa começa a digitar o bairro
-    document.getElementById('end-bairro').addEventListener('input', e => {
-        if (e.target.value.trim()) {
-            e.target.classList.remove('invalido');
-            document.getElementById('erro-bairro').classList.add('escondido');
+    const bairro = document.getElementById('end-bairro').value.trim();
+    const campoBairro = document.getElementById('end-bairro');
+    const erroBairro = document.getElementById('erro-bairro');
+
+    if (!bairro) {
+        campoBairro.classList.add('invalido');
+        erroBairro.classList.remove('escondido');
+        campoBairro.focus();
+        return;
+    }
+
+    const rua = document.getElementById('end-rua').value.trim();
+    const numero = document.getElementById('end-numero').value.trim();
+    const referencia = document.getElementById('end-ref').value.trim();
+    const observacoes = document.getElementById('obs-pedido').value.trim();
+
+    const total = carrinho.reduce(
+        (soma, item) => soma + calcularPrecoUnitario(item) * item.quantidade,
+        0
+    );
+
+    let mensagem = 'Olá! Gostaria de fazer um pedido:\n\n';
+
+    carrinho.forEach(item => {
+        mensagem += `*${item.quantidade}x ${item.nome}*\n`;
+        mensagem += `Valor: ${formatarPreco(calcularPrecoUnitario(item) * item.quantidade)}\n`;
+
+        if (item.adicionais.length) {
+            mensagem += '*Adicionais:*\n';
+
+            item.adicionais.forEach(adicional => {
+                mensagem += `- ${adicional.nome}: ${formatarPreco(adicional.preco)}\n`;
+            });
         }
+
+        mensagem += '\n';
     });
+
+    mensagem += `*Total dos produtos: ${formatarPreco(total)}*\n`;
+    mensagem += '(Taxa de entrega a confirmar)\n\n';
+    mensagem += '*ENDEREÇO DE ENTREGA*\n';
+    mensagem += `Bairro: ${bairro}\n`;
+
+    if (rua) mensagem += `Rua: ${rua}\n`;
+    if (numero) mensagem += `Número: ${numero}\n`;
+    if (referencia) mensagem += `Referência: ${referencia}\n`;
+
+    if (observacoes) {
+        mensagem += `\n*Observações:* ${observacoes}\n`;
+    }
+
+    const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(mensagem)}`;
+
+    window.open(url, '_blank', 'noopener,noreferrer');
+}
+
+/* =========================================
+   INICIALIZAÇÃO
+========================================= */
+
+document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('ano').textContent = new Date().getFullYear();
+
+    configurarFiltros();
+
+    document.getElementById('btn-abrir-carrinho')
+        .addEventListener('click', () => {
+            document.getElementById('carrinho-modal')
+                .classList.remove('escondido');
+        });
+
+    document.getElementById('btn-fechar-modal')
+        .addEventListener('click', () => {
+            document.getElementById('carrinho-modal')
+                .classList.add('escondido');
+        });
+
+    document.getElementById('carrinho-modal')
+        .addEventListener('click', evento => {
+            if (evento.target.id === 'carrinho-modal') {
+                evento.currentTarget.classList.add('escondido');
+            }
+        });
+
+    document.getElementById('btn-enviar-whats')
+        .addEventListener('click', enviarPedidoWhatsApp);
+
+    document.getElementById('end-bairro')
+        .addEventListener('input', evento => {
+            if (evento.target.value.trim()) {
+                evento.target.classList.remove('invalido');
+                document.getElementById('erro-bairro')
+                    .classList.add('escondido');
+            }
+        });
+
+    carregarProdutos();
 });
