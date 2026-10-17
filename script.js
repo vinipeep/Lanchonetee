@@ -270,7 +270,7 @@ btnFecharModal.addEventListener("click", () => carrinhoModal.classList.add("esco
 btnEnviarWhats.addEventListener("click", () => {
     if (carrinho.length === 0) return;
 
-    const telefone = "5535988320463";
+    const telefone = "553599219466";
     let mensagem = "🍔 *NOVO PEDIDO - PAI & FILHO*\n\n";
 
     carrinho.forEach(item => {
