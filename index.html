@@ -2,175 +2,209 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#8d2d18">
-    <title>Cardápio - Pai & Filho</title>
-
-    <link rel="icon" type="image/png" href="./logo.png?v=13">
-    <link rel="shortcut icon" type="image/png" href="./logo.png?v=13">
-    <link rel="stylesheet" href="style.css?v=13">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#b6381c">
+  <title>Pai & Filho | Cardápio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
 </head>
 <body>
-
-<header class="hero">
+  <header class="hero">
     <div class="hero-conteudo">
-        <span class="logo">PAI & FILHO</span>
-        <h1>Cardápio</h1>
-        <p>Lanches feitos na hora, do nosso jeito.</p>
-        <div class="hero-info">
-            <span>📍 Forjos</span>
-            <span>📅 Sex • Sáb • Dom</span>
-        </div>
+      <span class="marca">PAI & FILHO</span>
+      <p class="hero-etiqueta">FEITO NA HORA, FEITO COM CARINHO</p>
+      <h1>Cardápio</h1>
+      <p class="hero-descricao">Lanches feitos na hora, do nosso jeito.</p>
+      <div class="hero-tags">
+        <span>📍 Forjos</span>
+        <span>📅 Sex • Sáb • Dom</span>
+      </div>
     </div>
-</header>
+  </header>
 
-<section class="info">
-    <div class="info-item">
+  <main class="container">
+    <section class="informacoes">
+      <article class="info-card">
         <span class="info-icone">📞</span>
-        <div><strong>Delivery</strong><p>(35) 98832-0463</p></div>
-    </div>
-    <div class="info-item">
+        <div><h3>Delivery</h3><p>(35) 98832-0463</p></div>
+      </article>
+      <article class="info-card">
         <span class="info-icone">📍</span>
-        <div><strong>Endereço</strong><p>Rua Jabuticabeira - Forjos</p></div>
-    </div>
-    <div class="info-item">
+        <div><h3>Endereço</h3><p>Rua Jabuticabeira - Forjos</p></div>
+      </article>
+      <article class="info-card">
         <span class="info-icone">⏰</span>
-        <div><strong>Funcionamento</strong><p>Sexta, sábado e domingo</p></div>
+        <div><h3>Funcionamento</h3><p>Sexta, sábado e domingo</p></div>
+      </article>
+    </section>
+
+    <nav class="categorias" id="categorias" aria-label="Categorias do cardápio">
+      <button class="categoria-btn ativa" data-categoria="todos">Todos</button>
+      <button class="categoria-btn" data-categoria="lanches">🍔 Lanches</button>
+      <button class="categoria-btn" data-categoria="pasteis">🥟 Pastéis</button>
+      <button class="categoria-btn" data-categoria="porcoes">🍟 Porções</button>
+      <button class="categoria-btn" data-categoria="pizzas_pequenas">🍕 Pizzas Pequenas</button>
+      <button class="categoria-btn" data-categoria="pizzas_grandes">🍕 Pizzas Grandes</button>
+      <button class="categoria-btn" data-categoria="pizzas_doces">🍫 Pizzas Doces</button>
+    </nav>
+
+    <div id="cardapio">
+      <section class="secao-produtos" data-secao="lanches">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">PRA MATAR A FOME</span>
+          <h2>🍔 Hambúrgueres & Lanches</h2>
+          <p>Escolha seu favorito.</p>
+        </div>
+        <div class="produtos-grid" id="lista-lanches"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="pasteis">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">CROCANTES E DELICIOSOS</span>
+          <h2>🥟 Pastéis Fritos na Hora</h2>
+          <p>Recheio caprichado em cada mordida.</p>
+        </div>
+        <div class="produtos-grid" id="lista-pasteis"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="porcoes">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">PRA COMPARTILHAR</span>
+          <h2>🍟 Porções</h2>
+          <p>Perfeitas para acompanhar seu pedido.</p>
+        </div>
+        <div class="produtos-grid" id="lista-porcoes"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="pizzas_pequenas">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">SABOR EM CADA FATIA</span>
+          <h2>🍕 Pizzas Pequenas</h2>
+          <p>Escolha seu sabor favorito.</p>
+        </div>
+        <div class="produtos-grid" id="lista-pizzas_pequenas"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="pizzas_grandes">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">PARA DIVIDIR</span>
+          <h2>🍕 Pizzas Grandes</h2>
+          <p>Mais pizza, mais sabor.</p>
+        </div>
+        <div class="produtos-grid" id="lista-pizzas_grandes"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="pizzas_doces">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">UM DOCINHO PRA FECHAR</span>
+          <h2>🍫 Pizzas Doces</h2>
+          <p>O toque doce que faltava.</p>
+        </div>
+        <div class="produtos-grid" id="lista-pizzas_doces"></div>
+      </section>
     </div>
-</section>
+    <p class="sem-produtos escondido" id="sem-produtos">Nenhum produto encontrado nesta categoria.</p>
+  </main>
 
-<nav class="categorias">
-    <button class="categoria-btn ativo" data-categoria="todos">Todos</button>
-    <button class="categoria-btn" data-categoria="lanches">🍔 Lanches</button>
-    <button class="categoria-btn" data-categoria="pasteis">🥟 Pastéis</button>
-    <button class="categoria-btn" data-categoria="porcoes">🍟 Porções</button>
-    <button class="categoria-btn" data-categoria="pizzas_salgadas">🍕 Pizzas Pequenas</button>
-    <button class="categoria-btn" data-categoria="pizzas_grandes">🍕 Pizzas Grandes</button>
-    <button class="categoria-btn" data-categoria="pizzas_doces">🍫 Pizzas Doces</button>
-</nav>
+  <footer class="rodape">
+    <strong>PAI & FILHO</strong>
+    <p>Obrigado por pedir com a gente ❤️</p>
+    <small>Forjos • Sexta, sábado e domingo</small>
+  </footer>
 
-<main class="container">
-    <section class="secao" data-secao="lanches">
-        <div class="titulo-secao">
-            <span>LANCHES</span>
-            <h2>Hambúrgueres & Lanches</h2>
-            <p>Escolha seu favorito.</p>
-        </div>
-        <div class="produtos" id="lista-lanches"></div>
-    </section>
-
-    <section class="secao" data-secao="pasteis">
-        <div class="titulo-secao">
-            <span>PASTÉIS</span>
-            <h2>Pastéis Fritos na Hora</h2>
-            <p>Crocantes e recheados.</p>
-        </div>
-        <div class="produtos" id="lista-pasteis"></div>
-    </section>
-
-    <section class="secao" data-secao="porcoes">
-        <div class="titulo-secao">
-            <span>PORÇÕES</span>
-            <h2>Porções Especiais</h2>
-            <p>Perfeitas para compartilhar.</p>
-        </div>
-        <div class="produtos" id="lista-porcoes"></div>
-    </section>
-
-    <section class="secao" data-secao="pizzas_salgadas">
-        <div class="titulo-secao">
-            <span>PIZZAS PEQUENAS</span>
-            <h2>Pizzas Salgadas (25cm • 4 Pedaços)</h2>
-            <p>Massa crocante com recheios caprichados.</p>
-        </div>
-        <div class="produtos" id="lista-pizzas_salgadas"></div>
-    </section>
-
-    <section class="secao" data-secao="pizzas_grandes">
-        <div class="titulo-secao">
-            <span>PIZZAS GRANDES</span>
-            <h2>Pizzas Grandes (8 Pedaços)</h2>
-            <p>Ideais para a família toda.</p>
-        </div>
-        <div class="produtos" id="lista-pizzas_grandes"></div>
-    </section>
-
-    <section class="secao" data-secao="pizzas_doces">
-        <div class="titulo-secao">
-            <span>PIZZAS DOCES</span>
-            <h2>Pizzas Doces (25cm • 4 Pedaços)</h2>
-            <p>Para fechar com chave de ouro.</p>
-        </div>
-        <div class="produtos" id="lista-pizzas_doces"></div>
-    </section>
-</main>
-
-<div id="carrinho-bar" class="carrinho-bar escondido">
-    <div class="carrinho-bar-info">
-        <span id="carrinho-qtd">0 itens</span>
-        <strong id="carrinho-total">R$ 0,00</strong>
+  <div class="barra-carrinho escondido" id="barra-carrinho">
+    <div class="barra-carrinho-info">
+      <span class="carrinho-contagem" id="carrinho-contagem">0 itens</span>
+      <strong id="carrinho-subtotal">R$ 0,00</strong>
     </div>
-    <button id="btn-abrir-carrinho" class="btn-ver-pedido">Ver Pedido 🛒</button>
-</div>
+    <button id="btn-abrir-carrinho" class="btn-ver-carrinho">
+      Ver pedido <span>→</span>
+    </button>
+  </div>
 
-<div id="carrinho-modal" class="modal escondido">
-    <div class="modal-conteudo">
-        <div class="modal-header">
-            <h2>Seu Pedido</h2>
-            <button id="btn-fechar-modal" class="btn-fechar" aria-label="Fechar">&times;</button>
+  <!-- Modal de adicionais -->
+  <div class="modal escondido" id="adicionais-modal" role="dialog" aria-modal="true" aria-labelledby="adicionais-modal-titulo">
+    <div class="modal-conteudo modal-adicionais">
+      <header class="modal-header">
+        <div>
+          <span class="modal-etiqueta">DO SEU JEITO</span>
+          <h2 id="adicionais-modal-titulo">Personalize seu pedido</h2>
         </div>
+        <button class="btn-fechar" id="btn-fechar-adicionais" aria-label="Fechar" type="button">×</button>
+      </header>
 
-        <div id="carrinho-itens" class="carrinho-itens"></div>
-
-        <div class="modal-footer">
-            <div class="total-container">
-                <span>Total:</span>
-                <strong id="modal-total">R$ 0,00</strong>
-            </div>
-
-            <div class="campo-obs">
-                <label for="obs-pedido">Observações (opcional):</label>
-                <input type="text" id="obs-pedido" placeholder="Ex: Sem tomate, troco para 50...">
-            </div>
-
-            <div class="endereco-box">
-                <h3>📍 Endereço de entrega</h3>
-
-                <div class="campo-end">
-                    <label for="end-bairro">Bairro <span class="obrigatorio">*obrigatório</span></label>
-                    <input type="text" id="end-bairro" placeholder="Ex: Forjos" autocomplete="address-level3">
-                    <small id="erro-bairro" class="erro-campo escondido">Por favor, informe o bairro.</small>
-                </div>
-
-                <div class="campo-end">
-                    <label for="end-rua">Rua (opcional)</label>
-                    <input type="text" id="end-rua" placeholder="Ex: Rua Jabuticabeira" autocomplete="street-address">
-                </div>
-
-                <div class="campo-end">
-                    <label for="end-numero">Número (opcional)</label>
-                    <input type="text" id="end-numero" placeholder="Ex: 120" inputmode="numeric">
-                </div>
-
-                <div class="campo-end">
-                    <label for="end-ref">Ponto de referência (opcional)</label>
-                    <input type="text" id="end-ref" placeholder="Ex: Perto da igreja, portão azul">
-                </div>
-            </div>
-
-            <button id="btn-enviar-whats" class="btn-whatsapp">Enviar Pedido no WhatsApp 🚀</button>
+      <div class="modal-corpo">
+        <h3 id="adicionais-produto-nome">Produto</h3>
+        <p class="produto-descricao-modal" id="adicionais-produto-descricao"></p>
+        <div class="instrucao-adicionais">
+          <strong>🧀 Quer deixar ainda melhor?</strong>
+          <p>Toque nos adicionais que deseja incluir.</p>
         </div>
+        <div id="adicionais-modal-lista" class="lista-adicionais"></div>
+
+        <div class="resumo-precos">
+          <div><span>Valor do produto</span><strong id="adicionais-modal-preco-base">R$ 0,00</strong></div>
+          <div><span>Adicionais</span><strong id="adicionais-modal-total">R$ 0,00</strong></div>
+          <div class="resumo-final"><span>Total deste item</span><strong id="adicionais-modal-preco-final">R$ 0,00</strong></div>
+        </div>
+      </div>
+      <footer class="modal-acoes">
+        <button type="button" class="btn-secundario" id="btn-cancelar-adicionais">Cancelar</button>
+        <button type="button" class="btn-principal" id="btn-confirmar-adicionais">Adicionar ao pedido</button>
+      </footer>
     </div>
-</div>
+  </div>
 
-<footer>
-    <div class="footer-logo">PAI & FILHO</div>
-    <p>Lanches feitos na hora, do nosso jeito.</p>
-    <p>📍 Rua Jabuticabeira - Forjos</p>
-    <small>&copy; Lanchonete Pai & Filho. Todos os direitos reservados.</small>
-</footer>
+  <!-- Modal do carrinho -->
+  <div class="modal escondido" id="carrinho-modal" role="dialog" aria-modal="true" aria-labelledby="carrinho-modal-titulo">
+    <div class="modal-conteudo modal-carrinho">
+      <header class="modal-header">
+        <div>
+          <span class="modal-etiqueta">SEU PEDIDO</span>
+          <h2 id="carrinho-modal-titulo">Sacola</h2>
+        </div>
+        <button class="btn-fechar" id="btn-fechar-carrinho" aria-label="Fechar" type="button">×</button>
+      </header>
 
-<script src="script.js?v=13"></script>
+      <div class="modal-corpo">
+        <div id="itens-carrinho" class="itens-carrinho"></div>
+        <div id="carrinho-vazio" class="carrinho-vazio">
+          <span>🛍️</span>
+          <h3>Sua sacola está vazia</h3>
+          <p>Adicione algo gostoso do cardápio.</p>
+        </div>
+
+        <div class="formulario-entrega">
+          <h3>Onde entregamos?</h3>
+          <label for="cliente-nome">Seu nome</label>
+          <input id="cliente-nome" type="text" placeholder="Nome para o pedido" autocomplete="name">
+
+          <label for="cliente-endereco">Endereço de entrega</label>
+          <input id="cliente-endereco" type="text" placeholder="Rua, número e bairro" autocomplete="street-address">
+
+          <label for="cliente-referencia">Ponto de referência (opcional)</label>
+          <input id="cliente-referencia" type="text" placeholder="Ex.: perto da praça">
+
+          <label for="cliente-observacoes">Observações (opcional)</label>
+          <textarea id="cliente-observacoes" rows="2" placeholder="Alguma observação para o pedido?"></textarea>
+        </div>
+
+        <div class="total-pedido">
+          <span>Total do pedido</span>
+          <strong id="total-final">R$ 0,00</strong>
+        </div>
+      </div>
+      <footer class="modal-acoes modal-acoes-carrinho">
+        <button type="button" class="btn-secundario" id="btn-continuar">Continuar comprando</button>
+        <button type="button" class="btn-principal" id="btn-finalizar">Pedir pelo WhatsApp</button>
+      </footer>
+    </div>
+  </div>
+
+  <div class="aviso" id="aviso" role="status" aria-live="polite"></div>
 </body>
 </html>
