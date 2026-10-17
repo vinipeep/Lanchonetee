@@ -84,7 +84,7 @@
         <div class="secao-cabecalho">
           <span class="secao-etiqueta">SABOR EM CADA FATIA</span>
           <h2>🍕 Pizzas Pequenas</h2>
-          <p>Escolha seu sabor favorito.</p>
+          <p>Escolha seu sabor favorito ou monte meio a meio.</p>
         </div>
         <div class="produtos-grid" id="lista-pizzas_pequenas"></div>
       </section>
@@ -93,7 +93,7 @@
         <div class="secao-cabecalho">
           <span class="secao-etiqueta">PARA DIVIDIR</span>
           <h2>🍕 Pizzas Grandes</h2>
-          <p>Mais pizza, mais sabor.</p>
+          <p>Mais pizza, mais sabor ou monte meio a meio.</p>
         </div>
         <div class="produtos-grid" id="lista-pizzas_grandes"></div>
       </section>
@@ -155,6 +155,40 @@
       <footer class="modal-acoes">
         <button type="button" class="btn-secundario" id="btn-cancelar-adicionais">Cancelar</button>
         <button type="button" class="btn-principal" id="btn-confirmar-adicionais">Adicionar ao pedido</button>
+      </footer>
+    </div>
+  </div>
+
+  <!-- Modal de Metade / Metade -->
+  <div class="modal escondido" id="metade-modal" role="dialog" aria-modal="true" aria-labelledby="metade-modal-titulo">
+    <div class="modal-conteudo modal-adicionais">
+      <header class="modal-header">
+        <div>
+          <span class="modal-etiqueta">PIZZA MEIO A MEIO</span>
+          <h2 id="metade-modal-titulo">Escolha os 2 Sabores</h2>
+        </div>
+        <button class="btn-fechar" id="btn-fechar-metade" aria-label="Fechar" type="button">×</button>
+      </header>
+
+      <div class="modal-corpo">
+        <h3 id="metade-produto-titulo">Pizza Grande</h3>
+        <p class="produto-descricao-modal">Selecione os dois sabores para compor sua pizza meio a meio. O valor considerado será o maior entre os dois.</p>
+        
+        <div class="formulario-entrega" style="margin-top: 0; margin-bottom: 15px;">
+          <label for="primeiro-sabor">Primeiro Sabor (Metade 1)</label>
+          <select id="primeiro-sabor" style="width:100%; padding:13px; border-radius:10px; border:1px solid #ded8d1; background:white; font-size:16px; color:var(--texto);"></select>
+
+          <label for="segundo-sabor" style="margin-top: 10px;">Segundo Sabor (Metade 2)</label>
+          <select id="segundo-sabor" style="width:100%; padding:13px; border-radius:10px; border:1px solid #ded8d1; background:white; font-size:16px; color:var(--texto);"></select>
+        </div>
+
+        <div class="resumo-precos">
+          <div><span>Valor da Pizza (Maior sabor)</span><strong id="metade-modal-preco">R$ 0,00</strong></div>
+        </div>
+      </div>
+      <footer class="modal-acoes">
+        <button type="button" class="btn-secundario" id="btn-cancelar-metade">Cancelar</button>
+        <button type="button" class="btn-principal" id="btn-confirmar-metade">Confirmar Metade / Metade</button>
       </footer>
     </div>
   </div>

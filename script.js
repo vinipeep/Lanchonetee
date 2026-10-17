@@ -2,12 +2,10 @@
 
 const WHATSAPP_NUMERO = "5535988320463";
 
-// Link da planilha publicada (Arquivo > Compartilhar > Publicar na Web > CSV)
 const PLANILHA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWhv3boH7Ps-Sjil1GPXZQviqaMf-MYBgvEbq36MAu-lMtiSJtcZFhkda1UjV_DNpOAfB_SlC38BdL/pub?gid=0&single=true&output=csv";
 
 const CACHE_CHAVE = "paiefilho_cardapio_v1";
 
-// Cardápio reserva: usado só se a planilha nunca carregou (ex.: sem internet no primeiro acesso)
 const produtosReserva = [
   // LANCHES
   { id: 1, categoria: "lanches", nome: "X-Burguer", descricao: "Hambúrguer, presunto e mussarela", preco: 8.50, destaque: false },
@@ -90,15 +88,14 @@ const adicionaisPorCategoria = {
 let produtos = [];
 let carrinho = [];
 let produtoPersonalizando = null;
+let pizzaPersonalizandoMetade = null;
 let categoriaAtual = "todos";
 let avisoTimeout;
 
-const $ = (seletor) => document.querySelector(seletor);
-const $$ = (seletor) => document.querySelectorAll(seletor);
+const $ = (seletor) => document.querySelector(seletor); const $$ = (seletor) => document.querySelectorAll(seletor);
 
 /* ============ PLANILHA ============ */
 
-// Lê CSV respeitando aspas, vírgulas e quebras de linha dentro de células
 function lerCSV(texto) {
   const linhas = [];
   let linha = [];
@@ -155,7 +152,6 @@ function normalizarCategoria(valor) {
   return normalizar(valor).replace(/[\s-]+/g, "_");
 }
 
-// Converte "R$ 8,50", "8,50", "8.50" ou "1.234,50" em número
 function lerPreco(valor) {
   let texto = String(valor ?? "").replace(/[^\d,.-]/g, "");
   if (!texto) return NaN;
@@ -237,9 +233,7 @@ function lerCache() {
 function salvarCache(lista) {
   try {
     localStorage.setItem(CACHE_CHAVE, JSON.stringify(lista));
-  } catch {
-    // sem problema se o navegador bloquear o armazenamento
-  }
+  } catch {}
 }
 
 async function carregarPlanilha() {
@@ -340,15 +334,21 @@ function renderizarProdutos() {
     const card = document.createElement("article");
     card.className = "produto-card";
 
+    // Se for pizza salgada (pequena ou grande), exibe também o botão de "2 Sabores" ao lado
+    const ehPizzaSalgada = produto.categoria === "pizzas_pequenas" || produto.categoria === "pizzas_grandes";
+
     card.innerHTML = `
       <span class="produto-categoria">${escapar(categoriaDoProduto(produto))}</span>
       <h3>${escapar(produto.nome)}</h3>
       <p class="produto-descricao">${escapar(produto.descricao)}</p>
       <div class="produto-rodape">
         <span class="produto-preco">${formatarPreco(produto.preco)}</span>
-        <button type="button" class="btn-add" data-adicionar="${produto.id}">
-          + Adicionar
-        </button>
+        <div class="produto-acoes">
+          ${ehPizzaSalgada ? `<button type="button" class="btn-metade-card" data-metade="${produto.id}">🍕 2 Sabores</button>` : ""}
+          <button type="button" class="btn-add" data-adicionar="${produto.id}">
+            + Adicionar
+          </button>
+        </div>
       </div>
     `;
 
@@ -361,13 +361,8 @@ function renderizarProdutos() {
 function aplicarFiltro(categoria) {
   categoriaAtual = categoria;
 
-  $$(".categoria-btn").forEach(botao => {
-    botao.classList.toggle("ativa", botao.dataset.categoria === categoria);
-  });
-
-  let encontrados = 0;
-
-  $$(".secao-produtos").forEach(secao => {
+  $$(".categoria-btn").forEach(botao => { botao.classList.toggle("ativa", botao.dataset.categoria === categoria); });    let encontrados = 0;    $$
+(".secao-produtos").forEach(secao => {
     const quantidade = secao.querySelectorAll(".produto-card").length;
     const corresponde = categoria === "todos" ||
       secao.dataset.secao === categoria;
@@ -416,14 +411,7 @@ function abrirModalAdicionais(produto) {
   });
 
   atualizarTotalAdicionais();
-  abrirModal($("#adicionais-modal"));
-}
-
-function atualizarTotalAdicionais() {
-  if (!produtoPersonalizando) return;
-
-  const precoBase = Number(produtoPersonalizando.preco);
-  const selecionados = $$("#adicionais-modal-lista .checkbox-adicional:checked");
+  abrirModal($("#adicionais-modal")); }  function atualizarTotalAdicionais() { if (!produtoPersonalizando) return;    const precoBase = Number(produtoPersonalizando.preco); const selecionados = $$("#adicionais-modal-lista .checkbox-adicional:checked");
 
   const totalExtras = [...selecionados].reduce(
     (soma, checkbox) => soma + Number(checkbox.dataset.preco || 0),
@@ -432,15 +420,7 @@ function atualizarTotalAdicionais() {
 
   $("#adicionais-modal-total").textContent = formatarPreco(totalExtras);
   $("#adicionais-modal-preco-base").textContent = formatarPreco(precoBase);
-  $("#adicionais-modal-preco-final").textContent =
-    formatarPreco(precoBase + totalExtras);
-}
-
-function confirmarAdicionais() {
-  if (!produtoPersonalizando) return;
-
-  const selecionados = [
-    ...$$("#adicionais-modal-lista .checkbox-adicional:checked")
+  $("#adicionais-modal-preco-final").textContent = formatarPreco(precoBase + totalExtras); }  function confirmarAdicionais() { if (!produtoPersonalizando) return;    const selecionados = [ ...$$("#adicionais-modal-lista .checkbox-adicional:checked")
   ].map(checkbox => ({
     nome: checkbox.dataset.nome,
     preco: Number(checkbox.dataset.preco)
@@ -450,6 +430,92 @@ function confirmarAdicionais() {
   fecharModal($("#adicionais-modal"));
   produtoPersonalizando = null;
 }
+
+/* ============ FUNÇÕES DE METADE / METADE ============ */
+
+function abrirModalMetade(produto) {
+  pizzaPersonalizandoMetade = produto;
+  const saboresDisponiveis = produtos.filter(p => p.categoria === produto.categoria);
+
+  $("#metade-produto-titulo").textContent = `Montar ${produto.categoria.includes("pequenas") ? "Pizza Pequena" : "Pizza Grande"} Meio a Meio`;
+
+  const optionsHTML = saboresDisponiveis.map(p => 
+    `<option value="${p.id}" data-preco="${p.preco}">${escapar(p.nome)} (${formatarPreco(p.preco)})</option>`
+  ).join("");
+
+  const select1 = $("#primeiro-sabor");
+  const select2 = $("#segundo-sabor");
+
+  select1.innerHTML = optionsHTML;
+  select2.innerHTML = optionsHTML;
+
+  select1.value = produto.id;
+  if (saboresDisponiveis.length > 1) {
+    select2.value = saboresDisponiveis[1].id;
+  } else {
+    select2.value = produto.id;
+  }
+
+  atualizarPrecoMetade();
+
+  select1.onchange = atualizarPrecoMetade;
+  select2.onchange = atualizarPrecoMetade;
+
+  abrirModal($("#metade-modal"));
+}
+
+function atualizarPrecoMetade() {
+  const select1 = $("#primeiro-sabor");
+  const select2 = $("#segundo-sabor");
+
+  const opt1 = select1.options[select1.selectedIndex];
+  const opt2 = select2.options[select2.selectedIndex];
+
+  const preco1 = opt1 ? Number(opt1.dataset.preco || 0) : 0;
+  const preco2 = opt2 ? Number(opt2.dataset.preco || 0) : 0;
+
+  const maiorPreco = Math.max(preco1, preco2);
+  $("#metade-modal-preco").textContent = formatarPreco(maiorPreco);
+}
+
+function confirmarMetade() {
+  if (!pizzaPersonalizandoMetade) return;
+
+  const select1 = $("#primeiro-sabor");
+  const select2 = $("#segundo-sabor");
+
+  const opt1 = select1.options[select1.selectedIndex];
+  const opt2 = select2.options[select2.selectedIndex];
+
+  const sabor1Nome = opt1 ? opt1.text.split(" (")[0] : "";
+  const sabor2Nome = opt2 ? opt2.text.split(" (")[0] : "";
+
+  const preco1 = opt1 ? Number(opt1.dataset.preco || 0) : 0;
+  const preco2 = opt2 ? Number(opt2.dataset.preco || 0) : 0;
+  const maiorPreco = Math.max(preco1, preco2);
+
+  const nomeMetade = `${pizzaPersonalizandoMetade.categoria.includes('pequenas') ? 'Pizza Pequena' : 'Pizza Grande'} (Metade ${sabor1Nome} / Metade ${sabor2Nome})`;
+
+  carrinho.push({
+    id: pizzaPersonalizandoMetade.id * 1000 + Math.floor(Math.random() * 1000),
+    nome: nomeMetade,
+    preco: maiorPreco,
+    adicionais: [],
+    assinatura: `metade_${sabor1Nome}_${sabor2Nome}`,
+    quantidade: 1
+  });
+
+  atualizarCarrinho();
+  mostrarAviso(`Pizza Meio a Meio adicionada ao pedido!`);
+  fecharModalMetade();
+}
+
+function fecharModalMetade() {
+  fecharModal($("#metade-modal"));
+  pizzaPersonalizandoMetade = null;
+}
+
+/* ============ CARRINHO ============ */
 
 function adicionarAoCarrinho(produto, adicionais = []) {
   const assinatura = adicionais
@@ -533,18 +599,7 @@ function atualizarCarrinho() {
     `;
   }).join("");
 
-  $("#btn-finalizar").disabled = carrinho.length === 0;
-}
-
-function abrirModal(modal) {
-  modal.classList.remove("escondido");
-  document.body.classList.add("modal-aberto");
-}
-
-function fecharModal(modal) {
-  modal.classList.add("escondido");
-
-  if ($$(".modal:not(.escondido)").length === 0) {
+  $("#btn-finalizar").disabled = carrinho.length === 0; }  function abrirModal(modal) { modal.classList.remove("escondido"); document.body.classList.add("modal-aberto"); }  function fecharModal(modal) { modal.classList.add("escondido");    if ($$(".modal:not(.escondido)").length === 0) {
     document.body.classList.remove("modal-aberto");
   }
 }
@@ -594,7 +649,7 @@ function finalizarPedido() {
     linhas.push(
       "",
       `*${item.quantidade}x ${item.nome}*`,
-      `Valor unitário com adicionais: ${formatarPreco(precoUnitario(item))}`
+      `Valor unitário: ${formatarPreco(precoUnitario(item))}`
     );
 
     if (item.adicionais.length > 0) {
@@ -629,21 +684,25 @@ function configurarEventos() {
   });
 
   $("#cardapio").addEventListener("click", evento => {
-    const botao = evento.target.closest("[data-adicionar]");
-    if (!botao) return;
+    const btnAdicionar = evento.target.closest("[data-adicionar]");
+    const btnMetade = evento.target.closest("[data-metade]");
 
-    const produto = produtos.find(item =>
-      item.id === Number(botao.dataset.adicionar)
-    );
+    if (btnMetade) {
+      const produto = produtos.find(item => item.id === Number(btnMetade.dataset.metade));
+      if (produto) abrirModalMetade(produto);
+      return;
+    }
 
-    if (!produto) return;
+    if (btnAdicionar) {
+      const produto = produtos.find(item => item.id === Number(btnAdicionar.dataset.adicionar));
+      if (!produto) return;
 
-    const adicionais = adicionaisDoProduto(produto);
-
-    if (adicionais.length > 0) {
-      abrirModalAdicionais(produto);
-    } else {
-      adicionarAoCarrinho(produto);
+      const adicionais = adicionaisDoProduto(produto);
+      if (adicionais.length > 0) {
+        abrirModalAdicionais(produto);
+      } else {
+        adicionarAoCarrinho(produto);
+      }
     }
   });
 
@@ -654,6 +713,16 @@ function configurarEventos() {
   $("#adicionais-modal").addEventListener("click", evento => {
     if (evento.target === $("#adicionais-modal")) {
       fecharModalAdicionais();
+    }
+  });
+
+  $("#btn-fechar-metade").addEventListener("click", fecharModalMetade);
+  $("#btn-cancelar-metade").addEventListener("click", fecharModalMetade);
+  $("#btn-confirmar-metade").addEventListener("click", confirmarMetade);
+
+  $("#metade-modal").addEventListener("click", evento => {
+    if (evento.target === $("#metade-modal")) {
+      fecharModalMetade();
     }
   });
 
@@ -703,6 +772,8 @@ function configurarEventos() {
 
     if (!$("#adicionais-modal").classList.contains("escondido")) {
       fecharModalAdicionais();
+    } else if (!$("#metade-modal").classList.contains("escondido")) {
+      fecharModalMetade();
     } else if (!$("#carrinho-modal").classList.contains("escondido")) {
       fecharModal($("#carrinho-modal"));
     }
@@ -710,7 +781,6 @@ function configurarEventos() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Mostra na hora o último cardápio salvo (ou o reserva) e atualiza pela planilha em seguida
   produtos = lerCache() || produtosReserva;
 
   renderizarProdutos();
