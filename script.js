@@ -1,29 +1,27 @@
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5K_L35w711u_Y8u0N4-JkZ5pE3H25E3f7O0c5x-y2c5j9f0-p9C3d/pub?output=csv'; // Coloque aqui o seu link CSV público caso seja diferente
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vT5K_L35w711u_Y8u0N4-JkZ5pE3H25E3f7O0c5x-y2c5j9f0-p9C3d/pub?output=csv'; // Coloca aqui a tua URL do CSV
 
-let carrinho = [];
-
-// Função para buscar e renderizar os produtos da planilha
 async function carregarProdutos() {
     try {
         const resposta = await fetch(CSV_URL);
-        const dadosCSV = await resposta.text();
-        const linhas = dadosCSV.split('\n').map(linha => linha.trim()).filter(linha => linha.length > 0);
+        const texto = await resposta.text();
         
-        // Pega os cabeçalhos
-        const cabecalhos = linhas[0].split(',').map(c => c.trim().toLowerCase());
-        
+        const linhas = texto.split('\n').filter(l => l.trim().length > 0);
+        if (linhas.length <= 1) return;
+
         const produtos = [];
+        
         for (let i = 1; i < linhas.length; i++) {
-            // Trata vírgulas dentro de aspas
-            const valores = linhas[i].match(/(".*?"|[^",\s]+)(?=\s*,|\s*$)/g) || linhas[i].split(',');
-            if (valores.length < cabecalhos.length) continue;
-            
-            const item = {};
-            cabecalhos.forEach((cabecalho, index) => {
-                let val = valores[index] ? valores[index].replace(/^"|"$/g, '').trim() : '';
-                item[cabecalho] = val;
-            });
-            produtos.push(item);
+            const colunas = linhas[i].split(',').map(c => c.replace(/^"|"$/g, '').trim());
+            if (colunas.length >= 5) {
+                produtos.push({
+                    id: colunas[0],
+                    categoria: colunas[1]?.toLowerCase().trim(),
+                    nome: colunas[2],
+                    descricao: colunas[3],
+                    preco: colunas[4],
+                    destaque: colunas[5]?.toLowerCase().trim()
+                });
+            }
         }
 
         renderizarProdutos(produtos);
@@ -33,66 +31,42 @@ async function carregarProdutos() {
 }
 
 function renderizarProdutos(produtos) {
-    // Mapeamento das categorias da planilha para os IDs dos elementos no HTML
-    const containers = {
-        'lanches': document.getElementById('lista-lanches'),
-        'pasteis': document.getElementById('lista-pasteis'),
-        'porcoes': document.getElementById('lista-porcoes'),
-        'pizzas_salgadas': document.getElementById('lista-pizzas_salgadas'),
-        'pizzas_doces': document.getElementById('lista-pizzas_doces'),
-        'pizzas': document.getElementById('lista-pizzas_doces') // Fallback caso tenha 'pizzas' antigo
+    const MAPPING = {
+        'lanches': 'lista-lanches',
+        'pasteis': 'lista-pasteis',
+        'porcoes': 'lista-porcoes',
+        'pizzas_salgadas': 'lista-pizzas_salgadas',
+        'pizzas_doces': 'lista-pizzas_doces',
+        'pizzas': 'lista-pizzas_doces'
     };
 
-    // Limpa todos os containers
-    Object.values(containers).forEach(c => { if(c) c.innerHTML = ''; });
+    // Limpa todas as listas
+    Object.values(MAPPING).forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.innerHTML = '';
+    });
 
-    produtos.forEach(produto => {
-        const cat = produto.categoria ? produto.categoria.toLowerCase().trim() : '';
-        const targetContainer = containers[cat];
+    produtos.forEach(item => {
+        const targetId = MAPPING[item.categoria];
+        const container = document.getElementById(targetId);
 
-        if (targetContainer) {
-            const ehDestaque = produto.destaque && produto.destaque.toLowerCase().trim() === 'sim';
-            
+        if (container) {
             const card = document.createElement('div');
-            card.className = `produto-card ${ehDestaque ? 'destaque' : ''}`;
-            
+            card.className = `produto-card ${item.destaque === 'sim' ? 'destaque' : ''}`;
             card.innerHTML = `
                 <div class="produto-info">
-                    <span class="produto-categoria">${cat.replace('_', ' ').toUpperCase()}</span>
-                    <h3>${produto.nome}</h3>
-                    <p>${produto.descricao || ''}</p>
+                    <span class="produto-categoria">${item.categoria.replace('_', ' ').toUpperCase()}</span>
+                    <h3>${item.nome}</h3>
+                    <p>${item.descricao || ''}</p>
                     <div class="produto-footer">
-                        <strong class="preco">${produto.preco}</strong>
-                        <button class="btn-adicionar" onclick="adicionarAoCarrinho('${produto.nome}', '${produto.preco}')">+ Adicionar</button>
+                        <strong class="preco">${item.preco}</strong>
+                        <button class="btn-adicionar" onclick="adicionarAoCarrinho('${item.nome}', '${item.preco}')">+ Adicionar</button>
                     </div>
                 </div>
             `;
-            targetContainer.appendChild(card);
+            container.appendChild(card);
         }
     });
 }
 
-// Lógica dos Filtros de Categoria
-document.addEventListener('DOMContentLoaded', () => {
-    carregarProdutos();
-
-    const botoesFiltro = document.querySelectorAll('.categoria-btn');
-    const secoes = document.querySelectorAll('.secao');
-
-    botoesFiltro.forEach(btn => {
-        btn.addEventListener('click', () => {
-            botoesFiltro.forEach(b => b.classList.remove('ativo'));
-            btn.classList.add('ativo');
-
-            const categoriaSelecionada = btn.getAttribute('data-categoria');
-
-            secoes.forEach(secao => {
-                if (categoriaSelecionada === 'todos' || secao.getAttribute('data-secao') === categoriaSelecionada) {
-                    secao.style.display = 'block';
-                } else {
-                    secao.style.display = 'none';
-                }
-            });
-        });
-    });
-});
+document.addEventListener('DOMContentLoaded', carregarProdutos);
