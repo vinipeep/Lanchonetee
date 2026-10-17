@@ -12,6 +12,7 @@
 
 html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -496,13 +497,13 @@ footer small {
 }
 
 /* ================================================= */
-/* CELULAR - LETRAS E BOTÕES GRANDES (FÁCIL DE LER)  */
+/* CELULAR / TELA PEQUENA: LETRAS E BOTÕES GRANDES   */
 /* ================================================= */
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
 
     body {
-        padding-bottom: 130px;
+        padding-bottom: 140px;
     }
 
     .hero {
@@ -511,46 +512,46 @@ footer small {
     }
 
     .hero p {
-        font-size: 20px;
+        font-size: 21px;
     }
 
     .hero-info span {
-        font-size: 17px;
-        padding: 12px 20px;
+        font-size: 18px;
+        padding: 12px 22px;
     }
 
-    /* Informações de contato */
+    /* Contato */
     .info {
         grid-template-columns: 1fr;
         margin-top: -20px;
     }
 
     .info-item {
-        padding: 22px;
+        padding: 24px;
     }
 
     .info-icone {
-        font-size: 34px;
+        font-size: 36px;
     }
 
     .info-item strong {
-        font-size: 20px;
+        font-size: 22px;
     }
 
     .info-item p {
-        font-size: 18px;
-        color: #333;
+        font-size: 19px;
+        color: #222;
     }
 
-    /* Categorias maiores */
+    /* Categorias */
     .categorias {
         margin-top: 30px;
         gap: 10px;
     }
 
     .categoria-btn {
-        font-size: 19px;
-        padding: 16px 26px;
+        font-size: 20px;
+        padding: 16px 28px;
     }
 
     /* Títulos das seções */
@@ -559,28 +560,28 @@ footer small {
     }
 
     .titulo-secao span {
-        font-size: 16px;
+        font-size: 17px;
     }
 
     .titulo-secao h2 {
-        font-size: 36px;
+        font-size: 38px;
         line-height: 1.15;
     }
 
     .titulo-secao p {
-        font-size: 19px;
-        color: #333;
+        font-size: 20px;
+        color: #222;
     }
 
     /* CARDS: 1 coluna, tudo grande */
     .produtos {
         grid-template-columns: 1fr;
-        gap: 18px;
+        gap: 20px;
     }
 
     .produto {
-        padding: 24px;
-        border: 2px solid #d9d4cc;
+        padding: 26px;
+        border: 2px solid #d4cec5;
     }
 
     .produto.destaque {
@@ -588,38 +589,38 @@ footer small {
     }
 
     .produto-categoria {
-        font-size: 14px;
+        font-size: 15px;
         letter-spacing: 1.5px;
     }
 
     .produto h3 {
-        font-size: 28px;
+        font-size: 30px;
         line-height: 1.2;
-        margin-bottom: 10px;
+        margin-bottom: 12px;
     }
 
     .produto p {
-        font-size: 19px;
+        font-size: 20px;
         line-height: 1.5;
-        color: #222;
-        margin-bottom: 22px;
+        color: #111;
+        margin-bottom: 24px;
     }
 
-    /* Preço em cima, botão grande embaixo ocupando a largura toda */
+    /* Preço em cima, botão grande embaixo na largura toda */
     .produto-rodape {
         flex-direction: column;
         align-items: stretch;
-        gap: 14px;
+        gap: 16px;
     }
 
     .preco {
-        font-size: 32px;
+        font-size: 34px;
     }
 
     .btn-add {
         width: 100%;
-        min-height: 58px;
-        font-size: 21px;
+        min-height: 60px;
+        font-size: 22px;
         border-radius: 14px;
     }
 
@@ -629,61 +630,61 @@ footer small {
     }
 
     .carrinho-bar-info span {
-        font-size: 16px;
+        font-size: 17px;
     }
 
     .carrinho-bar-info strong {
-        font-size: 28px;
+        font-size: 30px;
     }
 
     .btn-ver-pedido {
-        font-size: 20px;
-        padding: 16px 24px;
-        min-height: 56px;
+        font-size: 21px;
+        padding: 16px 26px;
+        min-height: 58px;
     }
 
     /* Modal do pedido */
     .modal-header h2 {
-        font-size: 28px;
+        font-size: 30px;
     }
 
     .item-info strong {
-        font-size: 20px;
+        font-size: 21px;
     }
 
     .item-info span {
-        font-size: 18px;
+        font-size: 19px;
     }
 
     .btn-qtd {
-        width: 48px;
-        height: 48px;
-        font-size: 26px;
+        width: 50px;
+        height: 50px;
+        font-size: 28px;
     }
 
     .item-qtd-controles strong {
-        font-size: 22px;
-    }
-
-    .total-container {
         font-size: 24px;
     }
 
+    .total-container {
+        font-size: 26px;
+    }
+
     .campo-obs label {
-        font-size: 17px;
+        font-size: 18px;
     }
 
     .campo-obs input {
-        font-size: 18px;
+        font-size: 19px;
         padding: 16px;
     }
 
     .btn-whatsapp {
-        font-size: 21px;
-        padding: 20px;
+        font-size: 22px;
+        padding: 22px;
     }
 
     footer p {
-        font-size: 17px;
+        font-size: 18px;
     }
 }

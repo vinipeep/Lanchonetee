@@ -5,11 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cardápio - Pai & Filho</title>
 
-    <!-- Ícone da aba do navegador -->
     <link rel="icon" type="image/png" href="logo.png?v=6">
 
-    <!-- ?v=7 força o navegador a baixar a versão nova -->
-    <link rel="stylesheet" href="style.css?v=7">
+    <!-- ?v=10 força o navegador a baixar a versão nova -->
+    <link rel="stylesheet" href="style.css?v=10">
 </head>
 <body>
 
@@ -63,7 +62,6 @@
 
     <!-- SEÇÕES DO CARDÁPIO -->
     <main class="container">
-        <!-- LANCHES -->
         <section class="secao" data-secao="lanches">
             <div class="titulo-secao">
                 <span>LANCHES</span>
@@ -73,7 +71,6 @@
             <div class="produtos" id="lista-lanches"></div>
         </section>
 
-        <!-- PASTÉIS -->
         <section class="secao" data-secao="pasteis">
             <div class="titulo-secao">
                 <span>PASTÉIS</span>
@@ -83,7 +80,6 @@
             <div class="produtos" id="lista-pasteis"></div>
         </section>
 
-        <!-- PORÇÕES -->
         <section class="secao" data-secao="porcoes">
             <div class="titulo-secao">
                 <span>PORÇÕES</span>
@@ -93,7 +89,6 @@
             <div class="produtos" id="lista-porcoes"></div>
         </section>
 
-        <!-- PIZZAS SALGADAS -->
         <section class="secao" data-secao="pizzas_salgadas">
             <div class="titulo-secao">
                 <span>PIZZAS SALGADAS</span>
@@ -103,7 +98,6 @@
             <div class="produtos" id="lista-pizzas_salgadas"></div>
         </section>
 
-        <!-- PIZZAS DOCES -->
         <section class="secao" data-secao="pizzas_doces">
             <div class="titulo-secao">
                 <span>PIZZAS DOCES</span>
@@ -123,16 +117,14 @@
         <button id="btn-abrir-carrinho" class="btn-ver-pedido">Ver Pedido 🛒</button>
     </div>
 
-    <!-- MODAL POPUP DO CARRINHO -->
+    <!-- MODAL DO CARRINHO -->
     <div id="carrinho-modal" class="modal escondido">
         <div class="modal-conteudo">
             <div class="modal-header">
                 <h2>Seu Pedido</h2>
                 <button id="btn-fechar-modal" class="btn-fechar">&times;</button>
             </div>
-            <div id="carrinho-itens" class="carrinho-itens">
-                <!-- Itens adicionados entram via JS -->
-            </div>
+            <div id="carrinho-itens" class="carrinho-itens"></div>
             <div class="modal-footer">
                 <div class="total-container">
                     <span>Total:</span>
@@ -155,6 +147,6 @@
         <small>&copy; Lanchonete Pai & Filho. Todos os direitos reservados.</small>
     </footer>
 
-    <script src="script.js?v=7"></script>
+    <script src="script.js?v=10"></script>
 </body>
 </html>
