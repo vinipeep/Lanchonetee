@@ -334,7 +334,7 @@ function renderizarProdutos() {
     const card = document.createElement("article");
     card.className = "produto-card";
 
-    // EXCLUSIVO PARA PIZZAS GRANDES: Botão de "2 Sabores" aparece apenas aqui
+    // 🍕 EXCLUSIVO PARA PIZZAS GRANDES: Botão de "2 Sabores" aparece apenas aqui
     const ehPizzaGrande = produto.categoria === "pizzas_grandes";
 
     card.innerHTML = `
@@ -494,20 +494,14 @@ function confirmarMetade() {
   const preco2 = opt2 ? Number(opt2.dataset.preco || 0) : 0;
   const maiorPreco = Math.max(preco1, preco2);
 
-  const nomeMetade = `Pizza Grande (Metade ${sabor1Nome} / Metade ${sabor2Nome})`;
+  const pizzaMeioAMeio = {
+    ...pizzaPersonalizandoMetade,
+    nome: `Pizza Grande (Metade ${sabor1Nome} / Metade ${sabor2Nome})`,
+    preco: maiorPreco
+  };
 
-  carrinho.push({
-    id: pizzaPersonalizandoMetade.id * 1000 + Math.floor(Math.random() * 1000),
-    nome: nomeMetade,
-    preco: maiorPreco,
-    adicionais: [],
-    assinatura: `metade_${sabor1Nome}_${sabor2Nome}`,
-    quantidade: 1
-  });
-
-  atualizarCarrinho();
-  mostrarAviso(`Pizza Meio a Meio adicionada ao pedido!`);
   fecharModalMetade();
+  abrirModalAdicionais(pizzaMeioAMeio);
 }
 
 function fecharModalMetade() {
@@ -788,4 +782,3 @@ document.addEventListener("DOMContentLoaded", () => {
   atualizarCarrinho();
   carregarPlanilha();
 });
-
