@@ -4,63 +4,62 @@
 const WHATSAPP_NUMERO = "5535988320463";
 
 const produtos = [
-  // LANCHES — confira os preços com o cardápio original
-  { id: 1, nome: "X-Burguer", categoria: "lanches", preco: 8.50, descricao: "Hambúrguer, presunto e mussarela." },
-  { id: 2, nome: "X-Salada", categoria: "lanches", preco: 9.50, descricao: "Hambúrguer, presunto, mussarela, alface e tomate." },
-  { id: 3, nome: "X-Egg", categoria: "lanches", preco: 11.00, descricao: "Hambúrguer, ovo, presunto e mussarela." },
-  { id: 4, nome: "X-Bacon", categoria: "lanches", preco: 13.00, descricao: "Hambúrguer, bacon, presunto e mussarela." },
-  { id: 5, nome: "X-Calabresa", categoria: "lanches", preco: 12.00, descricao: "Hambúrguer, calabresa, presunto e mussarela." },
-  { id: 6, nome: "X-Tudo", categoria: "lanches", preco: 16.00, descricao: "Um lanche caprichado para matar a fome." },
-  { id: 7, nome: "Hambúrguer", categoria: "lanches", preco: 7.00, descricao: "Hambúrguer no pão." },
-  { id: 8, nome: "Misto Quente", categoria: "lanches", preco: 7.00, descricao: "Presunto e mussarela." },
-  { id: 9, nome: "Americano", categoria: "lanches", preco: 12.00, descricao: "Pão, presunto, mussarela, ovo, alface e tomate." },
-  { id: 10, nome: "Hot Dog", categoria: "lanches", preco: 9.00, descricao: "Pão e salsicha com acompanhamentos." },
+  // LANCHES
+  { id: 1, categoria: "lanches", nome: "X-Burguer", descricao: "Hambúrguer, presunto e mussarela", preco: 8.50, destaque: false },
+  { id: 2, categoria: "lanches", nome: "X-Salada", descricao: "Alface, tomate, hambúrguer, presunto e mussarela", preco: 9.50, destaque: false },
+  { id: 3, categoria: "lanches", nome: "X-Frango", descricao: "Frango, mussarela, alface e tomate", preco: 12.50, destaque: false },
+  { id: 4, categoria: "lanches", nome: "X-Burguer G", descricao: "2 hambúrgueres, presunto e mussarela", preco: 12.50, destaque: false },
+  { id: 5, categoria: "lanches", nome: "X-Salada G", descricao: "Alface, tomate, 2 hambúrgueres, presunto e mussarela", preco: 13.50, destaque: false },
+  { id: 6, categoria: "lanches", nome: "X-Burguer Bacon", descricao: "Hambúrguer, presunto, mussarela e bacon", preco: 11.50, destaque: false },
+  { id: 7, categoria: "lanches", nome: "X-Salada Bacon", descricao: "Tomate, alface, hambúrguer, presunto, mussarela e bacon", preco: 12.50, destaque: false },
+  { id: 8, categoria: "lanches", nome: "X-Burguer G Bacon", descricao: "2 hambúrgueres, presunto, mussarela e bacon", preco: 15.50, destaque: false },
+  { id: 9, categoria: "lanches", nome: "X-Salada G Bacon", descricao: "Tomate, alface, 2 hambúrgueres, presunto, mussarela e bacon", preco: 16.50, destaque: false },
+  { id: 10, categoria: "lanches", nome: "X-Frango Bacon", descricao: "Frango, mussarela, tomate, alface e bacon", preco: 15.50, destaque: false },
+  { id: 11, categoria: "lanches", nome: "Cachorro Quente na Chapa", descricao: "2 salsichas, mussarela, tomate, alface, milho, bacon e batata palha", preco: 17.50, destaque: false },
+  { id: 12, categoria: "lanches", nome: "Cachorro Quente", descricao: "2 salsichas, vinagrete, milho, purê de batata e batata palha", preco: 13.00, destaque: false },
 
-  // PASTÉIS — confira os preços e recheios
-  { id: 11, nome: "Pastel de Queijo", categoria: "pasteis", preco: 8.00, descricao: "Pastel frito na hora, recheado com queijo." },
-  { id: 12, nome: "Pastel de Carne", categoria: "pasteis", preco: 8.00, descricao: "Pastel frito na hora, recheado com carne." },
-  { id: 13, nome: "Pastel de Pizza", categoria: "pasteis", preco: 9.00, descricao: "Recheio de presunto, queijo e tomate." },
-  { id: 14, nome: "Pastel de Frango", categoria: "pasteis", preco: 9.00, descricao: "Pastel frito na hora, recheado com frango." },
-  { id: 15, nome: "Pastel de Carne com Queijo", categoria: "pasteis", preco: 10.00, descricao: "Carne temperada com queijo." },
-  { id: 16, nome: "Pastel Especial", categoria: "pasteis", preco: 12.00, descricao: "Consulte os sabores disponíveis." },
+  // PASTÉIS
+  { id: 13, categoria: "pasteis", nome: "Pastel de Carne", descricao: "Pastel tradicional de carne", preco: 8.00, destaque: false },
+  { id: 14, categoria: "pasteis", nome: "Pastel de Frango", descricao: "Pastel tradicional de frango", preco: 8.00, destaque: false },
+  { id: 15, categoria: "pasteis", nome: "Pastel Frango c/ Queijo", descricao: "Frango com queijo", preco: 8.00, destaque: false },
+  { id: 16, categoria: "pasteis", nome: "Pastel Frango c/ Catupiry", descricao: "Frango com catupiry", preco: 8.00, destaque: false },
+  { id: 17, categoria: "pasteis", nome: "Pastel Presunto e Mussarela", descricao: "Presunto e mussarela", preco: 8.00, destaque: false },
+  { id: 18, categoria: "pasteis", nome: "Pastel de Pizza", descricao: "Queijo, presunto, tomate e orégano", preco: 8.00, destaque: false },
+  { id: 19, categoria: "pasteis", nome: "Pastel de Queijo", descricao: "Mussarela", preco: 8.00, destaque: false },
 
-  // PORÇÕES — confira os preços e tamanhos
-  { id: 17, nome: "Batata Frita", categoria: "porcoes", preco: 15.00, descricao: "Porção de batatas fritas." },
-  { id: 18, nome: "Batata com Cheddar", categoria: "porcoes", preco: 22.00, descricao: "Batata frita com cheddar." },
-  { id: 19, nome: "Calabresa Acebolada", categoria: "porcoes", preco: 25.00, descricao: "Calabresa acebolada para compartilhar." },
-  { id: 20, nome: "Frango a Passarinho", categoria: "porcoes", preco: 28.00, descricao: "Porção de frango a passarinho." },
-  { id: 21, nome: "Mandioca Frita", categoria: "porcoes", preco: 18.00, descricao: "Porção de mandioca frita." },
+  // PORÇÕES
+  { id: 20, categoria: "porcoes", nome: "Porção Batata Grande", descricao: "Batata frita com cheddar e bacon", preco: 30.00, destaque: true },
+  { id: 21, categoria: "porcoes", nome: "Porção Batata Média", descricao: "Batata frita com cheddar e bacon", preco: 20.00, destaque: false },
+  { id: 22, categoria: "porcoes", nome: "Porção Batata Pequena", descricao: "Batata frita com cheddar e bacon", preco: 10.00, destaque: false },
 
-  // PIZZAS PEQUENAS — preço informado anteriormente: R$ 25,00
-  { id: 22, nome: "Pizza Pequena de Mussarela", categoria: "pizzas_pequenas", preco: 25.00, descricao: "Molho de tomate e mussarela." },
-  { id: 23, nome: "Pizza Pequena de Calabresa", categoria: "pizzas_pequenas", preco: 25.00, descricao: "Molho de tomate, calabresa e cebola." },
-  { id: 24, nome: "Pizza Pequena de Presunto", categoria: "pizzas_pequenas", preco: 25.00, descricao: "Molho de tomate, presunto e mussarela." },
-  { id: 25, nome: "Pizza Pequena de Frango", categoria: "pizzas_pequenas", preco: 25.00, descricao: "Frango com molho de tomate e mussarela." },
-  { id: 26, nome: "Pizza Pequena de Portuguesa", categoria: "pizzas_pequenas", preco: 25.00, descricao: "Consulte os ingredientes disponíveis." },
-  { id: 27, nome: "Pizza Pequena de Bacon", categoria: "pizzas_pequenas", preco: 25.00, descricao: "Molho de tomate, bacon e mussarela." },
+  // PIZZAS DOCES
+  { id: 23, categoria: "pizzas_doces", nome: "Pizza Brigadeiro", descricao: "Chocolate e granulado", preco: 25.00, destaque: false },
+  { id: 24, categoria: "pizzas_doces", nome: "Pizza Prestígio", descricao: "Chocolate, coco ralado e leite condensado", preco: 25.00, destaque: false },
+  { id: 25, categoria: "pizzas_doces", nome: "Pizza M&M", descricao: "Chocolate e M&M", preco: 25.00, destaque: false },
+  { id: 26, categoria: "pizzas_doces", nome: "Pizza Tubin", descricao: "Chocolate e tubin", preco: 25.00, destaque: false },
+  { id: 27, categoria: "pizzas_doces", nome: "Pizza Ouro Branco", descricao: "Chocolate e ouro branco", preco: 25.00, destaque: false },
+  { id: 28, categoria: "pizzas_doces", nome: "Pizza Bis", descricao: "Chocolate e bis", preco: 25.00, destaque: false },
+  { id: 29, categoria: "pizzas_doces", nome: "Pizza Choc Leite & Branco", descricao: "Chocolate ao leite e chocolate branco", preco: 25.00, destaque: false },
 
-  // PIZZAS GRANDES — R$ 35,00 era um preço provisório
-  { id: 28, nome: "Pizza Grande de Mussarela", categoria: "pizzas_grandes", preco: 35.00, descricao: "Molho de tomate e mussarela." },
-  { id: 29, nome: "Pizza Grande de Calabresa", categoria: "pizzas_grandes", preco: 35.00, descricao: "Molho de tomate, calabresa e cebola." },
-  { id: 30, nome: "Pizza Grande de Presunto", categoria: "pizzas_grandes", preco: 35.00, descricao: "Molho de tomate, presunto e mussarela." },
-  { id: 31, nome: "Pizza Grande de Frango", categoria: "pizzas_grandes", preco: 35.00, descricao: "Frango com molho de tomate e mussarela." },
-  { id: 32, nome: "Pizza Grande de Portuguesa", categoria: "pizzas_grandes", preco: 35.00, descricao: "Consulte os ingredientes disponíveis." },
-  { id: 33, nome: "Pizza Grande de Bacon", categoria: "pizzas_grandes", preco: 35.00, descricao: "Molho de tomate, bacon e mussarela." },
-  { id: 34, nome: "Pizza Grande de Frango com Catupiry", categoria: "pizzas_grandes", preco: 35.00, descricao: "Frango com catupiry." },
-  { id: 35, nome: "Pizza Grande de Quatro Queijos", categoria: "pizzas_grandes", preco: 35.00, descricao: "Seleção de queijos." },
-  { id: 36, nome: "Pizza Grande de Milho", categoria: "pizzas_grandes", preco: 35.00, descricao: "Molho de tomate, milho e mussarela." },
-  { id: 37, nome: "Pizza Grande de Napolitana", categoria: "pizzas_grandes", preco: 35.00, descricao: "Molho de tomate, queijo e tomate." },
+  // PIZZAS SALGADAS PEQUENAS
+  { id: 30, categoria: "pizzas_pequenas", nome: "Pizza Presunto e Mussarela (Pequena)", descricao: "Presunto, mussarela, tomate e azeitona", preco: 20.00, destaque: false },
+  { id: 31, categoria: "pizzas_pequenas", nome: "Pizza Calabresa (Pequena)", descricao: "Calabresa, bacon, cebola, mussarela e azeitona", preco: 20.00, destaque: false },
+  { id: 32, categoria: "pizzas_pequenas", nome: "Pizza Portuguesa (Pequena)", descricao: "Presunto, mussarela, ovos cozidos, batata palha e azeitona", preco: 20.00, destaque: false },
+  { id: 33, categoria: "pizzas_pequenas", nome: "Pizza Frango com Catupiry (Pequena)", descricao: "Frango, catupiry e azeitona", preco: 18.00, destaque: false },
+  { id: 34, categoria: "pizzas_pequenas", nome: "Pizza Mussarela (Pequena)", descricao: "Mussarela e azeitona", preco: 20.00, destaque: false },
+  { id: 35, categoria: "pizzas_pequenas", nome: "Pizza 3 Queijos (Pequena)", descricao: "Mussarela, provolone, parmesão e azeitona", preco: 20.00, destaque: false },
+  { id: 36, categoria: "pizzas_pequenas", nome: "Pizza Brócolis (Pequena)", descricao: "Brócolis, mussarela e azeitona", preco: 20.00, destaque: false },
+  { id: 37, categoria: "pizzas_pequenas", nome: "Pizza Batata Frita (Pequena)", descricao: "Batata frita, bacon, mussarela e azeitona", preco: 20.00, destaque: false },
 
-  // PIZZAS DOCES — confira os sabores e preços
-  { id: 38, nome: "Pizza Doce de Chocolate", categoria: "pizzas_doces", preco: 25.00, descricao: "Pizza doce de chocolate." },
-  { id: 39, nome: "Pizza Doce de Chocolate Branco", categoria: "pizzas_doces", preco: 25.00, descricao: "Pizza doce de chocolate branco." },
-  { id: 40, nome: "Pizza Doce de Chocolate com Morango", categoria: "pizzas_doces", preco: 28.00, descricao: "Chocolate com morango." },
-  { id: 41, nome: "Pizza Doce de Brigadeiro", categoria: "pizzas_doces", preco: 28.00, descricao: "Pizza doce com brigadeiro." },
-  { id: 42, nome: "Pizza Doce de Banana com Canela", categoria: "pizzas_doces", preco: 25.00, descricao: "Banana com canela." },
-  { id: 43, nome: "Pizza Doce de Prestígio", categoria: "pizzas_doces", preco: 28.00, descricao: "Chocolate e coco." },
-  { id: 44, nome: "Pizza Doce de Confete", categoria: "pizzas_doces", preco: 28.00, descricao: "Pizza doce com confetes de chocolate." },
-  { id: 45, nome: "Pizza Doce de Beijinho", categoria: "pizzas_doces", preco: 28.00, descricao: "Pizza doce com coco." },
-  { id: 46, nome: "Pizza Doce Especial", categoria: "pizzas_doces", preco: 30.00, descricao: "Consulte o sabor especial disponível." }
+  // PIZZAS SALGADAS GRANDES
+  { id: 38, categoria: "pizzas_grandes", nome: "Pizza Presunto e Mussarela (Grande)", descricao: "Presunto, mussarela e tomate", preco: 40.00, destaque: false },
+  { id: 39, categoria: "pizzas_grandes", nome: "Pizza Mussarela (Grande)", descricao: "Mussarela", preco: 40.00, destaque: false },
+  { id: 40, categoria: "pizzas_grandes", nome: "Pizza Calabresa (Grande)", descricao: "Mussarela, calabresa, bacon, cebola e azeitona", preco: 40.00, destaque: false },
+  { id: 41, categoria: "pizzas_grandes", nome: "Pizza Portuguesa (Grande)", descricao: "Mussarela, presunto, ovo, batata palha e azeitona", preco: 40.00, destaque: false },
+  { id: 42, categoria: "pizzas_grandes", nome: "Pizza Frango com Catupiry (Grande)", descricao: "Frango, catupiry e azeitona", preco: 35.00, destaque: false },
+  { id: 43, categoria: "pizzas_grandes", nome: "Pizza Batata Frita (Grande)", descricao: "Batata frita, queijo, mussarela, bacon e azeitona", preco: 40.00, destaque: false },
+  { id: 44, categoria: "pizzas_grandes", nome: "Pizza 3 Queijos (Grande)", descricao: "Mussarela, provolone, parmesão e azeitona", preco: 40.00, destaque: false },
+  { id: 45, categoria: "pizzas_grandes", nome: "Pizza Brócolis (Grande)", descricao: "Mussarela, brócolis e azeitona", preco: 40.00, destaque: false }
 ];
 
 const adicionaisPorCategoria = {
