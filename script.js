@@ -1,35 +1,47 @@
-const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQWhv3boH7Ps-Sjil1GPXZQviqaMf-MYBgvEbq36MAu-lMtiSJtcZFhkda1UjV_DNpOAfB_SlC38BdL/pub?gid=0&single=true&output=csv';
+// Dados embutidos para garantir que carrega perfeitamente em qualquer ambiente (local e github pages)
+const produtosFixos = [
+    { id: "1", categoria: "lanches", nome: "X-Burguer", descricao: "Hambúrguer, presunto e mussarela", preco: "R$ 8,50", destaque: "nao" },
+    { id: "2", categoria: "lanches", nome: "X-Salada", descricao: "Alface, tomate, hambúrguer, presunto e mussarela", preco: "R$ 9,50", destaque: "nao" },
+    { id: "3", categoria: "lanches", nome: "X-Frango", descricao: "Frango, mussarela, alface e tomate", preco: "R$ 12,50", destaque: "nao" },
+    { id: "4", categoria: "lanches", nome: "X-Burguer G", descricao: "2 hambúrgueres, presunto e mussarela", preco: "R$ 12,50", destaque: "nao" },
+    { id: "5", categoria: "lanches", nome: "X-Salada G", descricao: "Alface, tomate, 2 hambúrgueres, presunto e mussarela", preco: "R$ 13,50", destaque: "nao" },
+    { id: "6", categoria: "lanches", nome: "X-Burguer Bacon", descricao: "Hambúrguer, presunto, mussarela e bacon", preco: "R$ 11,50", destaque: "nao" },
+    { id: "7", categoria: "lanches", nome: "X-Salada Bacon", descricao: "Tomate, alface, hambúrguer, presunto, mussarela e bacon", preco: "R$ 12,50", destaque: "nao" },
+    { id: "8", categoria: "lanches", nome: "X-Burguer G Bacon", descricao: "2 hambúrgueres, presunto, mussarela e bacon", preco: "R$ 15,50", destaque: "nao" },
+    { id: "9", categoria: "lanches", nome: "X-Salada G Bacon", descricao: "Tomate, alface, 2 hambúrgueres, presunto, mussarela e bacon", preco: "R$ 16,50", destaque: "nao" },
+    { id: "10", categoria: "lanches", nome: "X-Frango Bacon", descricao: "Frango, mussarela, tomate, alface e bacon", preco: "R$ 15,50", destaque: "nao" },
+    { id: "11", categoria: "lanches", nome: "Cachorro Quente na Chapa", descricao: "2 salsichas, mussarela, tomate, alface, milho, bacon e batata palha", preco: "R$ 17,50", destaque: "nao" },
+    { id: "12", categoria: "lanches", nome: "Cachorro Quente", descricao: "2 salsichas, vinagrete, milho, purê de batata e batata palha", preco: "R$ 13,00", destaque: "nao" },
+    
+    { id: "13", categoria: "pasteis", nome: "Pastel de Carne", descricao: "Pastel tradicional de carne", preco: "R$ 8,00", destaque: "nao" },
+    { id: "14", categoria: "pasteis", nome: "Pastel de Frango", descricao: "Pastel tradicional de frango", preco: "R$ 8,00", destaque: "nao" },
+    { id: "15", categoria: "pasteis", nome: "Pastel Frango c/ Queijo", descricao: "Frango com queijo", preco: "R$ 8,00", destaque: "nao" },
+    { id: "16", categoria: "pasteis", nome: "Pastel Frango c/ Catupiry", descricao: "Frango com catupiry", preco: "R$ 8,00", destaque: "nao" },
+    { id: "17", categoria: "pasteis", nome: "Pastel Presunto e Mussarela", descricao: "Presunto e mussarela", preco: "R$ 8,00", destaque: "nao" },
+    { id: "18", categoria: "pasteis", nome: "Pastel de Pizza", descricao: "Queijo, presunto, tomate e orégano", preco: "R$ 8,00", destaque: "nao" },
+    { id: "19", categoria: "pasteis", nome: "Pastel de Queijo", descricao: "Mussarela", preco: "R$ 8,00", destaque: "nao" },
+    
+    { id: "20", categoria: "porcoes", nome: "Porção Batata Grande", descricao: "Batata frita com cheddar e bacon", preco: "R$ 30,00", destaque: "sim" },
+    { id: "21", categoria: "porcoes", nome: "Porção Batata Média", descricao: "Batata frita com cheddar e bacon", preco: "R$ 20,00", destaque: "nao" },
+    { id: "22", categoria: "porcoes", nome: "Porção Batata Pequena", descricao: "Batata frita com cheddar e bacon", preco: "R$ 10,00", destaque: "nao" },
+    
+    { id: "23", categoria: "pizzas_doces", nome: "Pizza Brigadeiro", descricao: "Chocolate e granulado", preco: "R$ 25,00", destaque: "nao" },
+    { id: "24", categoria: "pizzas_doces", nome: "Pizza Prestígio", descricao: "Chocolate, coco ralado e leite condensado", preco: "R$ 25,00", destaque: "nao" },
+    { id: "25", categoria: "pizzas_doces", nome: "Pizza M&M", descricao: "Chocolate e M&M", preco: "R$ 25,00", destaque: "nao" },
+    { id: "26", categoria: "pizzas_doces", nome: "Pizza Tubin", descricao: "Chocolate e tubin", preco: "R$ 25,00", destaque: "nao" },
+    { id: "27", categoria: "pizzas_doces", nome: "Pizza Ouro Branco", descricao: "Chocolate e Ouro Branco", preco: "R$ 25,00", destaque: "nao" },
+    { id: "28", categoria: "pizzas_doces", nome: "Pizza Bis", descricao: "Chocolate e Bis", preco: "R$ 25,00", destaque: "nao" },
+    { id: "29", categoria: "pizzas_doces", nome: "Pizza Choc Leite & Branco", descricao: "Chocolate ao leite e chocolate branco", preco: "R$ 25,00", destaque: "nao" },
+
+    { id: "30", categoria: "pizzas_salgadas", nome: "Pizza Mussarela", descricao: "Molho de tomate, mussarela e orégano", preco: "R$ 25,00", destaque: "nao" },
+    { id: "31", categoria: "pizzas_salgadas", nome: "Pizza Calabresa", descricao: "Molho de tomate, mussarela, calabresa e cebola", preco: "R$ 25,00", destaque: "nao" },
+    { id: "32", categoria: "pizzas_salgadas", nome: "Pizza Frango c/ Catupiry", descricao: "Molho de tomate, mussarela, frango desfiado e catupiry", preco: "R$ 25,00", destaque: "nao" },
+    { id: "33", categoria: "pizzas_salgadas", nome: "Pizza Portuguesa", descricao: "Molho de tomate, mussarela, presunto, ovo, cebola e ervilha", preco: "R$ 25,00", destaque: "nao" },
+    { id: "34", categoria: "pizzas_salgadas", nome: "Pizza Bacon", descricao: "Molho de tomate, mussarela e bacon crocante", preco: "R$ 25,00", destaque: "nao" }
+];
 
 let carrinho = [];
 
-// Carrega os produtos da planilha via PapaParse
-async function carregarProdutos() {
-    try {
-        const resposta = await fetch(CSV_URL);
-        const textoCSV = await resposta.text();
-
-        Papa.parse(textoCSV, {
-            header: true,
-            skipEmptyLines: true,
-            complete: function(results) {
-                const produtos = results.data.map(item => ({
-                    id: item.id ? item.id.trim() : '',
-                    categoria: item.categoria ? item.categoria.toLowerCase().trim() : '',
-                    nome: item.nome ? item.nome.trim() : '',
-                    descricao: item.descricao ? item.descricao.trim() : '',
-                    preco: item.preco ? item.preco.trim() : '',
-                    destaque: item.destaque ? item.destaque.toLowerCase().trim() : 'nao'
-                }));
-
-                renderizarProdutos(produtos);
-            }
-        });
-    } catch (erro) {
-        console.error("Erro ao carregar os produtos:", erro);
-    }
-}
-
-// Renderiza os produtos nas seções correspondentes do HTML
 function renderizarProdutos(produtos) {
     const MAPPING = {
         'lanches': 'lista-lanches',
@@ -40,7 +52,6 @@ function renderizarProdutos(produtos) {
         'pizzas': 'lista-pizzas_doces'
     };
 
-    // Limpa todas as seções antes de preencher
     Object.values(MAPPING).forEach(id => {
         const el = document.getElementById(id);
         if (el) el.innerHTML = '';
@@ -69,9 +80,7 @@ function renderizarProdutos(produtos) {
     });
 }
 
-// Funções do Carrinho
 function adicionarAoCarrinho(nome, precoStr) {
-    // Converte o preço de formato "R$ 8,50" para número (8.50)
     let precoLimpo = precoStr.replace('R$', '').replace(',', '.').trim();
     let precoNum = parseFloat(precoLimpo) || 0;
 
@@ -123,11 +132,9 @@ function removerDoCarrinho(index) {
     atualizarCarrinho();
 }
 
-// Inicialização e Eventos
 document.addEventListener('DOMContentLoaded', () => {
-    carregarProdutos();
+    renderizarProdutos(produtosFixos);
 
-    // Filtros de Categoria
     const botoesFiltro = document.querySelectorAll('.categoria-btn');
     const secoes = document.querySelectorAll('.secao');
 
@@ -148,7 +155,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Abrir/Fechar Modal do Carrinho
     const modal = document.getElementById('carrinho-modal');
     const btnAbrir = document.getElementById('btn-abrir-carrinho');
     const btnFechar = document.getElementById('btn-fechar-modal');
@@ -156,7 +162,6 @@ document.addEventListener('DOMContentLoaded', () => {
     if (btnAbrir) btnAbrir.addEventListener('click', () => modal.classList.remove('escondido'));
     if (btnFechar) btnFechar.addEventListener('click', () => modal.classList.add('escondido'));
 
-    // Enviar pedido para o WhatsApp
     const btnWhats = document.getElementById('btn-enviar-whats');
     if (btnWhats) {
         btnWhats.addEventListener('click', () => {
