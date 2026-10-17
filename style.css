@@ -1,4 +1,3 @@
-
 :root {
   --vermelho: #b6381c;
   --vermelho-escuro: #8d2d18;
@@ -12,7 +11,12 @@
 }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
 
 body {
   margin: 0;
@@ -36,12 +40,13 @@ textarea:focus-visible {
 
 .escondido { display: none !important; }
 
-/* CABEÇALHO */
+/* CABEÇALHO (centralizado em todas as telas) */
 .hero {
   position: relative;
   overflow: hidden;
   padding: 54px 22px 45px;
   color: white;
+  text-align: center;
   background:
     radial-gradient(ellipse at 90% 10%, rgba(255, 194, 121, .22), transparent 38%),
     linear-gradient(135deg, #2a1d18 0%, #4b2419 52%, #8d2d18 100%);
@@ -65,11 +70,12 @@ textarea:focus-visible {
   z-index: 1;
   max-width: 1120px;
   margin: auto;
+  text-align: center;
 }
 
 .marca {
   display: inline-block;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
   letter-spacing: 3px;
   color: #ffd5b2;
@@ -78,7 +84,7 @@ textarea:focus-visible {
 .hero-etiqueta {
   margin: 27px 0 5px;
   color: #f3c4a5;
-  font-size: 11px;
+  font-size: 12px;
   letter-spacing: 2px;
   font-weight: 800;
 }
@@ -89,13 +95,15 @@ textarea:focus-visible {
 }
 
 .hero-descricao {
-  margin: 13px 0 20px;
+  max-width: 460px;
+  margin: 13px auto 22px;
   color: #f6e8df;
-  font-size: 17px;
+  font-size: 18px;
 }
 
 .hero-tags {
   display: flex;
+  justify-content: center;
   gap: 10px;
   flex-wrap: wrap;
 }
@@ -103,9 +111,9 @@ textarea:focus-visible {
 .hero-tags span {
   border: 1px solid rgba(255,255,255,.2);
   background: rgba(255,255,255,.08);
-  padding: 8px 12px;
+  padding: 9px 14px;
   border-radius: 30px;
-  font-size: 13px;
+  font-size: 14px;
 }
 
 /* CONTEÚDO */
@@ -139,15 +147,15 @@ textarea:focus-visible {
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 42px;
-  height: 42px;
+  width: 44px;
+  height: 44px;
   background: #fff0e8;
   border-radius: 12px;
-  font-size: 20px;
+  font-size: 22px;
 }
 
-.info-card h3 { margin: 0 0 3px; font-size: 14px; }
-.info-card p { margin: 0; font-size: 12px; color: var(--texto-suave); }
+.info-card h3 { margin: 0 0 3px; font-size: 15px; }
+.info-card p { margin: 0; font-size: 13px; color: var(--texto-suave); }
 
 /* CATEGORIAS */
 .categorias {
@@ -164,10 +172,10 @@ textarea:focus-visible {
   border: 1px solid var(--borda);
   border-radius: 30px;
   background: white;
-  padding: 11px 16px;
+  padding: 12px 17px;
   color: #4d4640;
   font-weight: 700;
-  font-size: 13px;
+  font-size: 14px;
   transition: .2s ease;
 }
 
@@ -193,7 +201,7 @@ textarea:focus-visible {
 
 .secao-etiqueta {
   color: var(--vermelho);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: 2px;
 }
@@ -206,7 +214,7 @@ textarea:focus-visible {
 .secao-cabecalho p {
   margin: 0;
   color: var(--texto-suave);
-  font-size: 14px;
+  font-size: 15px;
 }
 
 .produtos-grid {
@@ -239,7 +247,7 @@ textarea:focus-visible {
   color: var(--vermelho-escuro);
   border-radius: 5px;
   padding: 4px 8px;
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 800;
   letter-spacing: .6px;
   text-transform: uppercase;
@@ -248,13 +256,13 @@ textarea:focus-visible {
 
 .produto-card h3 {
   margin: 0 0 7px;
-  font-size: 17px;
+  font-size: 18px;
   line-height: 1.35;
 }
 
 .produto-descricao {
   color: var(--texto-suave);
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.6;
   margin: 0 0 20px;
   flex: 1;
@@ -269,7 +277,7 @@ textarea:focus-visible {
 }
 
 .produto-preco {
-  font-size: 19px;
+  font-size: 20px;
   font-weight: 800;
   color: var(--vermelho);
   white-space: nowrap;
@@ -284,8 +292,8 @@ textarea:focus-visible {
   border-radius: 10px;
   background: var(--vermelho);
   color: white;
-  padding: 11px 13px;
-  font-size: 12px;
+  padding: 12px 15px;
+  font-size: 13px;
   font-weight: 800;
   transition: background .2s, transform .2s;
 }
@@ -309,8 +317,8 @@ textarea:focus-visible {
 }
 
 .rodape strong { letter-spacing: 3px; color: #ffd5b2; }
-.rodape p { margin: 8px 0; color: #f2ded3; font-size: 13px; }
-.rodape small { color: #c7b6ac; font-size: 11px; }
+.rodape p { margin: 8px 0; color: #f2ded3; font-size: 14px; }
+.rodape small { color: #c7b6ac; font-size: 12px; }
 
 /* BARRA FIXA DO CARRINHO */
 .barra-carrinho {
@@ -337,8 +345,8 @@ textarea:focus-visible {
   gap: 2px;
 }
 
-.carrinho-contagem { color: #d6c5ba; font-size: 11px; }
-.barra-carrinho-info strong { font-size: 18px; }
+.carrinho-contagem { color: #d6c5ba; font-size: 12px; }
+.barra-carrinho-info strong { font-size: 19px; }
 
 .btn-ver-carrinho {
   border: 0;
@@ -395,7 +403,7 @@ textarea:focus-visible {
 .modal-etiqueta {
   display: block;
   color: #f0b895;
-  font-size: 10px;
+  font-size: 11px;
   letter-spacing: 1.8px;
   font-weight: 800;
   margin-bottom: 4px;
@@ -410,8 +418,8 @@ textarea:focus-visible {
   flex-shrink: 0;
   display: grid;
   place-items: center;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border: 1px solid rgba(255,255,255,.25);
   border-radius: 50%;
   color: white;
@@ -436,7 +444,7 @@ textarea:focus-visible {
 
 .produto-descricao-modal {
   margin: 0 0 18px;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--texto-suave);
 }
 
@@ -448,12 +456,12 @@ textarea:focus-visible {
   margin-bottom: 17px;
 }
 
-.instrucao-adicionais strong { font-size: 14px; }
+.instrucao-adicionais strong { font-size: 15px; }
 
 .instrucao-adicionais p {
   margin: 4px 0 0;
   color: #75645a;
-  font-size: 12px;
+  font-size: 13px;
 }
 
 .lista-adicionais {
@@ -486,7 +494,7 @@ textarea:focus-visible {
 .adicional-nome {
   flex: 1;
   min-width: 0;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 700;
 }
 
@@ -499,15 +507,16 @@ textarea:focus-visible {
 
 .adicional-preco {
   color: var(--verde);
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 800;
   white-space: nowrap;
 }
 
 .checkbox-adicional {
   appearance: none;
-  width: 26px;
-  height: 26px;
+  -webkit-appearance: none;
+  width: 28px;
+  height: 28px;
   margin: 0;
   border: 2px solid #b9b2ab;
   border-radius: 7px;
@@ -525,7 +534,7 @@ textarea:focus-visible {
 .checkbox-adicional:checked::after {
   content: "✓";
   color: white;
-  font-size: 17px;
+  font-size: 18px;
   font-weight: 800;
 }
 
@@ -542,7 +551,7 @@ textarea:focus-visible {
   justify-content: space-between;
   gap: 12px;
   padding: 5px 0;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--texto-suave);
 }
 
@@ -556,13 +565,13 @@ textarea:focus-visible {
   margin-top: 8px;
   padding-top: 13px;
   color: var(--texto);
-  font-size: 15px;
+  font-size: 16px;
   font-weight: 800;
 }
 
 .resumo-precos .resumo-final strong {
   color: var(--vermelho);
-  font-size: 21px;
+  font-size: 22px;
 }
 
 .modal-acoes {
@@ -575,11 +584,11 @@ textarea:focus-visible {
 
 .btn-secundario,
 .btn-principal {
-  min-height: 49px;
+  min-height: 50px;
   padding: 12px 17px;
   border: 0;
   border-radius: 11px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 800;
 }
 
@@ -610,12 +619,12 @@ textarea:focus-visible {
   gap: 12px;
 }
 
-.item-carrinho h4 { margin: 0 0 4px; font-size: 14px; }
+.item-carrinho h4 { margin: 0 0 4px; font-size: 15px; }
 .item-carrinho-preco { font-weight: 800; white-space: nowrap; }
 
 .item-carrinho-adicionais {
   margin: 5px 0 0;
-  font-size: 12px;
+  font-size: 13px;
   color: var(--texto-suave);
 }
 
@@ -627,8 +636,8 @@ textarea:focus-visible {
 }
 
 .quantidade-btn {
-  width: 30px;
-  height: 30px;
+  width: 36px;
+  height: 36px;
   border: 1px solid var(--borda);
   border-radius: 8px;
   background: white;
@@ -636,9 +645,9 @@ textarea:focus-visible {
 }
 
 .quantidade {
-  min-width: 20px;
+  min-width: 22px;
   text-align: center;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 800;
 }
 
@@ -647,8 +656,9 @@ textarea:focus-visible {
   border: 0;
   background: transparent;
   color: var(--vermelho);
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
+  padding: 8px;
 }
 
 .carrinho-vazio { text-align: center; padding: 25px 8px; }
@@ -658,7 +668,7 @@ textarea:focus-visible {
 .carrinho-vazio p {
   margin: 0;
   color: var(--texto-suave);
-  font-size: 13px;
+  font-size: 14px;
 }
 
 .formulario-entrega {
@@ -668,11 +678,11 @@ textarea:focus-visible {
   margin-top: 22px;
 }
 
-.formulario-entrega h3 { margin: 0 0 6px; font-size: 17px; }
+.formulario-entrega h3 { margin: 0 0 6px; font-size: 18px; }
 
 .formulario-entrega label {
   margin-top: 7px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 800;
 }
 
@@ -681,9 +691,10 @@ textarea:focus-visible {
   width: 100%;
   border: 1px solid #ded8d1;
   border-radius: 10px;
-  padding: 12px;
+  padding: 13px;
   background: white;
   color: var(--texto);
+  font-size: 16px; /* 16px evita o zoom automático do iPhone */
   resize: vertical;
 }
 
@@ -720,11 +731,11 @@ textarea:focus-visible {
   bottom: 100px;
   transform: translate(-50%, 12px);
   max-width: calc(100% - 32px);
-  padding: 12px 18px;
+  padding: 13px 18px;
   background: #251a16;
   color: white;
   border-radius: 10px;
-  font-size: 13px;
+  font-size: 14px;
   box-shadow: var(--sombra);
   opacity: 0;
   pointer-events: none;
@@ -748,90 +759,94 @@ textarea:focus-visible {
   }
 
   .info-card {
-    padding: 13px 15px;
+    padding: 14px 16px;
     align-items: center;
   }
 
   .info-icone {
-    width: 38px;
-    height: 38px;
+    width: 46px;
+    height: 46px;
   }
 }
 
-/* CELULARES: CABEÇALHO CENTRALIZADO E CARDS MAIORES */
-@media (max-width: 560px) {
-  body { padding-bottom: 100px; }
-
-  .hero {
-    padding: 42px 20px 38px;
-    text-align: center;
+/* CELULARES: TEXTOS MAIORES E BOTÕES FÁCEIS DE TOCAR */
+@media (max-width: 640px) {
+  body {
+    font-size: 16px;
+    padding-bottom: 110px;
   }
 
-  .hero-conteudo {
-    width: 100%;
-    text-align: center;
+  .hero {
+    padding: 44px 18px 40px;
   }
 
   .marca {
-    font-size: 13px;
+    font-size: 14px;
     letter-spacing: 3px;
   }
 
   .hero-etiqueta {
     margin: 24px 0 8px;
-    font-size: 10px;
+    font-size: 12px;
     letter-spacing: 1.5px;
   }
 
   .hero h1 {
-    font-size: clamp(38px, 10vw, 48px);
-    line-height: 1.12;
+    font-size: clamp(46px, 13vw, 58px);
+    line-height: 1.1;
   }
 
   .hero-descricao {
-    max-width: 360px;
-    margin: 15px auto 22px;
-    font-size: 16px;
-    line-height: 1.6;
+    max-width: 340px;
+    margin: 15px auto 24px;
+    font-size: 18px;
+    line-height: 1.55;
   }
 
   .hero-tags {
-    justify-content: center;
     gap: 8px;
   }
 
   .hero-tags span {
-    font-size: 12px;
-    padding: 9px 12px;
+    font-size: 15px;
+    padding: 10px 15px;
   }
 
   .container {
-    padding: 0 10px;
+    padding: 0 14px;
   }
 
   .informacoes {
-    padding-top: 14px;
-    margin-bottom: 24px;
+    padding-top: 16px;
+    margin-bottom: 26px;
     gap: 10px;
   }
 
   .info-card {
-    padding: 15px;
+    padding: 16px;
+    border-radius: 16px;
+    gap: 14px;
+  }
+
+  .info-icone {
+    width: 50px;
+    height: 50px;
+    font-size: 25px;
     border-radius: 14px;
   }
 
-  .info-card h3 { font-size: 15px; }
-  .info-card p { font-size: 13px; }
+  .info-card h3 { font-size: 17px; }
+  .info-card p { font-size: 15px; }
 
   .categorias {
-    margin-right: -10px;
-    padding: 5px 10px 17px 0;
-    gap: 8px;
+    margin-right: -14px;
+    padding: 5px 14px 17px 0;
+    gap: 9px;
   }
 
   .categoria-btn {
-    padding: 12px 15px;
-    font-size: 13px;
+    padding: 14px 18px;
+    font-size: 15px;
   }
 
   .secao-produtos {
@@ -839,23 +854,22 @@ textarea:focus-visible {
   }
 
   .secao-cabecalho {
-    margin-bottom: 17px;
-    padding: 0 4px;
+    margin-bottom: 18px;
+    padding: 0 2px;
   }
 
-  .secao-etiqueta { font-size: 11px; }
+  .secao-etiqueta { font-size: 12px; }
 
   .secao-cabecalho h2 {
-    font-size: 27px;
+    font-size: 28px;
     line-height: 1.3;
   }
 
   .secao-cabecalho p {
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.6;
   }
 
-  /* Cards ocupam a largura disponível */
   .produtos-grid {
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
@@ -865,7 +879,6 @@ textarea:focus-visible {
     width: 100%;
     padding: 24px 20px;
     border-radius: 20px;
-    border-width: 1px;
     box-shadow: 0 5px 18px rgba(37,25,17,.055);
   }
 
@@ -875,63 +888,68 @@ textarea:focus-visible {
   }
 
   .produto-categoria {
-    font-size: 11px;
-    padding: 6px 10px;
+    font-size: 12px;
+    padding: 6px 11px;
     margin-bottom: 15px;
     letter-spacing: .7px;
   }
 
   .produto-card h3 {
-    font-size: 22px;
-    line-height: 1.35;
+    font-size: 23px;
+    line-height: 1.3;
     margin: 0 0 10px;
   }
 
   .produto-descricao {
-    font-size: 16px;
-    line-height: 1.7;
+    font-size: 17px;
+    line-height: 1.65;
     margin: 0 0 24px;
   }
 
   .produto-rodape {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     gap: 12px;
-    padding-top: 15px;
+    padding-top: 16px;
     border-top: 1px solid #f0ebe6;
   }
 
   .produto-preco {
-    font-size: 23px;
+    font-size: 26px;
     line-height: 1.3;
   }
 
   .btn-add {
-    min-height: 50px;
-    padding: 14px 18px;
-    font-size: 14px;
-    border-radius: 12px;
+    min-height: 54px;
+    padding: 14px 22px;
+    font-size: 16px;
+    border-radius: 13px;
     gap: 8px;
     flex-shrink: 0;
   }
 
+  .rodape p { font-size: 15px; }
+  .rodape small { font-size: 13px; }
+
   /* BARRA DO CARRINHO */
   .barra-carrinho {
-    bottom: 9px;
+    bottom: 10px;
     width: calc(100% - 20px);
-    padding: 12px 12px 12px 16px;
+    padding: 12px 12px 12px 18px;
     gap: 10px;
-    border-radius: 16px;
+    border-radius: 18px;
   }
 
-  .barra-carrinho-info strong { font-size: 17px; }
-  .carrinho-contagem { font-size: 12px; }
+  .barra-carrinho-info strong { font-size: 20px; }
+  .carrinho-contagem { font-size: 13px; }
 
   .btn-ver-carrinho {
-    padding: 14px 15px;
-    font-size: 13px;
-    border-radius: 11px;
+    padding: 15px 18px;
+    font-size: 15px;
+    border-radius: 12px;
+  }
+
+  .aviso {
+    bottom: 105px;
+    font-size: 15px;
   }
 
   /* MODAIS NO CELULAR */
@@ -942,45 +960,51 @@ textarea:focus-visible {
 
   .modal-conteudo {
     max-height: 94dvh;
-    border-radius: 20px 20px 0 0;
+    border-radius: 22px 22px 0 0;
   }
 
   .modal-header { padding: 18px; }
-  .modal-header h2 { font-size: 21px; }
+  .modal-header h2 { font-size: 23px; }
+  .modal-etiqueta { font-size: 12px; }
   .modal-corpo { padding: 20px 17px; }
-  .modal-corpo > h3 { font-size: 22px; }
+  .modal-corpo > h3 { font-size: 24px; }
+
+  .btn-fechar {
+    width: 46px;
+    height: 46px;
+  }
 
   .produto-descricao-modal {
-    font-size: 15px;
+    font-size: 16px;
     line-height: 1.6;
   }
 
   .instrucao-adicionais { padding: 16px; }
-  .instrucao-adicionais strong { font-size: 15px; }
-  .instrucao-adicionais p { font-size: 14px; }
+  .instrucao-adicionais strong { font-size: 16px; }
+  .instrucao-adicionais p { font-size: 15px; }
 
   .lista-adicionais { gap: 11px; }
 
   .adicional-opcao {
-    min-height: 72px;
-    padding: 15px 13px;
+    min-height: 76px;
+    padding: 15px 14px;
     gap: 10px;
   }
 
-  .adicional-nome { font-size: 15px; }
+  .adicional-nome { font-size: 17px; }
 
-  .adicional-direita { gap: 10px; }
-  .adicional-preco { font-size: 14px; }
+  .adicional-direita { gap: 12px; }
+  .adicional-preco { font-size: 16px; }
 
   .checkbox-adicional {
-    width: 27px;
-    height: 27px;
+    width: 30px;
+    height: 30px;
   }
 
   .resumo-precos { padding: 16px; }
-  .resumo-precos > div { font-size: 14px; }
-  .resumo-precos .resumo-final { font-size: 16px; }
-  .resumo-precos .resumo-final strong { font-size: 22px; }
+  .resumo-precos > div { font-size: 16px; }
+  .resumo-precos .resumo-final { font-size: 18px; }
+  .resumo-precos .resumo-final strong { font-size: 24px; }
 
   .modal-acoes {
     gap: 9px;
@@ -989,42 +1013,49 @@ textarea:focus-visible {
 
   .btn-secundario,
   .btn-principal {
-    min-height: 50px;
-    padding: 13px 12px;
-    font-size: 13px;
+    min-height: 54px;
+    padding: 13px 14px;
+    font-size: 15px;
   }
 
   /* CARRINHO NO CELULAR */
-  .item-carrinho h4 { font-size: 16px; }
-  .item-carrinho-preco { font-size: 15px; }
-  .item-carrinho-adicionais { font-size: 13px; }
+  .item-carrinho h4 { font-size: 18px; }
+  .item-carrinho-preco { font-size: 17px; }
+  .item-carrinho-adicionais { font-size: 15px; }
 
   .quantidade-btn {
-    width: 36px;
-    height: 36px;
+    width: 44px;
+    height: 44px;
+    font-size: 18px;
   }
 
-  .formulario-entrega h3 { font-size: 19px; }
-  .formulario-entrega label { font-size: 14px; }
+  .quantidade { font-size: 17px; min-width: 26px; }
+  .btn-remover { font-size: 15px; padding: 10px; }
+
+  .carrinho-vazio h3 { font-size: 20px; }
+  .carrinho-vazio p { font-size: 16px; }
+
+  .formulario-entrega h3 { font-size: 20px; }
+  .formulario-entrega label { font-size: 15px; }
 
   .formulario-entrega input,
   .formulario-entrega textarea {
-    padding: 14px;
+    padding: 15px;
     font-size: 16px;
   }
 
-  .total-pedido { padding: 17px; }
-  .total-pedido strong { font-size: 23px; }
+  .total-pedido { padding: 18px; font-size: 17px; }
+  .total-pedido strong { font-size: 25px; }
 }
 
 /* CELULARES ESTREITOS */
 @media (max-width: 360px) {
-  .container { padding: 0 8px; }
+  .container { padding: 0 10px; }
 
   .produto-card { padding: 21px 16px; }
 
   .produto-card h3 { font-size: 21px; }
-  .produto-descricao { font-size: 15px; }
+  .produto-descricao { font-size: 16px; }
 
   .produto-rodape {
     align-items: stretch;
@@ -1032,14 +1063,14 @@ textarea:focus-visible {
     gap: 14px;
   }
 
-  .produto-preco { font-size: 24px; }
+  .produto-preco { font-size: 26px; }
 
   .btn-add {
     width: 100%;
-    min-height: 50px;
+    min-height: 54px;
   }
 
-  .adicional-nome { font-size: 14px; }
-  .adicional-preco { font-size: 13px; }
+  .adicional-nome { font-size: 15px; }
+  .adicional-preco { font-size: 14px; }
   .modal-acoes { gap: 7px; }
 }
