@@ -79,8 +79,6 @@ function formatarPreco(valor) {
 
 /* ========================================= */
 /* RENDERIZAR PRODUTOS                       */
-/* (classes do style.css + as antigas por    */
-/*  compatibilidade)                         */
 /* ========================================= */
 function renderizarProdutos(produtos) {
     Object.values(MAPPING).forEach(id => {
@@ -93,15 +91,15 @@ function renderizarProdutos(produtos) {
         if (!container || !item.nome) return;
 
         const card = document.createElement('div');
-        card.className = 'produto produto-card' + (item.destaque === 'sim' ? ' destaque' : '');
+        card.className = 'produto' + (item.destaque === 'sim' ? ' destaque' : '');
         card.innerHTML = `
-            <div class="produto-conteudo produto-info">
+            <div class="produto-conteudo">
                 <span class="produto-categoria">${escapar(item.categoria.replace(/_/g, ' '))}</span>
                 <h3>${escapar(item.nome)}</h3>
                 <p>${escapar(item.descricao)}</p>
-                <div class="produto-rodape produto-footer">
+                <div class="produto-rodape">
                     <strong class="preco">${escapar(item.preco)}</strong>
-                    <button class="btn-add btn-adicionar" type="button">+ Adicionar</button>
+                    <button class="btn-add" type="button">+ Adicionar</button>
                 </div>
             </div>
         `;
@@ -145,7 +143,7 @@ function atualizarCarrinho() {
     lista.innerHTML = '';
     carrinho.forEach(item => {
         const div = document.createElement('div');
-        div.className = 'item-carrinho carrinho-item';
+        div.className = 'item-carrinho';
         div.innerHTML = `
             <div class="item-info">
                 <strong>${escapar(item.nome)}</strong><br>
@@ -169,12 +167,42 @@ function atualizarCarrinho() {
 }
 
 /* ========================================= */
-/* WHATSAPP                                  */
+/* WHATSAPP + ENDEREÇO                       */
 /* ========================================= */
+function pegarEndereco() {
+    const valor = id => (document.getElementById(id)?.value || '').trim();
+    return {
+        bairro: valor('end-bairro'),
+        rua: valor('end-rua'),
+        numero: valor('end-numero'),
+        ref: valor('end-ref')
+    };
+}
+
 function enviarWhatsApp() {
     if (carrinho.length === 0) return;
+
+    // Valida o bairro (único campo obrigatório)
+    const end = pegarEndereco();
+    const campoBairro = document.getElementById('end-bairro');
+    const erroBairro = document.getElementById('erro-bairro');
+
+    if (!end.bairro) {
+        campoBairro.classList.add('invalido');
+        erroBairro.classList.remove('escondido');
+        campoBairro.focus();
+        campoBairro.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        return;
+    }
+
     const obs = (document.getElementById('obs-pedido')?.value || '').trim();
     const total = carrinho.reduce((s, i) => s + i.qtd * i.preco, 0);
+
+    // Monta o endereço só com o que foi preenchido
+    const partes = [`Bairro: ${end.bairro}`];
+    if (end.rua) partes.push(`Rua: ${end.rua}`);
+    if (end.numero) partes.push(`Número: ${end.numero}`);
+    if (end.ref) partes.push(`Referência: ${end.ref}`);
 
     let msg = 'Olá, gostaria de fazer o seguinte pedido:\n\n';
     carrinho.forEach(i => {
@@ -182,6 +210,7 @@ function enviarWhatsApp() {
     });
     msg += `\n*Total:* ${formatarPreco(total)}`;
     if (obs) msg += `\n*Observações:* ${obs}`;
+    msg += `\n\nMeu endereço é: ${partes.join(', ')}; gostaria de saber quanto ficaria a taxa de entrega.`;
 
     window.open(`https://api.whatsapp.com/send?phone=${WHATSAPP_NUMERO}&text=${encodeURIComponent(msg)}`, '_blank');
 }
@@ -217,4 +246,12 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById('btn-fechar-modal').addEventListener('click', () => modal.classList.add('escondido'));
     modal.addEventListener('click', e => { if (e.target === modal) modal.classList.add('escondido'); });
     document.getElementById('btn-enviar-whats').addEventListener('click', enviarWhatsApp);
+
+    // Tira o aviso de erro assim que a pessoa começa a digitar o bairro
+    document.getElementById('end-bairro').addEventListener('input', e => {
+        if (e.target.value.trim()) {
+            e.target.classList.remove('invalido');
+            document.getElementById('erro-bairro').classList.add('escondido');
+        }
+    });
 });

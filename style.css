@@ -341,10 +341,10 @@ body {
     border-radius: 20px;
     width: 100%;
     max-width: 500px;
-    max-height: 90vh;
+    max-height: 92vh;
+    overflow-y: auto;          /* o modal inteiro rola quando o formulário é grande */
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
 .modal-header {
@@ -354,6 +354,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 .modal-header h2 {
@@ -373,8 +376,6 @@ body {
 
 .carrinho-itens {
     padding: 20px;
-    overflow-y: auto;
-    flex-grow: 1;
     display: flex;
     flex-direction: column;
     gap: 15px;
@@ -463,6 +464,65 @@ body {
     font-size: 18px;
     cursor: pointer;
     text-align: center;
+}
+
+/* ========================= */
+/* ENDEREÇO DE ENTREGA */
+/* ========================= */
+
+.endereco-box {
+    background: white;
+    border: 1px solid #e2ded8;
+    border-radius: 14px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.endereco-box h3 {
+    font-size: 18px;
+    color: #1c1c1c;
+}
+
+.campo-end label {
+    display: block;
+    font-weight: 600;
+    font-size: 15px;
+    margin-bottom: 4px;
+}
+
+.campo-end input {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    font-family: inherit;
+    font-size: 16px;
+}
+
+.campo-end input:focus {
+    outline: 2px solid #b6381c;
+    border-color: #b6381c;
+}
+
+.campo-end input.invalido {
+    border: 2px solid #d62828;
+    background: #fff4f4;
+}
+
+.obrigatorio {
+    color: #d62828;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.erro-campo {
+    display: block;
+    color: #d62828;
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 4px;
 }
 
 /* ========================= */
@@ -677,6 +737,26 @@ footer small {
     .campo-obs input {
         font-size: 19px;
         padding: 16px;
+    }
+
+    /* Endereço */
+    .endereco-box h3 {
+        font-size: 24px;
+    }
+
+    .campo-end label {
+        font-size: 19px;
+        margin-bottom: 6px;
+    }
+
+    .campo-end input {
+        font-size: 20px;
+        padding: 16px;
+    }
+
+    .obrigatorio,
+    .erro-campo {
+        font-size: 17px;
     }
 
     .btn-whatsapp {

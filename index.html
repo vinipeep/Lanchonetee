@@ -7,8 +7,8 @@
 
     <link rel="icon" type="image/png" href="logo.png?v=6">
 
-    <!-- ?v=10 força o navegador a baixar a versão nova -->
-    <link rel="stylesheet" href="style.css?v=10">
+    <!-- ?v=11 força o navegador a baixar a versão nova -->
+    <link rel="stylesheet" href="style.css?v=11">
 </head>
 <body>
 
@@ -124,16 +124,46 @@
                 <h2>Seu Pedido</h2>
                 <button id="btn-fechar-modal" class="btn-fechar">&times;</button>
             </div>
+
             <div id="carrinho-itens" class="carrinho-itens"></div>
+
             <div class="modal-footer">
                 <div class="total-container">
                     <span>Total:</span>
                     <strong id="modal-total">R$ 0,00</strong>
                 </div>
+
                 <div class="campo-obs">
                     <label for="obs-pedido">Observações (opcional):</label>
                     <input type="text" id="obs-pedido" placeholder="Ex: Sem tomate, troco para 50...">
                 </div>
+
+                <!-- ENDEREÇO DE ENTREGA -->
+                <div class="endereco-box">
+                    <h3>📍 Endereço de entrega</h3>
+
+                    <div class="campo-end">
+                        <label for="end-bairro">Bairro <span class="obrigatorio">*obrigatório</span></label>
+                        <input type="text" id="end-bairro" placeholder="Ex: Forjos" autocomplete="off">
+                        <small id="erro-bairro" class="erro-campo escondido">Por favor, informe o bairro.</small>
+                    </div>
+
+                    <div class="campo-end">
+                        <label for="end-rua">Rua (opcional)</label>
+                        <input type="text" id="end-rua" placeholder="Ex: Rua Jabuticabeira" autocomplete="off">
+                    </div>
+
+                    <div class="campo-end">
+                        <label for="end-numero">Número (opcional)</label>
+                        <input type="text" id="end-numero" placeholder="Ex: 120" inputmode="numeric" autocomplete="off">
+                    </div>
+
+                    <div class="campo-end">
+                        <label for="end-ref">Ponto de referência (opcional)</label>
+                        <input type="text" id="end-ref" placeholder="Ex: Perto da igreja, portão azul" autocomplete="off">
+                    </div>
+                </div>
+
                 <button id="btn-enviar-whats" class="btn-whatsapp">Enviar Pedido no WhatsApp 🚀</button>
             </div>
         </div>
@@ -147,6 +177,6 @@
         <small>&copy; Lanchonete Pai & Filho. Todos os direitos reservados.</small>
     </footer>
 
-    <script src="script.js?v=10"></script>
+    <script src="script.js?v=11"></script>
 </body>
 </html>
