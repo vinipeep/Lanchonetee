@@ -334,8 +334,8 @@ function renderizarProdutos() {
     const card = document.createElement("article");
     card.className = "produto-card";
 
-    // Se for pizza salgada (pequena ou grande), exibe também o botão de "2 Sabores" ao lado
-    const ehPizzaSalgada = produto.categoria === "pizzas_pequenas" || produto.categoria === "pizzas_grandes";
+    // EXCLUSIVO PARA PIZZAS GRANDES: Botão de "2 Sabores" aparece apenas aqui
+    const ehPizzaGrande = produto.categoria === "pizzas_grandes";
 
     card.innerHTML = `
       <span class="produto-categoria">${escapar(categoriaDoProduto(produto))}</span>
@@ -344,7 +344,7 @@ function renderizarProdutos() {
       <div class="produto-rodape">
         <span class="produto-preco">${formatarPreco(produto.preco)}</span>
         <div class="produto-acoes">
-          ${ehPizzaSalgada ? `<button type="button" class="btn-metade-card" data-metade="${produto.id}">🍕 2 Sabores</button>` : ""}
+          ${ehPizzaGrande ? `<button type="button" class="btn-metade-card" data-metade="${produto.id}">🍕 2 Sabores</button>` : ""}
           <button type="button" class="btn-add" data-adicionar="${produto.id}">
             + Adicionar
           </button>
@@ -431,13 +431,13 @@ function abrirModalAdicionais(produto) {
   produtoPersonalizando = null;
 }
 
-/* ============ FUNÇÕES DE METADE / METADE ============ */
+/* ============ FUNÇÕES DE METADE / METADE (PIZZAS GRANDES) ============ */
 
 function abrirModalMetade(produto) {
   pizzaPersonalizandoMetade = produto;
-  const saboresDisponiveis = produtos.filter(p => p.categoria === produto.categoria);
+  const saboresDisponiveis = produtos.filter(p => p.categoria === "pizzas_grandes");
 
-  $("#metade-produto-titulo").textContent = `Montar ${produto.categoria.includes("pequenas") ? "Pizza Pequena" : "Pizza Grande"} Meio a Meio`;
+  $("#metade-produto-titulo").textContent = `Montar Pizza Grande Meio a Meio`;
 
   const optionsHTML = saboresDisponiveis.map(p => 
     `<option value="${p.id}" data-preco="${p.preco}">${escapar(p.nome)} (${formatarPreco(p.preco)})</option>`
@@ -494,7 +494,7 @@ function confirmarMetade() {
   const preco2 = opt2 ? Number(opt2.dataset.preco || 0) : 0;
   const maiorPreco = Math.max(preco1, preco2);
 
-  const nomeMetade = `${pizzaPersonalizandoMetade.categoria.includes('pequenas') ? 'Pizza Pequena' : 'Pizza Grande'} (Metade ${sabor1Nome} / Metade ${sabor2Nome})`;
+  const nomeMetade = `Pizza Grande (Metade ${sabor1Nome} / Metade ${sabor2Nome})`;
 
   carrinho.push({
     id: pizzaPersonalizandoMetade.id * 1000 + Math.floor(Math.random() * 1000),
@@ -788,3 +788,4 @@ document.addEventListener("DOMContentLoaded", () => {
   atualizarCarrinho();
   carregarPlanilha();
 });
+
