@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pai & Filho | Cardápio & Delivery</title>
+    <title>Cardápio - Pai & Filho</title>
+
+    <!-- Ícone da aba do navegador (Favicon) -->
+<link rel="icon" type="image/png" href="logo.png?v=3">
+
     <link rel="stylesheet" href="style.css">
 </head>
-
 <body>
 
-    <!-- CABEÇALHO -->
+    <!-- HERO / CABEÇALHO -->
     <header class="hero">
         <div class="hero-conteudo">
             <span class="logo">PAI & FILHO</span>
@@ -18,12 +20,12 @@
             <p>Lanches feitos na hora, do nosso jeito.</p>
             <div class="hero-info">
                 <span>📍 Forjos</span>
-                <span>🗓️ Sex • Sáb • Dom</span>
+                <span>📅 Sex • Sáb • Dom</span>
             </div>
         </div>
     </header>
 
-    <!-- INFORMAÇÕES -->
+    <!-- INFORMAÇÕES DE CONTATO -->
     <section class="info">
         <div class="info-item">
             <span class="info-icone">📞</span>
@@ -32,7 +34,6 @@
                 <p>(35) 98832-0463</p>
             </div>
         </div>
-
         <div class="info-item">
             <span class="info-icone">📍</span>
             <div>
@@ -40,9 +41,8 @@
                 <p>Rua Jabuticabeira - Forjos</p>
             </div>
         </div>
-
         <div class="info-item">
-            <span class="info-icone">🕐</span>
+            <span class="info-icone">⏰</span>
             <div>
                 <strong>Funcionamento</strong>
                 <p>Sexta, sábado e domingo</p>
@@ -50,35 +50,33 @@
         </div>
     </section>
 
-    <!-- CATEGORIAS -->
+    <!-- FILTRO DE CATEGORIAS -->
     <nav class="categorias">
         <button class="categoria-btn ativo" data-categoria="todos">Todos</button>
         <button class="categoria-btn" data-categoria="lanches">🍔 Lanches</button>
         <button class="categoria-btn" data-categoria="pasteis">🥟 Pastéis</button>
         <button class="categoria-btn" data-categoria="porcoes">🍟 Porções</button>
-        <button class="categoria-btn" data-categoria="pizzas">🍫 Pizzas Doces</button>
+        <button class="categoria-btn" data-categoria="pizzas">🍕 Pizzas Doces</button>
     </nav>
 
+    <!-- SEÇÕES DO CARDÁPIO -->
     <main class="container">
-
         <!-- LANCHES -->
         <section class="secao" data-secao="lanches">
             <div class="titulo-secao">
-                <span>Lanches</span>
+                <span>LANCHES</span>
                 <h2>Hambúrgueres & Lanches</h2>
                 <p>Escolha seu favorito.</p>
             </div>
-            <div class="produtos" id="lista-lanches">
-                <p class="loading">Carregando cardápio...</p>
-            </div>
+            <div class="produtos" id="lista-lanches"></div>
         </section>
 
         <!-- PASTÉIS -->
         <section class="secao" data-secao="pasteis">
             <div class="titulo-secao">
-                <span>Pastéis</span>
-                <h2>Pastéis</h2>
-                <p>Preparados na hora.</p>
+                <span>PASTÉIS</span>
+                <h2>Pastéis Fritos na Hora</h2>
+                <p>Crocantes e recheados.</p>
             </div>
             <div class="produtos" id="lista-pasteis"></div>
         </section>
@@ -86,9 +84,9 @@
         <!-- PORÇÕES -->
         <section class="secao" data-secao="porcoes">
             <div class="titulo-secao">
-                <span>Porções</span>
-                <h2>Batata Frita</h2>
-                <p>Batata frita com cheddar e bacon.</p>
+                <span>PORÇÕES</span>
+                <h2>Porções Especiais</h2>
+                <p>Perfeitas para compartilhar.</p>
             </div>
             <div class="produtos" id="lista-porcoes"></div>
         </section>
@@ -96,16 +94,15 @@
         <!-- PIZZAS DOCES -->
         <section class="secao" data-secao="pizzas">
             <div class="titulo-secao">
-                <span>Pizzas</span>
+                <span>PIZZAS DOCES</span>
                 <h2>Pizzas Doces</h2>
-                <p>4 pedaços • 25 cm</p>
+                <p>Para fechar com chave de ouro.</p>
             </div>
             <div class="produtos" id="lista-pizzas"></div>
         </section>
-
     </main>
 
-    <!-- BARRA FIXA DO CARRINHO -->
+    <!-- BARRA FIXA DO CARRINHO (FLUTUANTE NO RODAPÉ) -->
     <div id="carrinho-bar" class="carrinho-bar escondido">
         <div class="carrinho-bar-info">
             <span id="carrinho-qtd">0 itens</span>
@@ -114,14 +111,16 @@
         <button id="btn-abrir-carrinho" class="btn-ver-pedido">Ver Pedido 🛒</button>
     </div>
 
-    <!-- MODAL DO CARRINHO -->
+    <!-- MODAL POPUP DO CARRINHO -->
     <div id="carrinho-modal" class="modal escondido">
         <div class="modal-conteudo">
             <div class="modal-header">
                 <h2>Seu Pedido</h2>
                 <button id="btn-fechar-modal" class="btn-fechar">&times;</button>
             </div>
-            <div id="carrinho-itens" class="carrinho-itens"></div>
+            <div id="carrinho-itens" class="carrinho-itens">
+                <!-- Itens adicionados entram dinamicamente via JS -->
+            </div>
             <div class="modal-footer">
                 <div class="total-container">
                     <span>Total:</span>
@@ -129,7 +128,7 @@
                 </div>
                 <div class="campo-obs">
                     <label for="obs-pedido">Observações (opcional):</label>
-                    <input type="text" id="obs-pedido" placeholder="Ex: Sem tomate, troco para R$ 50...">
+                    <input type="text" id="obs-pedido" placeholder="Ex: Sem tomate, troco para 50...">
                 </div>
                 <button id="btn-enviar-whats" class="btn-whatsapp">Enviar Pedido no WhatsApp 🚀</button>
             </div>
@@ -141,11 +140,9 @@
         <div class="footer-logo">PAI & FILHO</div>
         <p>Lanches feitos na hora, do nosso jeito.</p>
         <p>📍 Rua Jabuticabeira - Forjos</p>
-        <p>📞 (35) 98832-0463</p>
-        <small>© 2026 Pai & Filho</small>
+        <small>&copy; Lanchonete Pai & Filho. Todos os direitos reservados.</small>
     </footer>
 
     <script src="script.js"></script>
 </body>
-
 </html>
