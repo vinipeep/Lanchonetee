@@ -7,8 +7,8 @@
 
     <link rel="icon" type="image/png" href="logo.png?v=6">
 
-    <!-- ?v=11 força o navegador a baixar a versão nova -->
-    <link rel="stylesheet" href="style.css?v=11">
+    <!-- ?v=12 força o navegador a baixar a versão nova -->
+    <link rel="stylesheet" href="style.css?v=12">
 </head>
 <body>
 
@@ -56,7 +56,8 @@
         <button class="categoria-btn" data-categoria="lanches">🍔 Lanches</button>
         <button class="categoria-btn" data-categoria="pasteis">🥟 Pastéis</button>
         <button class="categoria-btn" data-categoria="porcoes">🍟 Porções</button>
-        <button class="categoria-btn" data-categoria="pizzas_salgadas">🍕 Pizzas Salgadas</button>
+        <button class="categoria-btn" data-categoria="pizzas_salgadas">🍕 Pizzas Pequenas</button>
+        <button class="categoria-btn" data-categoria="pizzas_grandes">🍕 Pizzas Grandes</button>
         <button class="categoria-btn" data-categoria="pizzas_doces">🍫 Pizzas Doces</button>
     </nav>
 
@@ -91,11 +92,20 @@
 
         <section class="secao" data-secao="pizzas_salgadas">
             <div class="titulo-secao">
-                <span>PIZZAS SALGADAS</span>
+                <span>PIZZAS PEQUENAS</span>
                 <h2>Pizzas Salgadas (25cm • 4 Pedaços)</h2>
                 <p>Massa crocante com recheios caprichados.</p>
             </div>
             <div class="produtos" id="lista-pizzas_salgadas"></div>
+        </section>
+
+        <section class="secao" data-secao="pizzas_grandes">
+            <div class="titulo-secao">
+                <span>PIZZAS GRANDES</span>
+                <h2>Pizzas Grandes (8 Pedaços)</h2>
+                <p>Ideais para a família toda.</p>
+            </div>
+            <div class="produtos" id="lista-pizzas_grandes"></div>
         </section>
 
         <section class="secao" data-secao="pizzas_doces">
@@ -177,6 +187,6 @@
         <small>&copy; Lanchonete Pai & Filho. Todos os direitos reservados.</small>
     </footer>
 
-    <script src="script.js?v=11"></script>
+    <script src="script.js?v=12"></script>
 </body>
 </html>

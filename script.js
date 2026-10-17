@@ -1,58 +1,83 @@
 /* ========================================= */
 /* CONFIGURAÇÕES                             */
 /* ========================================= */
+const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vQWhv3boH7Ps-Sjil1GPXZQviqaMf-MYBgvEbq36MAu-lMtiSJtcZFhkda1UjV_DNpOAfB_SlC38BdL/pub?gid=0&single=true&output=csv';
+
 const WHATSAPP_NUMERO = '5535988320463'; // 55 + DDD + número
 
 /* ========================================= */
-/* CARDÁPIO (edite aqui para mudar produtos) */
+/* LISTA RESERVA                             */
+/* (só é usada se a planilha não carregar)   */
 /* ========================================= */
-const produtosFixos = [
-    { id: "1", categoria: "lanches", nome: "X-Burguer", descricao: "Hambúrguer, presunto e mussarela", preco: "R$ 8,50", destaque: "nao" },
-    { id: "2", categoria: "lanches", nome: "X-Salada", descricao: "Alface, tomate, hambúrguer, presunto e mussarela", preco: "R$ 9,50", destaque: "nao" },
-    { id: "3", categoria: "lanches", nome: "X-Frango", descricao: "Frango, mussarela, alface e tomate", preco: "R$ 12,50", destaque: "nao" },
-    { id: "4", categoria: "lanches", nome: "X-Burguer G", descricao: "2 hambúrgueres, presunto e mussarela", preco: "R$ 12,50", destaque: "nao" },
-    { id: "5", categoria: "lanches", nome: "X-Salada G", descricao: "Alface, tomate, 2 hambúrgueres, presunto e mussarela", preco: "R$ 13,50", destaque: "nao" },
-    { id: "6", categoria: "lanches", nome: "X-Burguer Bacon", descricao: "Hambúrguer, presunto, mussarela e bacon", preco: "R$ 11,50", destaque: "nao" },
-    { id: "7", categoria: "lanches", nome: "X-Salada Bacon", descricao: "Tomate, alface, hambúrguer, presunto, mussarela e bacon", preco: "R$ 12,50", destaque: "nao" },
-    { id: "8", categoria: "lanches", nome: "X-Burguer G Bacon", descricao: "2 hambúrgueres, presunto, mussarela e bacon", preco: "R$ 15,50", destaque: "nao" },
-    { id: "9", categoria: "lanches", nome: "X-Salada G Bacon", descricao: "Tomate, alface, 2 hambúrgueres, presunto, mussarela e bacon", preco: "R$ 16,50", destaque: "nao" },
-    { id: "10", categoria: "lanches", nome: "X-Frango Bacon", descricao: "Frango, mussarela, tomate, alface e bacon", preco: "R$ 15,50", destaque: "nao" },
-    { id: "11", categoria: "lanches", nome: "Cachorro Quente na Chapa", descricao: "2 salsichas, mussarela, tomate, alface, milho, bacon e batata palha", preco: "R$ 17,50", destaque: "nao" },
-    { id: "12", categoria: "lanches", nome: "Cachorro Quente", descricao: "2 salsichas, vinagrete, milho, purê de batata e batata palha", preco: "R$ 13,00", destaque: "nao" },
+const produtosReserva = [
+    { categoria: "lanches", nome: "X-Burguer", descricao: "Hambúrguer, presunto e mussarela", preco: "R$ 8,50", destaque: "nao" },
+    { categoria: "lanches", nome: "X-Salada", descricao: "Alface, tomate, hambúrguer, presunto e mussarela", preco: "R$ 9,50", destaque: "nao" },
+    { categoria: "lanches", nome: "X-Frango", descricao: "Frango, mussarela, alface e tomate", preco: "R$ 12,50", destaque: "nao" },
+    { categoria: "lanches", nome: "X-Burguer G", descricao: "2 hambúrgueres, presunto e mussarela", preco: "R$ 12,50", destaque: "nao" },
+    { categoria: "lanches", nome: "X-Salada G", descricao: "Alface, tomate, 2 hambúrgueres, presunto e mussarela", preco: "R$ 13,50", destaque: "nao" },
+    { categoria: "lanches", nome: "X-Burguer Bacon", descricao: "Hambúrguer, presunto, mussarela e bacon", preco: "R$ 11,50", destaque: "nao" },
+    { categoria: "lanches", nome: "X-Salada Bacon", descricao: "Tomate, alface, hambúrguer, presunto, mussarela e bacon", preco: "R$ 12,50", destaque: "nao" },
+    { categoria: "lanches", nome: "X-Burguer G Bacon", descricao: "2 hambúrgueres, presunto, mussarela e bacon", preco: "R$ 15,50", destaque: "nao" },
+    { categoria: "lanches", nome: "X-Salada G Bacon", descricao: "Tomate, alface, 2 hambúrgueres, presunto, mussarela e bacon", preco: "R$ 16,50", destaque: "nao" },
+    { categoria: "lanches", nome: "X-Frango Bacon", descricao: "Frango, mussarela, tomate, alface e bacon", preco: "R$ 15,50", destaque: "nao" },
+    { categoria: "lanches", nome: "Cachorro Quente na Chapa", descricao: "2 salsichas, mussarela, tomate, alface, milho, bacon e batata palha", preco: "R$ 17,50", destaque: "nao" },
+    { categoria: "lanches", nome: "Cachorro Quente", descricao: "2 salsichas, vinagrete, milho, purê de batata e batata palha", preco: "R$ 13,00", destaque: "nao" },
 
-    { id: "13", categoria: "pasteis", nome: "Pastel de Carne", descricao: "Pastel tradicional de carne", preco: "R$ 8,00", destaque: "nao" },
-    { id: "14", categoria: "pasteis", nome: "Pastel de Frango", descricao: "Pastel tradicional de frango", preco: "R$ 8,00", destaque: "nao" },
-    { id: "15", categoria: "pasteis", nome: "Pastel Frango c/ Queijo", descricao: "Frango com queijo", preco: "R$ 8,00", destaque: "nao" },
-    { id: "16", categoria: "pasteis", nome: "Pastel Frango c/ Catupiry", descricao: "Frango com catupiry", preco: "R$ 8,00", destaque: "nao" },
-    { id: "17", categoria: "pasteis", nome: "Pastel Presunto e Mussarela", descricao: "Presunto e mussarela", preco: "R$ 8,00", destaque: "nao" },
-    { id: "18", categoria: "pasteis", nome: "Pastel de Pizza", descricao: "Queijo, presunto, tomate e orégano", preco: "R$ 8,00", destaque: "nao" },
-    { id: "19", categoria: "pasteis", nome: "Pastel de Queijo", descricao: "Mussarela", preco: "R$ 8,00", destaque: "nao" },
+    { categoria: "pasteis", nome: "Pastel de Carne", descricao: "Pastel tradicional de carne", preco: "R$ 8,00", destaque: "nao" },
+    { categoria: "pasteis", nome: "Pastel de Frango", descricao: "Pastel tradicional de frango", preco: "R$ 8,00", destaque: "nao" },
+    { categoria: "pasteis", nome: "Pastel Frango c/ Queijo", descricao: "Frango com queijo", preco: "R$ 8,00", destaque: "nao" },
+    { categoria: "pasteis", nome: "Pastel Frango c/ Catupiry", descricao: "Frango com catupiry", preco: "R$ 8,00", destaque: "nao" },
+    { categoria: "pasteis", nome: "Pastel Presunto e Mussarela", descricao: "Presunto e mussarela", preco: "R$ 8,00", destaque: "nao" },
+    { categoria: "pasteis", nome: "Pastel de Pizza", descricao: "Queijo, presunto, tomate e orégano", preco: "R$ 8,00", destaque: "nao" },
+    { categoria: "pasteis", nome: "Pastel de Queijo", descricao: "Mussarela", preco: "R$ 8,00", destaque: "nao" },
 
-    { id: "20", categoria: "porcoes", nome: "Porção Batata Grande", descricao: "Batata frita com cheddar e bacon", preco: "R$ 30,00", destaque: "sim" },
-    { id: "21", categoria: "porcoes", nome: "Porção Batata Média", descricao: "Batata frita com cheddar e bacon", preco: "R$ 20,00", destaque: "nao" },
-    { id: "22", categoria: "porcoes", nome: "Porção Batata Pequena", descricao: "Batata frita com cheddar e bacon", preco: "R$ 10,00", destaque: "nao" },
+    { categoria: "porcoes", nome: "Porção Batata Grande", descricao: "Batata frita com cheddar e bacon", preco: "R$ 30,00", destaque: "sim" },
+    { categoria: "porcoes", nome: "Porção Batata Média", descricao: "Batata frita com cheddar e bacon", preco: "R$ 20,00", destaque: "nao" },
+    { categoria: "porcoes", nome: "Porção Batata Pequena", descricao: "Batata frita com cheddar e bacon", preco: "R$ 10,00", destaque: "nao" },
 
-    { id: "23", categoria: "pizzas_doces", nome: "Pizza Brigadeiro", descricao: "Chocolate e granulado", preco: "R$ 25,00", destaque: "nao" },
-    { id: "24", categoria: "pizzas_doces", nome: "Pizza Prestígio", descricao: "Chocolate, coco ralado e leite condensado", preco: "R$ 25,00", destaque: "nao" },
-    { id: "25", categoria: "pizzas_doces", nome: "Pizza M&M", descricao: "Chocolate e M&M", preco: "R$ 25,00", destaque: "nao" },
-    { id: "26", categoria: "pizzas_doces", nome: "Pizza Tubin", descricao: "Chocolate e tubin", preco: "R$ 25,00", destaque: "nao" },
-    { id: "27", categoria: "pizzas_doces", nome: "Pizza Ouro Branco", descricao: "Chocolate e Ouro Branco", preco: "R$ 25,00", destaque: "nao" },
-    { id: "28", categoria: "pizzas_doces", nome: "Pizza Bis", descricao: "Chocolate e Bis", preco: "R$ 25,00", destaque: "nao" },
-    { id: "29", categoria: "pizzas_doces", nome: "Pizza Choc Leite & Branco", descricao: "Chocolate ao leite e chocolate branco", preco: "R$ 25,00", destaque: "nao" },
+    { categoria: "pizzas_doces", nome: "Pizza Brigadeiro", descricao: "Chocolate e granulado", preco: "R$ 25,00", destaque: "nao" },
+    { categoria: "pizzas_doces", nome: "Pizza Prestígio", descricao: "Chocolate, coco ralado e leite condensado", preco: "R$ 25,00", destaque: "nao" },
+    { categoria: "pizzas_doces", nome: "Pizza M&M", descricao: "Chocolate e M&M", preco: "R$ 25,00", destaque: "nao" },
+    { categoria: "pizzas_doces", nome: "Pizza Tubin", descricao: "Chocolate e tubin", preco: "R$ 25,00", destaque: "nao" },
+    { categoria: "pizzas_doces", nome: "Pizza Ouro Branco", descricao: "Chocolate e ouro branco", preco: "R$ 25,00", destaque: "nao" },
+    { categoria: "pizzas_doces", nome: "Pizza Bis", descricao: "Chocolate e bis", preco: "R$ 25,00", destaque: "nao" },
+    { categoria: "pizzas_doces", nome: "Pizza Choc Leite & Branco", descricao: "Chocolate ao leite e chocolate branco", preco: "R$ 25,00", destaque: "nao" },
 
-    { id: "30", categoria: "pizzas_salgadas", nome: "Pizza Mussarela", descricao: "Molho de tomate, mussarela e orégano", preco: "R$ 25,00", destaque: "nao" },
-    { id: "31", categoria: "pizzas_salgadas", nome: "Pizza Calabresa", descricao: "Molho de tomate, mussarela, calabresa e cebola", preco: "R$ 25,00", destaque: "nao" },
-    { id: "32", categoria: "pizzas_salgadas", nome: "Pizza Frango c/ Catupiry", descricao: "Molho de tomate, mussarela, frango desfiado e catupiry", preco: "R$ 25,00", destaque: "nao" },
-    { id: "33", categoria: "pizzas_salgadas", nome: "Pizza Portuguesa", descricao: "Molho de tomate, mussarela, presunto, ovo, cebola e ervilha", preco: "R$ 25,00", destaque: "nao" },
-    { id: "34", categoria: "pizzas_salgadas", nome: "Pizza Bacon", descricao: "Molho de tomate, mussarela e bacon crocante", preco: "R$ 25,00", destaque: "nao" }
+    { categoria: "pizzas_salgadas", nome: "Pizza Presunto e Mussarela (Pequena)", descricao: "Presunto, mussarela, tomate e azeitona", preco: "R$ 20,00", destaque: "nao" },
+    { categoria: "pizzas_salgadas", nome: "Pizza Calabresa (Pequena)", descricao: "Calabresa, bacon, cebola, mussarela e azeitona", preco: "R$ 20,00", destaque: "nao" },
+    { categoria: "pizzas_salgadas", nome: "Pizza Portuguesa (Pequena)", descricao: "Presunto, mussarela, ovos cozidos, batata palha e azeitona", preco: "R$ 20,00", destaque: "nao" },
+    { categoria: "pizzas_salgadas", nome: "Pizza Frango com Catupiry (Pequena)", descricao: "Frango, catupiry e azeitona", preco: "R$ 18,00", destaque: "nao" },
+    { categoria: "pizzas_salgadas", nome: "Pizza Mussarela (Pequena)", descricao: "Mussarela e azeitona", preco: "R$ 20,00", destaque: "nao" },
+    { categoria: "pizzas_salgadas", nome: "Pizza 3 Queijos (Pequena)", descricao: "Mussarela, provolone, parmesão e azeitona", preco: "R$ 20,00", destaque: "nao" },
+    { categoria: "pizzas_salgadas", nome: "Pizza Brócolis (Pequena)", descricao: "Brócolis, mussarela e azeitona", preco: "R$ 20,00", destaque: "nao" },
+    { categoria: "pizzas_salgadas", nome: "Pizza Batata Frita (Pequena)", descricao: "Batata frita, bacon, mussarela e azeitona", preco: "R$ 20,00", destaque: "nao" },
+
+    { categoria: "pizzas_grandes", nome: "Pizza Presunto e Mussarela (Grande)", descricao: "Presunto, mussarela e tomate", preco: "R$ 40,00", destaque: "nao" },
+    { categoria: "pizzas_grandes", nome: "Pizza Mussarela (Grande)", descricao: "Mussarela", preco: "R$ 40,00", destaque: "nao" },
+    { categoria: "pizzas_grandes", nome: "Pizza Calabresa (Grande)", descricao: "Mussarela, calabresa, bacon, cebola e azeitona", preco: "R$ 40,00", destaque: "nao" },
+    { categoria: "pizzas_grandes", nome: "Pizza Portuguesa (Grande)", descricao: "Mussarela, presunto, ovo, batata palha e azeitona", preco: "R$ 40,00", destaque: "nao" },
+    { categoria: "pizzas_grandes", nome: "Pizza Frango com Catupiry (Grande)", descricao: "Frango, catupiry e azeitona", preco: "R$ 35,00", destaque: "nao" },
+    { categoria: "pizzas_grandes", nome: "Pizza Batata Frita (Grande)", descricao: "Batata frita, queijo, mussarela, bacon e azeitona", preco: "R$ 40,00", destaque: "nao" },
+    { categoria: "pizzas_grandes", nome: "Pizza 3 Queijos (Grande)", descricao: "Mussarela, provolone, parmesão e azeitona", preco: "R$ 40,00", destaque: "nao" },
+    { categoria: "pizzas_grandes", nome: "Pizza Brócolis (Grande)", descricao: "Mussarela, brócolis e azeitona", preco: "R$ 40,00", destaque: "nao" }
 ];
 
+/* Aceita várias formas de escrever a categoria na planilha */
 const MAPPING = {
     'lanches': 'lista-lanches',
+    'lanche': 'lista-lanches',
     'pasteis': 'lista-pasteis',
+    'pastel': 'lista-pasteis',
     'porcoes': 'lista-porcoes',
+    'porcao': 'lista-porcoes',
     'pizzas_salgadas': 'lista-pizzas_salgadas',
+    'pizza_salgada': 'lista-pizzas_salgadas',
+    'pizzas_pequenas': 'lista-pizzas_salgadas',
+    'pizza_pequena': 'lista-pizzas_salgadas',
+    'pizzas_grandes': 'lista-pizzas_grandes',
+    'pizza_grande': 'lista-pizzas_grandes',
     'pizzas_doces': 'lista-pizzas_doces',
+    'pizza_doce': 'lista-pizzas_doces',
     'pizzas': 'lista-pizzas_doces'
 };
 
@@ -61,6 +86,14 @@ let carrinho = [];
 /* ========================================= */
 /* UTILITÁRIOS                               */
 /* ========================================= */
+function normalizarCategoria(txt) {
+    return String(txt || '')
+        .toLowerCase()
+        .normalize('NFD').replace(/[\u0300-\u036f]/g, '') // tira acentos
+        .trim()
+        .replace(/[\s-]+/g, '_');                          // espaço/hífen vira _
+}
+
 function escapar(txt) {
     return String(txt ?? '').replace(/[&<>"']/g, m => ({
         '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -78,6 +111,76 @@ function formatarPreco(valor) {
 }
 
 /* ========================================= */
+/* LER A PLANILHA (CSV)                      */
+/* ========================================= */
+function parseCSV(texto) {
+    const linhas = [];
+    let linha = [], campo = '', aspas = false;
+
+    for (let i = 0; i < texto.length; i++) {
+        const c = texto[i];
+        if (aspas) {
+            if (c === '"' && texto[i + 1] === '"') { campo += '"'; i++; }
+            else if (c === '"') aspas = false;
+            else campo += c;
+        } else {
+            if (c === '"') aspas = true;
+            else if (c === ',') { linha.push(campo); campo = ''; }
+            else if (c === '\n' || c === '\r') {
+                if (c === '\r' && texto[i + 1] === '\n') i++;
+                linha.push(campo); campo = '';
+                if (linha.some(x => x.trim() !== '')) linhas.push(linha);
+                linha = [];
+            } else campo += c;
+        }
+    }
+    linha.push(campo);
+    if (linha.some(x => x.trim() !== '')) linhas.push(linha);
+    return linhas;
+}
+
+async function carregarDaPlanilha() {
+    const resposta = await fetch(`${CSV_URL}&t=${Date.now()}`);
+    if (!resposta.ok) throw new Error('Erro HTTP ' + resposta.status);
+
+    const texto = await resposta.text();
+    if (texto.trim().toLowerCase().startsWith('<!doctype') || texto.includes('<html')) {
+        throw new Error('A planilha não está publicada como CSV');
+    }
+
+    const linhas = parseCSV(texto);
+    const produtos = [];
+
+    // Colunas: id, categoria, nome, descricao, preco, destaque
+    for (let i = 1; i < linhas.length; i++) {
+        const [id, categoria, nome, descricao, preco, destaque] = linhas[i].map(c => c.trim());
+        if (!nome) continue;
+        produtos.push({
+            id,
+            categoria: normalizarCategoria(categoria),
+            nome,
+            descricao: descricao || '',
+            preco: preco || '',
+            destaque: (destaque || '').toLowerCase()
+        });
+    }
+
+    if (produtos.length === 0) throw new Error('Planilha sem produtos');
+    return produtos;
+}
+
+async function carregarProdutos() {
+    try {
+        const produtos = await carregarDaPlanilha();
+        console.log(`✅ ${produtos.length} produtos carregados da PLANILHA.`);
+        renderizarProdutos(produtos);
+    } catch (erro) {
+        console.warn('⚠️ Usando a lista reserva porque a planilha falhou:', erro.message);
+        renderizarProdutos(produtosReserva.map(p => ({ ...p, categoria: normalizarCategoria(p.categoria) })));
+    }
+}
+
+/* ========================================= */
 /* RENDERIZAR PRODUTOS                       */
 /* ========================================= */
 function renderizarProdutos(produtos) {
@@ -88,7 +191,10 @@ function renderizarProdutos(produtos) {
 
     produtos.forEach(item => {
         const container = document.getElementById(MAPPING[item.categoria]);
-        if (!container || !item.nome) return;
+        if (!container || !item.nome) {
+            console.warn('Categoria não reconhecida:', `"${item.categoria}"`, '→', item.nome);
+            return;
+        }
 
         const card = document.createElement('div');
         card.className = 'produto' + (item.destaque === 'sim' ? ' destaque' : '');
@@ -238,7 +344,7 @@ function configurarFiltro() {
 /* INICIALIZAÇÃO                             */
 /* ========================================= */
 document.addEventListener('DOMContentLoaded', () => {
-    renderizarProdutos(produtosFixos);
+    carregarProdutos();
     configurarFiltro();
 
     const modal = document.getElementById('carrinho-modal');
