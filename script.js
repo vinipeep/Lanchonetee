@@ -1,7 +1,7 @@
-// Link CSV do Google Sheets
+// Link CSV da planilha do Google Sheets
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWhv3boH7Ps-Sjil1GPXZQviqaMf-MYBgvEbq36MAu-lMtiSJtcZFhkda1UjV_DNpOAfB_SlC38BdL/pub?gid=0&single=true&output=csv";
 
-// Cardápio de reserva local (Fallback)
+// Cardápio de reserva local (Garante funcionamento se a rede falhar)
 const CARDAPIO_PADRAO = [
     { categoria: "lanches", nome: "X-Burguer", descricao: "Hambúrguer, presunto e mussarela.", preco: 8.50 },
     { categoria: "lanches", nome: "X-Salada", descricao: "Alface, tomate, hambúrguer, presunto e mussarela.", preco: 9.50 },
@@ -53,13 +53,14 @@ const modalTotal = document.getElementById("modal-total");
 const btnEnviarWhats = document.getElementById("btn-enviar-whats");
 const obsPedidoInput = document.getElementById("obs-pedido");
 
-// Limpa qualquer formato de texto e converte para Número Decimal Válido
-function limparEConverterPreco(valor) {
+// Função para converter e tratar qualquer formato de preço
+function TratarPreco(valor) {
     if (typeof valor === 'number') return isNaN(valor) ? 0 : valor;
     if (!valor) return 0;
 
     let limpo = String(valor)
-        .replace(/[^\d.,]/g, '') // Mantém apenas dígitos, pontos e vírgulas
+        .replace("R$", "")
+        .replace(/\s/g, "")
         .trim();
 
     if (limpo.includes(',') && limpo.includes('.')) {
@@ -68,10 +69,11 @@ function limparEConverterPreco(valor) {
         limpo = limpo.replace(',', '.');
     }
 
-    const num = parseFloat(limpo);
-    return isNaN(num) ? 0 : num;
+    const res = parseFloat(limpo);
+    return isNaN(res) ? 0 : res;
 }
 
+// Leitor de CSV resiliente
 function parseCSV(text) {
     const lines = text.trim().split(/\r?\n/);
     if (lines.length < 2) return [];
@@ -79,24 +81,30 @@ function parseCSV(text) {
     const headers = lines[0].split(',').map(h => h.trim().replace(/^"|"$/g, '').toLowerCase());
 
     return lines.slice(1).map(line => {
-        const values = line.split(',');
+        const regex = /(?:^|,)(?:"([^"]*)"|([^,]*))/g;
+        let matches = [];
+        let match;
+        while ((match = regex.exec(line)) !== null) {
+            let val = match[1] !== undefined ? match[1] : match[2];
+            matches.push(val ? val.trim() : '');
+        }
+
         let obj = {};
         headers.forEach((header, index) => {
-            let val = values[index] ? values[index].trim().replace(/^"|"$/g, '') : '';
-            obj[header] = val;
+            obj[header] = matches[index] || '';
         });
         return obj;
     });
 }
 
 // =========================
-// CARREGAR DADOS
+// CARREGAR DADOS DA PLANILHA
 // =========================
 
 async function carregarCardapio() {
     try {
         const resposta = await fetch(SHEET_CSV_URL);
-        if (!resposta.ok) throw new Error("Erro de rede");
+        if (!resposta.ok) throw new Error("Falha na requisição");
 
         const csvTexto = await resposta.text();
         const dados = parseCSV(csvTexto);
@@ -105,7 +113,7 @@ async function carregarCardapio() {
             categoria: (item.categoria || '').toLowerCase().trim(),
             nome: item.nome || '',
             descricao: item.descricao || '',
-            preco: limparEConverterPreco(item.preco),
+            preco: TratarPreco(item.preco),
             destaque: (item.destaque || '').toLowerCase().trim()
         })).filter(p => p.nome && p.categoria);
 
@@ -113,9 +121,9 @@ async function carregarCardapio() {
             exibirProdutos(produtos);
             return;
         }
-        throw new Error("Nenhum item válido encontrado no CSV");
+        throw new Error("Planilha vazia");
     } catch (erro) {
-        console.warn("Carregando cardápio local devido a falha na leitura externa:", erro);
+        console.warn("Usando cardápio de reserva:", erro);
         exibirProdutos(CARDAPIO_PADRAO);
     }
 }
@@ -130,7 +138,8 @@ function exibirProdutos(produtos) {
         const card = document.createElement("article");
         card.className = `produto ${p.destaque === 'sim' ? 'destaque' : ''}`;
 
-        const precoFormatado = Number(p.preco).toFixed(2).replace('.', ',');
+        const numPreco = TratarPreco(p.preco);
+        const precoFormatado = numPreco.toFixed(2).replace('.', ',');
 
         card.innerHTML = `
             <div class="produto-conteudo">
@@ -139,7 +148,7 @@ function exibirProdutos(produtos) {
                 <p>${p.descricao || ''}</p>
                 <div class="produto-rodape">
                     <strong class="preco">R$ ${precoFormatado}</strong>
-                    <button class="btn-add" data-nome="${p.nome}" data-preco="${p.preco}">+ Adicionar</button>
+                    <button class="btn-add" data-nome="${p.nome}" data-preco="${numPreco}">+ Adicionar</button>
                 </div>
             </div>
         `;
@@ -180,7 +189,7 @@ function configurarBotoesAdicionar() {
     document.querySelectorAll(".btn-add").forEach(botao => {
         botao.addEventListener("click", () => {
             const nome = botao.dataset.nome;
-            const preco = limparEConverterPreco(botao.dataset.preco);
+            const preco = TratarPreco(botao.dataset.preco);
 
             const itemExistente = carrinho.find(item => item.nome === nome);
 
@@ -255,7 +264,7 @@ btnAbrirCarrinho.addEventListener("click", () => carrinhoModal.classList.remove(
 btnFecharModal.addEventListener("click", () => carrinhoModal.classList.add("escondido"));
 
 // =========================
-// ENVIAR PARA WHATSAPP
+// WHATSAPP
 // =========================
 
 btnEnviarWhats.addEventListener("click", () => {
