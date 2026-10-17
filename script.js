@@ -1,7 +1,7 @@
 // Link CSV do Google Sheets
 const SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWhv3boH7Ps-Sjil1GPXZQviqaMf-MYBgvEbq36MAu-lMtiSJtcZFhkda1UjV_DNpOAfB_SlC38BdL/pub?gid=0&single=true&output=csv";
 
-// Cardápio de reserva (Garante que O SITE FUNCIONE MESMO LOCALMENTE)
+// Cardápio de reserva local (Fallback)
 const CARDAPIO_PADRAO = [
     { categoria: "lanches", nome: "X-Burguer", descricao: "Hambúrguer, presunto e mussarela.", preco: 8.50 },
     { categoria: "lanches", nome: "X-Salada", descricao: "Alface, tomate, hambúrguer, presunto e mussarela.", preco: 9.50 },
@@ -53,7 +53,25 @@ const modalTotal = document.getElementById("modal-total");
 const btnEnviarWhats = document.getElementById("btn-enviar-whats");
 const obsPedidoInput = document.getElementById("obs-pedido");
 
-// Converte texto CSV simples para array de objetos
+// Limpa qualquer formato de texto e converte para Número Decimal Válido
+function limparEConverterPreco(valor) {
+    if (typeof valor === 'number') return isNaN(valor) ? 0 : valor;
+    if (!valor) return 0;
+
+    let limpo = String(valor)
+        .replace(/[^\d.,]/g, '') // Mantém apenas dígitos, pontos e vírgulas
+        .trim();
+
+    if (limpo.includes(',') && limpo.includes('.')) {
+        limpo = limpo.replace(/\./g, '').replace(',', '.');
+    } else if (limpo.includes(',')) {
+        limpo = limpo.replace(',', '.');
+    }
+
+    const num = parseFloat(limpo);
+    return isNaN(num) ? 0 : num;
+}
+
 function parseCSV(text) {
     const lines = text.trim().split(/\r?\n/);
     if (lines.length < 2) return [];
@@ -78,8 +96,8 @@ function parseCSV(text) {
 async function carregarCardapio() {
     try {
         const resposta = await fetch(SHEET_CSV_URL);
-        if (!resposta.ok) throw new Error("Erro na rede");
-        
+        if (!resposta.ok) throw new Error("Erro de rede");
+
         const csvTexto = await resposta.text();
         const dados = parseCSV(csvTexto);
 
@@ -87,7 +105,7 @@ async function carregarCardapio() {
             categoria: (item.categoria || '').toLowerCase().trim(),
             nome: item.nome || '',
             descricao: item.descricao || '',
-            preco: item.preco ? parseFloat(item.preco.replace('R$', '').replace(',', '.').trim()) : 0,
+            preco: limparEConverterPreco(item.preco),
             destaque: (item.destaque || '').toLowerCase().trim()
         })).filter(p => p.nome && p.categoria);
 
@@ -95,9 +113,9 @@ async function carregarCardapio() {
             exibirProdutos(produtos);
             return;
         }
-        throw new Error("Sem produtos no CSV");
+        throw new Error("Nenhum item válido encontrado no CSV");
     } catch (erro) {
-        console.warn("Usando cardápio de reserva local (erro no carregamento do Sheets):", erro);
+        console.warn("Carregando cardápio local devido a falha na leitura externa:", erro);
         exibirProdutos(CARDAPIO_PADRAO);
     }
 }
@@ -111,7 +129,7 @@ function exibirProdutos(produtos) {
 
         const card = document.createElement("article");
         card.className = `produto ${p.destaque === 'sim' ? 'destaque' : ''}`;
-        
+
         const precoFormatado = Number(p.preco).toFixed(2).replace('.', ',');
 
         card.innerHTML = `
@@ -125,7 +143,7 @@ function exibirProdutos(produtos) {
                 </div>
             </div>
         `;
-        
+
         container.appendChild(card);
     });
 
@@ -162,7 +180,7 @@ function configurarBotoesAdicionar() {
     document.querySelectorAll(".btn-add").forEach(botao => {
         botao.addEventListener("click", () => {
             const nome = botao.dataset.nome;
-            const preco = parseFloat(botao.dataset.preco);
+            const preco = limparEConverterPreco(botao.dataset.preco);
 
             const itemExistente = carrinho.find(item => item.nome === nome);
 
@@ -263,5 +281,4 @@ btnEnviarWhats.addEventListener("click", () => {
     window.open(url, "_blank");
 });
 
-// Inicializar
 carregarCardapio();
