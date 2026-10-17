@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cardápio - Pai & Filho</title>
 
-    <!-- Ícone da aba do navegador (Favicon) -->
-<link rel="icon" type="image/png" href="logo.png?v=3">
+    <!-- Ícone da aba do navegador (Favicon transparente com versão v=6) -->
+    <link rel="icon" type="image/png" href="logo.png?v=6">
 
     <link rel="stylesheet" href="style.css">
 </head>
@@ -56,7 +56,8 @@
         <button class="categoria-btn" data-categoria="lanches">🍔 Lanches</button>
         <button class="categoria-btn" data-categoria="pasteis">🥟 Pastéis</button>
         <button class="categoria-btn" data-categoria="porcoes">🍟 Porções</button>
-        <button class="categoria-btn" data-categoria="pizzas">🍕 Pizzas Doces</button>
+        <button class="categoria-btn" data-categoria="pizzas_salgadas">🍕 Pizzas Salgadas</button>
+        <button class="categoria-btn" data-categoria="pizzas_doces">🍫 Pizzas Doces</button>
     </nav>
 
     <!-- SEÇÕES DO CARDÁPIO -->
@@ -91,14 +92,24 @@
             <div class="produtos" id="lista-porcoes"></div>
         </section>
 
+        <!-- PIZZAS SALGADAS -->
+        <section class="secao" data-secao="pizzas_salgadas">
+            <div class="titulo-secao">
+                <span>PIZZAS SALGADAS</span>
+                <h2>Pizzas Salgadas (25cm • 4 Pedaços)</h2>
+                <p>Massa crocante com recheios caprichados.</p>
+            </div>
+            <div class="produtos" id="lista-pizzas_salgadas"></div>
+        </section>
+
         <!-- PIZZAS DOCES -->
-        <section class="secao" data-secao="pizzas">
+        <section class="secao" data-secao="pizzas_doces">
             <div class="titulo-secao">
                 <span>PIZZAS DOCES</span>
-                <h2>Pizzas Doces</h2>
+                <h2>Pizzas Doces (25cm • 4 Pedaços)</h2>
                 <p>Para fechar com chave de ouro.</p>
             </div>
-            <div class="produtos" id="lista-pizzas"></div>
+            <div class="produtos" id="lista-pizzas_doces"></div>
         </section>
     </main>
 
