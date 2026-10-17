@@ -1,4 +1,3 @@
-// Dados embutidos para garantir que carrega perfeitamente em qualquer ambiente (local e github pages)
 const produtosFixos = [
     { id: "1", categoria: "lanches", nome: "X-Burguer", descricao: "Hambúrguer, presunto e mussarela", preco: "R$ 8,50", destaque: "nao" },
     { id: "2", categoria: "lanches", nome: "X-Salada", descricao: "Alface, tomate, hambúrguer, presunto e mussarela", preco: "R$ 9,50", destaque: "nao" },

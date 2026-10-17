@@ -1,163 +1,16 @@
-/* RESET E CONFIGURAÇÕES GERAIS */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
-
-body {
-    background-color: #fcfbfa;
-    color: #333;
-    padding-bottom: 90px; /* Espaço para a barra flutuante do carrinho */
-}
-
-/* HERO / CABEÇALHO */
-.hero {
-    background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
-    color: white;
-    text-align: center;
-    padding: 40px 20px;
-}
-
-.hero-conteudo .logo {
-    font-size: 0.9rem;
-    letter-spacing: 2px;
-    font-weight: bold;
-    color: #ff4757;
-    text-transform: uppercase;
-}
-
-.hero-conteudo h1 {
-    font-size: 2.2rem;
-    margin: 10px 0 5px;
-}
-
-.hero-conteudo p {
-    font-size: 1rem;
-    color: #aaa;
-    margin-bottom: 15px;
-}
-
-.hero-info {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    font-size: 0.85rem;
-    color: #ccc;
-}
-
-/* INFORMAÇÕES DE CONTATO */
-.info {
-    display: flex;
-    justify-content: space-around;
-    background: white;
-    padding: 15px 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.info-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-size: 0.9rem;
-}
-
-.info-icone {
-    font-size: 1.5rem;
-}
-
-.info-item strong {
-    display: block;
-    color: #2c2c2c;
-}
-
-.info-item p {
-    color: #666;
-    font-size: 0.85rem;
-}
-
-/* FILTRO DE CATEGORIAS */
-.categorias {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    padding: 10px 20px;
-    overflow-x: auto;
-    white-space: nowrap;
-    background: white;
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.03);
-}
-
-.categoria-btn {
-    background: #f1f1f1;
-    border: none;
-    padding: 8px 16px;
-    border-radius: 20px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    cursor: pointer;
-    color: #555;
-    transition: all 0.2s ease;
-}
-
-.categoria-btn.ativo, .categoria-btn:hover {
-    background-color: #b33939;
-    color: white;
-}
-
-/* SEÇÕES E GRELHA DE PRODUTOS */
-.container {
-    max-width: 1000px;
-    margin: 20px auto;
-    padding: 0 20px;
-}
-
-.secao {
-    margin-bottom: 40px;
-}
-
-.titulo-secao {
-    margin-bottom: 20px;
-    border-bottom: 2px solid #eee;
-    padding-bottom: 8px;
-}
-
-.titulo-secao span {
-    font-size: 0.75rem;
-    font-weight: bold;
-    color: #b33939;
-    letter-spacing: 1px;
-}
-
-.titulo-secao h2 {
-    font-size: 1.5rem;
-    color: #2c2c2c;
-}
-
-.titulo-secao p {
-    font-size: 0.85rem;
-    color: #777;
-}
-
-/* GRELHA DE PRODUTOS PERFEITAMENTE ALINHADA */
+/* GRELHA DE PRODUTOS RESPONSIVA E MAIOR NO CELULAR */
 .produtos {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 20px;
+    /* Ajustado para cards mais amplos e fáceis de visualizar em telas menores */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
 }
 
 .produto-card {
     background: #ffffff;
-    border-radius: 12px;
-    padding: 18px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border-radius: 14px;
+    padding: 20px; /* Mais espaço interno para respiro */
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.06);
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -166,8 +19,8 @@ body {
 }
 
 .produto-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.09);
 }
 
 .produto-card.destaque {
@@ -181,7 +34,7 @@ body {
 }
 
 .produto-categoria {
-    font-size: 0.7rem;
+    font-size: 0.75rem; /* Categoria um pouco maior */
     font-weight: bold;
     color: #b33939;
     margin-bottom: 6px;
@@ -189,17 +42,18 @@ body {
 }
 
 .produto-card h3 {
-    font-size: 1.1rem;
+    font-size: 1.25rem; /* Nome do produto maior e mais destacado */
     color: #2c2c2c;
-    margin-bottom: 6px;
+    margin-bottom: 8px;
+    font-weight: 700;
 }
 
 .produto-card p {
-    font-size: 0.85rem;
-    color: #666;
-    margin-bottom: 15px;
+    font-size: 0.95rem; /* Descrição mais legível no celular */
+    color: #555;
+    margin-bottom: 18px;
     flex-grow: 1;
-    line-height: 1.4;
+    line-height: 1.5;
 }
 
 /* RODAPÉ DO CARD (PREÇO + BOTÃO) */
@@ -208,12 +62,12 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-top: auto;
-    padding-top: 12px;
+    padding-top: 14px;
     border-top: 1px solid #f2f2f2;
 }
 
 .preco {
-    font-size: 1.05rem;
+    font-size: 1.2rem; /* Preço em destaque */
     color: #b33939;
     font-weight: bold;
 }
@@ -222,208 +76,14 @@ body {
     background-color: #b33939;
     color: white;
     border: none;
-    padding: 8px 14px;
+    padding: 10px 16px; /* Botão ligeiramente maior para facilitar o toque no celular */
     border-radius: 8px;
     cursor: pointer;
     font-weight: bold;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     transition: background-color 0.2s;
 }
 
 .btn-adicionar:hover {
     background-color: #8f2d2d;
-}
-
-/* BARRA FLUTUANTE DO CARRINHO */
-.carrinho-bar {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background: #2c2c2c;
-    color: white;
-    padding: 15px 25px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 -4px 10px rgba(0,0,0,0.15);
-    z-index: 1000;
-}
-
-.carrinho-bar.escondido {
-    display: none;
-}
-
-.carrinho-bar-info {
-    display: flex;
-    flex-direction: column;
-}
-
-#carrinho-qtd {
-    font-size: 0.8rem;
-    color: #ccc;
-}
-
-#carrinho-total {
-    font-size: 1.2rem;
-    color: #ff4757;
-}
-
-.btn-ver-pedido {
-    background-color: #2ed573;
-    color: #111;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 0.95rem;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.btn-ver-pedido:hover {
-    background-color: #26af5f;
-}
-
-/* MODAL DO CARRINHO */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 2000;
-}
-
-.modal.escondido {
-    display: none;
-}
-
-.modal-conteudo {
-    background: white;
-    width: 90%;
-    max-width: 450px;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    display: flex;
-    flex-direction: column;
-    max-height: 80vh;
-}
-
-.modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-    margin-bottom: 15px;
-}
-
-.modal-header h2 {
-    font-size: 1.2rem;
-    color: #2c2c2c;
-}
-
-.btn-fechar {
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    color: #888;
-}
-
-.carrinho-itens {
-    overflow-y: auto;
-    max-height: 250px;
-    margin-bottom: 15px;
-}
-
-.carrinho-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-    border-bottom: 1px solid #f5f5f5;
-    font-size: 0.9rem;
-}
-
-.btn-remover {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1rem;
-}
-
-.modal-footer {
-    border-top: 1px solid #eee;
-    padding-top: 15px;
-}
-
-.total-container {
-    display: flex;
-    justify-content: space-between;
-    font-size: 1.1rem;
-    margin-bottom: 12px;
-}
-
-.campo-obs {
-    margin-bottom: 15px;
-}
-
-.campo-obs label {
-    display: block;
-    font-size: 0.8rem;
-    color: #666;
-    margin-bottom: 5px;
-}
-
-.campo-obs input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
-    font-size: 0.9rem;
-}
-
-.btn-whatsapp {
-    width: 100%;
-    background-color: #25D366;
-    color: white;
-    border: none;
-    padding: 12px;
-    border-radius: 8px;
-    font-weight: bold;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-}
-
-.btn-whatsapp:hover {
-    background-color: #1ebd56;
-}
-
-/* RODAPÉ DO SITE */
-footer {
-    text-align: center;
-    padding: 30px 20px;
-    background: #1a1a1a;
-    color: #aaa;
-    margin-top: 40px;
-    font-size: 0.85rem;
-}
-
-.footer-logo {
-    font-weight: bold;
-    color: white;
-    margin-bottom: 5px;
-    letter-spacing: 1px;
-}
-
-footer p {
-    margin-bottom: 5px;
 }
