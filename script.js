@@ -2,7 +2,13 @@
 
 const WHATSAPP_NUMERO = "5535988320463";
 
-const produtos = [
+// Link da planilha publicada (Arquivo > Compartilhar > Publicar na Web > CSV)
+const PLANILHA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWhv3boH7Ps-Sjil1GPXZQviqaMf-MYBgvEbq36MAu-lMtiSJtcZFhkda1UjV_DNpOAfB_SlC38BdL/pub?gid=0&single=true&output=csv";
+
+const CACHE_CHAVE = "paiefilho_cardapio_v1";
+
+// Cardápio reserva: usado só se a planilha nunca carregou (ex.: sem internet no primeiro acesso)
+const produtosReserva = [
   // LANCHES
   { id: 1, categoria: "lanches", nome: "X-Burguer", descricao: "Hambúrguer, presunto e mussarela", preco: 8.50, destaque: false },
   { id: 2, categoria: "lanches", nome: "X-Salada", descricao: "Alface, tomate, hambúrguer, presunto e mussarela", preco: 9.50, destaque: false },
@@ -81,6 +87,7 @@ const adicionaisPorCategoria = {
   ]
 };
 
+let produtos = [];
 let carrinho = [];
 let produtoPersonalizando = null;
 let categoriaAtual = "todos";
@@ -88,6 +95,179 @@ let avisoTimeout;
 
 const $ = (seletor) => document.querySelector(seletor);
 const $$ = (seletor) => document.querySelectorAll(seletor);
+
+/* ============ PLANILHA ============ */
+
+// Lê CSV respeitando aspas, vírgulas e quebras de linha dentro de células
+function lerCSV(texto) {
+  const linhas = [];
+  let linha = [];
+  let campo = "";
+  let aspas = false;
+
+  texto = texto.replace(/^\uFEFF/, "");
+
+  for (let i = 0; i < texto.length; i++) {
+    const c = texto[i];
+
+    if (aspas) {
+      if (c === '"' && texto[i + 1] === '"') {
+        campo += '"';
+        i++;
+      } else if (c === '"') {
+        aspas = false;
+      } else {
+        campo += c;
+      }
+    } else if (c === '"') {
+      aspas = true;
+    } else if (c === ",") {
+      linha.push(campo);
+      campo = "";
+    } else if (c === "\n" || c === "\r") {
+      if (c === "\r" && texto[i + 1] === "\n") i++;
+      linha.push(campo);
+      linhas.push(linha);
+      linha = [];
+      campo = "";
+    } else {
+      campo += c;
+    }
+  }
+
+  if (campo !== "" || linha.length > 0) {
+    linha.push(campo);
+    linhas.push(linha);
+  }
+
+  return linhas;
+}
+
+function normalizar(texto) {
+  return String(texto ?? "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function normalizarCategoria(valor) {
+  return normalizar(valor).replace(/[\s-]+/g, "_");
+}
+
+// Converte "R$ 8,50", "8,50", "8.50" ou "1.234,50" em número
+function lerPreco(valor) {
+  let texto = String(valor ?? "").replace(/[^\d,.-]/g, "");
+  if (!texto) return NaN;
+
+  if (texto.includes(",")) {
+    texto = texto.replace(/\./g, "").replace(",", ".");
+  }
+
+  return parseFloat(texto);
+}
+
+function ehSim(valor) {
+  return ["sim", "s", "true", "1", "x", "yes"].includes(normalizar(valor));
+}
+
+function ehNao(valor) {
+  return ["nao", "n", "false", "0", "no", "inativo", "off"].includes(normalizar(valor));
+}
+
+const CATEGORIAS_VALIDAS = [
+  "lanches", "pasteis", "porcoes",
+  "pizzas_pequenas", "pizzas_grandes", "pizzas_doces"
+];
+
+function converterPlanilha(texto) {
+  const linhas = lerCSV(texto).filter(l => l.some(c => c.trim() !== ""));
+  if (linhas.length < 2) return [];
+
+  const cabecalho = linhas[0].map(normalizar);
+  const coluna = (...nomes) => cabecalho.findIndex(h => nomes.includes(h));
+
+  const iId = coluna("id");
+  const iCategoria = coluna("categoria");
+  const iNome = coluna("nome", "produto");
+  const iDescricao = coluna("descricao", "descri");
+  const iPreco = coluna("preco", "valor");
+  const iDestaque = coluna("destaque");
+  const iAtivo = coluna("ativo", "disponivel");
+
+  if (iCategoria < 0 || iNome < 0 || iPreco < 0) return [];
+
+  const lista = [];
+  const idsUsados = new Set();
+
+  linhas.slice(1).forEach((linha, indice) => {
+    const nome = (linha[iNome] || "").trim();
+    const categoria = normalizarCategoria(linha[iCategoria]);
+    const preco = lerPreco(linha[iPreco]);
+
+    if (!nome || !CATEGORIAS_VALIDAS.includes(categoria) || isNaN(preco)) return;
+    if (iAtivo >= 0 && ehNao(linha[iAtivo])) return;
+
+    let id = iId >= 0 ? parseInt(linha[iId], 10) : NaN;
+    if (isNaN(id) || idsUsados.has(id)) id = 1000 + indice;
+    idsUsados.add(id);
+
+    lista.push({
+      id,
+      categoria,
+      nome,
+      descricao: iDescricao >= 0 ? (linha[iDescricao] || "").trim() : "",
+      preco,
+      destaque: iDestaque >= 0 ? ehSim(linha[iDestaque]) : false
+    });
+  });
+
+  return lista;
+}
+
+function lerCache() {
+  try {
+    const salvo = JSON.parse(localStorage.getItem(CACHE_CHAVE));
+    return Array.isArray(salvo) && salvo.length > 0 ? salvo : null;
+  } catch {
+    return null;
+  }
+}
+
+function salvarCache(lista) {
+  try {
+    localStorage.setItem(CACHE_CHAVE, JSON.stringify(lista));
+  } catch {
+    // sem problema se o navegador bloquear o armazenamento
+  }
+}
+
+async function carregarPlanilha() {
+  const controle = new AbortController();
+  const limite = setTimeout(() => controle.abort(), 8000);
+
+  try {
+    const resposta = await fetch(`${PLANILHA_URL}&_=${Date.now()}`, {
+      signal: controle.signal,
+      cache: "no-store"
+    });
+
+    if (!resposta.ok) throw new Error("Falha ao carregar a planilha");
+
+    const lista = converterPlanilha(await resposta.text());
+    if (lista.length === 0) throw new Error("Planilha vazia ou fora do formato");
+
+    produtos = lista;
+    salvarCache(lista);
+    renderizarProdutos();
+  } catch (erro) {
+    console.warn("Usando cardápio salvo:", erro.message);
+  } finally {
+    clearTimeout(limite);
+  }
+}
+
+/* ============ FUNÇÕES GERAIS ============ */
 
 function formatarPreco(valor) {
   return Number(valor || 0).toLocaleString("pt-BR", {
@@ -188,14 +368,14 @@ function aplicarFiltro(categoria) {
   let encontrados = 0;
 
   $$(".secao-produtos").forEach(secao => {
+    const quantidade = secao.querySelectorAll(".produto-card").length;
     const corresponde = categoria === "todos" ||
       secao.dataset.secao === categoria;
+    const visivel = corresponde && quantidade > 0;
 
-    secao.classList.toggle("escondido", !corresponde);
+    secao.classList.toggle("escondido", !visivel);
 
-    if (corresponde) {
-      encontrados += secao.querySelectorAll(".produto-card").length;
-    }
+    if (visivel) encontrados += quantidade;
   });
 
   $("#sem-produtos").classList.toggle("escondido", encontrados > 0);
@@ -530,7 +710,11 @@ function configurarEventos() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
+  // Mostra na hora o último cardápio salvo (ou o reserva) e atualiza pela planilha em seguida
+  produtos = lerCache() || produtosReserva;
+
   renderizarProdutos();
   configurarEventos();
   atualizarCarrinho();
+  carregarPlanilha();
 });
