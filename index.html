@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -181,11 +180,15 @@
 
         <div class="formulario-entrega">
           <h3>Onde entregamos?</h3>
-          <label for="cliente-nome">Seu nome</label>
+
+          <label for="cliente-nome">Nome</label>
           <input id="cliente-nome" type="text" placeholder="Nome para o pedido" autocomplete="name">
 
-          <label for="cliente-endereco">Endereço de entrega</label>
-          <input id="cliente-endereco" type="text" placeholder="Rua, número e bairro" autocomplete="street-address">
+          <label for="cliente-bairro">Bairro</label>
+          <input id="cliente-bairro" type="text" placeholder="Ex.: Forjos" autocomplete="address-level3">
+
+          <label for="cliente-rua">Rua e número (opcional)</label>
+          <input id="cliente-rua" type="text" placeholder="Ex.: Rua Jabuticabeira, 123" autocomplete="street-address">
 
           <label for="cliente-referencia">Ponto de referência (opcional)</label>
           <input id="cliente-referencia" type="text" placeholder="Ex.: perto da praça">

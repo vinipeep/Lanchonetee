@@ -1,4 +1,3 @@
-
 "use strict";
 
 const WHATSAPP_NUMERO = "5535988320463";
@@ -382,7 +381,8 @@ function finalizarPedido() {
   }
 
   const nome = $("#cliente-nome").value.trim();
-  const endereco = $("#cliente-endereco").value.trim();
+  const bairro = $("#cliente-bairro").value.trim();
+  const rua = $("#cliente-rua").value.trim();
   const referencia = $("#cliente-referencia").value.trim();
   const observacoes = $("#cliente-observacoes").value.trim();
 
@@ -392,9 +392,9 @@ function finalizarPedido() {
     return;
   }
 
-  if (!endereco) {
-    $("#cliente-endereco").focus();
-    mostrarAviso("Informe o endereço de entrega.");
+  if (!bairro) {
+    $("#cliente-bairro").focus();
+    mostrarAviso("Informe o bairro para a entrega.");
     return;
   }
 
@@ -402,9 +402,10 @@ function finalizarPedido() {
     "*🍔 PEDIDO — PAI & FILHO*",
     "",
     `*Nome:* ${nome}`,
-    `*Endereço:* ${endereco}`
+    `*Bairro:* ${bairro}`
   ];
 
+  if (rua) linhas.push(`*Rua:* ${rua}`);
   if (referencia) linhas.push(`*Referência:* ${referencia}`);
 
   linhas.push("", "*ITENS DO PEDIDO*");
