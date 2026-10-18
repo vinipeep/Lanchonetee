@@ -14,8 +14,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=10">
-  <script src="script.js?v=10" defer></script>
+  <link rel="stylesheet" href="style.css?v=13">
+  <script src="script.js?v=13" defer></script>
 </head>
 <body>
   <header class="hero">
@@ -55,6 +55,7 @@
       <button class="categoria-btn" data-categoria="pizzas_pequenas">🍕 Pizzas Pequenas</button>
       <button class="categoria-btn" data-categoria="pizzas_grandes">🍕 Pizzas Grandes</button>
       <button class="categoria-btn" data-categoria="pizzas_doces">🍫 Pizzas Doces</button>
+      <button class="categoria-btn" data-categoria="bebidas">🥤 Bebidas</button>
     </nav>
 
     <div id="cardapio">
@@ -110,6 +111,70 @@
           <p>O toque doce que faltava.</p>
         </div>
         <div class="produtos-grid" id="lista-pizzas_doces"></div>
+      </section>
+
+      <!-- BEBIDAS (todas ficam no botão "Bebidas") -->
+      <section class="secao-produtos" data-secao="bebidas_alcoolicas" data-grupo="bebidas">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">BEM GELADAS</span>
+          <h2>🍺 Bebidas Alcoólicas</h2>
+          <p>🔞 Venda proibida para menores de 18 anos. Beba com moderação.</p>
+        </div>
+        <div class="produtos-grid" id="lista-bebidas_alcoolicas"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="refrigerantes_lata" data-grupo="bebidas">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">PRA REFRESCAR</span>
+          <h2>🥤 Refrigerante Lata</h2>
+          <p>Geladinhos para acompanhar.</p>
+        </div>
+        <div class="produtos-grid" id="lista-refrigerantes_lata"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="refrigerantes_garrafa" data-grupo="bebidas">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">PRA DIVIDIR</span>
+          <h2>🥤 Refrigerantes Garrafa</h2>
+          <p>2 litros, 1 litro e mini.</p>
+        </div>
+        <div class="produtos-grid" id="lista-refrigerantes_garrafa"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="energeticos" data-grupo="bebidas">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">ENERGIA NA HORA</span>
+          <h2>⚡ Energéticos</h2>
+          <p>Pra render mais.</p>
+        </div>
+        <div class="produtos-grid" id="lista-energeticos"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="aguas" data-grupo="bebidas">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">LEVINHAS</span>
+          <h2>💧 Águas</h2>
+          <p>Com ou sem gás.</p>
+        </div>
+        <div class="produtos-grid" id="lista-aguas"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="cerveja_sem_alcool" data-grupo="bebidas">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">SEM ÁLCOOL</span>
+          <h2>🍻 Cerveja sem Álcool</h2>
+          <p>O sabor da cerveja, sem o álcool.</p>
+        </div>
+        <div class="produtos-grid" id="lista-cerveja_sem_alcool"></div>
+      </section>
+
+      <section class="secao-produtos" data-secao="sucos" data-grupo="bebidas">
+        <div class="secao-cabecalho">
+          <span class="secao-etiqueta">OUTRAS OPÇÕES</span>
+          <h2>🧃 Sucos e Outras Bebidas</h2>
+          <p>Sucos, isotônicos e achocolatado.</p>
+        </div>
+        <div class="produtos-grid" id="lista-sucos"></div>
       </section>
     </div>
     <p class="sem-produtos escondido" id="sem-produtos">Nenhum produto encontrado nesta categoria.</p>

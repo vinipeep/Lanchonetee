@@ -4,7 +4,16 @@ const WHATSAPP_NUMERO = "5535988320463";
 
 const PLANILHA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWhv3boH7Ps-Sjil1GPXZQviqaMf-MYBgvEbq36MAu-lMtiSJtcZFhkda1UjV_DNpOAfB_SlC38BdL/pub?gid=0&single=true&output=csv";
 
-const CACHE_CHAVE = "paiefilho_cardapio_v1";
+// Mudei para v2 para o celular esquecer o cardápio antigo e carregar as bebidas
+const CACHE_CHAVE = "paiefilho_cardapio_v2";
+
+// Categorias aceitas (cada uma precisa de uma lista no HTML com id "lista-NOME")
+const CATEGORIAS_VALIDAS = [
+  "lanches", "pasteis", "porcoes",
+  "pizzas_pequenas", "pizzas_grandes", "pizzas_doces",
+  "bebidas_alcoolicas", "refrigerantes_lata", "refrigerantes_garrafa",
+  "energeticos", "aguas", "cerveja_sem_alcool", "sucos"
+];
 
 const produtosReserva = [
   // LANCHES
@@ -62,7 +71,59 @@ const produtosReserva = [
   { id: 42, categoria: "pizzas_grandes", nome: "Pizza Frango com Catupiry (Grande)", descricao: "Frango, catupiry e azeitona", preco: 35.00, destaque: false },
   { id: 43, categoria: "pizzas_grandes", nome: "Pizza Batata Frita (Grande)", descricao: "Batata frita, queijo, mussarela, bacon e azeitona", preco: 40.00, destaque: false },
   { id: 44, categoria: "pizzas_grandes", nome: "Pizza 3 Queijos (Grande)", descricao: "Mussarela, provolone, parmesão e azeitona", preco: 40.00, destaque: false },
-  { id: 45, categoria: "pizzas_grandes", nome: "Pizza Brócolis (Grande)", descricao: "Mussarela, brócolis e azeitona", preco: 40.00, destaque: false }
+  { id: 45, categoria: "pizzas_grandes", nome: "Pizza Brócolis (Grande)", descricao: "Mussarela, brócolis e azeitona", preco: 40.00, destaque: false },
+
+  // BEBIDAS ALCOÓLICAS
+  { id: 46, categoria: "bebidas_alcoolicas", nome: "Skol Lata 350ml", descricao: "", preco: 4.50, destaque: false },
+  { id: 47, categoria: "bebidas_alcoolicas", nome: "Itaipava Lata 350ml", descricao: "", preco: 4.00, destaque: false },
+  { id: 48, categoria: "bebidas_alcoolicas", nome: "Original Lata 350ml", descricao: "", preco: 6.00, destaque: false },
+  { id: 49, categoria: "bebidas_alcoolicas", nome: "Heineken Lata 350ml", descricao: "", preco: 7.00, destaque: false },
+  { id: 50, categoria: "bebidas_alcoolicas", nome: "Amstel Lata 350ml", descricao: "", preco: 4.50, destaque: false },
+  { id: 51, categoria: "bebidas_alcoolicas", nome: "Império Lata 350ml", descricao: "", preco: 4.00, destaque: false },
+  { id: 52, categoria: "bebidas_alcoolicas", nome: "51 Ice", descricao: "", preco: 7.80, destaque: false },
+  { id: 53, categoria: "bebidas_alcoolicas", nome: "Heineken Garrafa 330ml", descricao: "", preco: 8.20, destaque: false },
+  { id: 54, categoria: "bebidas_alcoolicas", nome: "Cantinho do Vale", descricao: "", preco: 7.00, destaque: false },
+  { id: 55, categoria: "bebidas_alcoolicas", nome: "Vinho Country Wine", descricao: "", preco: 18.20, destaque: false },
+
+  // REFRIGERANTE LATA
+  { id: 56, categoria: "refrigerantes_lata", nome: "Coca-Cola Lata", descricao: "", preco: 5.50, destaque: false },
+  { id: 57, categoria: "refrigerantes_lata", nome: "Fanta Uva Lata", descricao: "", preco: 5.00, destaque: false },
+  { id: 58, categoria: "refrigerantes_lata", nome: "Sprite Lata", descricao: "", preco: 5.00, destaque: false },
+
+  // REFRIGERANTES GARRAFA
+  { id: 59, categoria: "refrigerantes_garrafa", nome: "It Laranja 2L", descricao: "", preco: 7.00, destaque: false },
+  { id: 60, categoria: "refrigerantes_garrafa", nome: "It Limão 2L", descricao: "", preco: 7.00, destaque: false },
+  { id: 61, categoria: "refrigerantes_garrafa", nome: "It Guaraná 2L", descricao: "", preco: 7.00, destaque: false },
+  { id: 62, categoria: "refrigerantes_garrafa", nome: "It Cola 2L", descricao: "", preco: 7.00, destaque: false },
+  { id: 63, categoria: "refrigerantes_garrafa", nome: "Guara Limão 2L", descricao: "", preco: 6.50, destaque: false },
+  { id: 64, categoria: "refrigerantes_garrafa", nome: "Guara Abacaxi 2L", descricao: "", preco: 6.50, destaque: false },
+  { id: 65, categoria: "refrigerantes_garrafa", nome: "Guara Guaraná 2L", descricao: "", preco: 6.50, destaque: false },
+  { id: 66, categoria: "refrigerantes_garrafa", nome: "Tubaína Guara 2L", descricao: "", preco: 6.50, destaque: false },
+  { id: 67, categoria: "refrigerantes_garrafa", nome: "Coca-Cola 2,5L", descricao: "", preco: 15.00, destaque: false },
+  { id: 68, categoria: "refrigerantes_garrafa", nome: "Coca-Cola Zero 1L", descricao: "", preco: 8.00, destaque: false },
+  { id: 69, categoria: "refrigerantes_garrafa", nome: "Coca-Cola 1L", descricao: "", preco: 8.00, destaque: false },
+  { id: 70, categoria: "refrigerantes_garrafa", nome: "Coca-Cola 200ml", descricao: "", preco: 2.70, destaque: false },
+
+  // ENERGÉTICOS
+  { id: 71, categoria: "energeticos", nome: "Bally 2L", descricao: "", preco: 14.50, destaque: false },
+  { id: 72, categoria: "energeticos", nome: "Monster Lata", descricao: "", preco: 11.60, destaque: false },
+
+  // ÁGUAS
+  { id: 73, categoria: "aguas", nome: "Água de Coco 1L", descricao: "", preco: 12.00, destaque: false },
+  { id: 74, categoria: "aguas", nome: "Água 500ml", descricao: "", preco: 2.00, destaque: false },
+  { id: 75, categoria: "aguas", nome: "Água com Gás 500ml", descricao: "", preco: 2.50, destaque: false },
+  { id: 76, categoria: "aguas", nome: "Água 1,5L", descricao: "", preco: 5.00, destaque: false },
+
+  // CERVEJA SEM ÁLCOOL
+  { id: 77, categoria: "cerveja_sem_alcool", nome: "Heineken Zero Lata 350ml", descricao: "", preco: 7.50, destaque: false },
+  { id: 78, categoria: "cerveja_sem_alcool", nome: "Heineken Zero Garrafa 330ml", descricao: "", preco: 8.20, destaque: false },
+
+  // SUCOS E OUTRAS
+  { id: 79, categoria: "sucos", nome: "Suco 1L", descricao: "", preco: 7.90, destaque: false },
+  { id: 80, categoria: "sucos", nome: "Tampico 450ml", descricao: "", preco: 5.00, destaque: false },
+  { id: 81, categoria: "sucos", nome: "Power Ade", descricao: "", preco: 6.40, destaque: false },
+  { id: 82, categoria: "sucos", nome: "Gatorade", descricao: "", preco: 7.00, destaque: false },
+  { id: 83, categoria: "sucos", nome: "Todinho", descricao: "", preco: 2.00, destaque: false }
 ];
 
 const adicionaisPorCategoria = {
@@ -225,11 +286,6 @@ function ehNao(valor) {
   return ["nao", "n", "false", "0", "no", "inativo", "off"].includes(normalizar(valor));
 }
 
-const CATEGORIAS_VALIDAS = [
-  "lanches", "pasteis", "porcoes",
-  "pizzas_pequenas", "pizzas_grandes", "pizzas_doces"
-];
-
 function converterPlanilha(texto) {
   const linhas = lerCSV(texto).filter(l => l.some(c => c.trim() !== ""));
   if (linhas.length < 2) return [];
@@ -344,9 +400,14 @@ function categoriaDoProduto(produto) {
     lanches: "Lanches",
     pasteis: "Pastéis",
     porcoes: "Porções",
-    pizzas_pequenas: "Pizzas pequenas",
-    pizzas_grandes: "Pizzas grandes",
-    pizzas_doces: "Pizzas doces"
+    pizzas_doces: "Pizzas doces",
+    bebidas_alcoolicas: "Bebida alcoólica",
+    refrigerantes_lata: "Refrigerante lata",
+    refrigerantes_garrafa: "Refrigerante",
+    energeticos: "Energético",
+    aguas: "Água",
+    cerveja_sem_alcool: "Sem álcool",
+    sucos: "Sucos e outros"
   };
 
   return nomes[produto.categoria] || "Cardápio";
@@ -370,16 +431,16 @@ function mostrarAviso(mensagem) {
 }
 
 function renderizarProdutos() {
-  const listas = {
-    lanches: $("#lista-lanches"),
-    pasteis: $("#lista-pasteis"),
-    porcoes: $("#lista-porcoes"),
-    pizzas_pequenas: $("#lista-pizzas_pequenas"),
-    pizzas_grandes: $("#lista-pizzas_grandes"),
-    pizzas_doces: $("#lista-pizzas_doces")
-  };
+  // Cada categoria tem uma lista no HTML com id "lista-NOME"
+  const listas = {};
 
-  Object.values(listas).forEach(lista => lista.innerHTML = "");
+  CATEGORIAS_VALIDAS.forEach(categoria => {
+    const elemento = $(`#lista-${categoria}`);
+    if (elemento) {
+      elemento.innerHTML = "";
+      listas[categoria] = elemento;
+    }
+  });
 
   produtos.forEach(produto => {
     const destino = listas[produto.categoria];
@@ -426,8 +487,12 @@ function aplicarFiltro(categoria) {
 
   $$(".secao-produtos").forEach(secao => {
     const quantidade = secao.querySelectorAll(".produto-card").length;
+
+    // "bebidas" mostra todas as seções que têm data-grupo="bebidas"
     const corresponde = categoria === "todos" ||
-      secao.dataset.secao === categoria;
+      secao.dataset.secao === categoria ||
+      secao.dataset.grupo === categoria;
+
     const visivel = corresponde && quantidade > 0;
 
     secao.classList.toggle("escondido", !visivel);

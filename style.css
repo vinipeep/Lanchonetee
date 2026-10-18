@@ -1143,3 +1143,12 @@ textarea:focus-visible {
   .adicional-preco { font-size: 14px; }
   .modal-acoes { gap: 7px; }
 }
+/* ===== BEBIDAS (cards sem descrição) ===== */
+.produto-descricao:empty {
+  display: none;
+}
+
+.produto-descricao:empty + .produto-rodape {
+  margin-top: auto;
+  padding-top: 12px;
+}
