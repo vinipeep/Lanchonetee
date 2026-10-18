@@ -73,6 +73,11 @@ const adicionaisPorCategoria = {
     { nome: "Cheddar", preco: 3 },
     { nome: "Ovo", preco: 2 }
   ],
+  porcoes: [
+    { nome: "Catupiry", preco: 5 },
+    { nome: "Cheddar", preco: 5 },
+    { nome: "Bacon", preco: 5 }
+  ],
   pizzas_salgadas: [
     { nome: "Catupiry extra", preco: 3 },
     { nome: "Cheddar extra", preco: 3 },
