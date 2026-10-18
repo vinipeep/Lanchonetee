@@ -66,6 +66,13 @@ const produtosReserva = [
 ];
 
 const adicionaisPorCategoria = {
+  lanches: [
+    { nome: "Catupiry", preco: 3 },
+    { nome: "Milho", preco: 2 },
+    { nome: "Batata palha", preco: 2 },
+    { nome: "Cheddar", preco: 3 },
+    { nome: "Ovo", preco: 2 }
+  ],
   pizzas_salgadas: [
     { nome: "Catupiry extra", preco: 3 },
     { nome: "Cheddar extra", preco: 3 },
