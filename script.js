@@ -92,7 +92,49 @@ let pizzaPersonalizandoMetade = null;
 let categoriaAtual = "todos";
 let avisoTimeout;
 
-const $ = (seletor) => document.querySelector(seletor); const $$ = (seletor) => document.querySelectorAll(seletor);
+const $ = (seletor) => document.querySelector(seletor);
+const $$ = (seletor) => document.querySelectorAll(seletor);
+
+/* ============ DIAS SEM PIZZA ============ */
+
+// 0 = domingo, 1 = segunda, 2 = terça, 3 = quarta, 4 = quinta, 5 = sexta, 6 = sábado
+const DIAS_SEM_PIZZA = [0];
+
+const CATEGORIAS_PIZZA = ["pizzas_pequenas", "pizzas_grandes", "pizzas_doces"];
+
+function diaDaSemanaBrasil() {
+  const nome = new Intl.DateTimeFormat("en-US", {
+    weekday: "short",
+    timeZone: "America/Sao_Paulo"
+  }).format(new Date());
+
+  return ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(nome);
+}
+
+function semPizzaHoje() {
+  return DIAS_SEM_PIZZA.includes(diaDaSemanaBrasil());
+}
+
+function ehPizza(produto) {
+  return CATEGORIAS_PIZZA.includes(produto.categoria);
+}
+
+function atualizarAvisoPizza() {
+  $$(".secao-produtos").forEach(secao => {
+    if (!CATEGORIAS_PIZZA.includes(secao.dataset.secao)) return;
+
+    const antigo = secao.querySelector(".aviso-pizza");
+    if (antigo) antigo.remove();
+
+    if (!semPizzaHoje()) return;
+
+    const aviso = document.createElement("div");
+    aviso.className = "aviso-pizza";
+    aviso.innerHTML = "🚫 <strong>Aos domingos não fazemos pizzas.</strong> Os outros itens do cardápio estão disponíveis!";
+
+    secao.querySelector(".secao-cabecalho").after(aviso);
+  });
+}
 
 /* ============ PLANILHA ============ */
 
@@ -331,11 +373,18 @@ function renderizarProdutos() {
     const destino = listas[produto.categoria];
     if (!destino) return;
 
-    const card = document.createElement("article");
-    card.className = "produto-card";
-
-    // 🍕 EXCLUSIVO PARA PIZZAS GRANDES: Botão de "2 Sabores" aparece apenas aqui
+    const bloqueado = semPizzaHoje() && ehPizza(produto);
     const ehPizzaGrande = produto.categoria === "pizzas_grandes";
+
+    const card = document.createElement("article");
+    card.className = "produto-card" + (bloqueado ? " indisponivel" : "");
+
+    const botoes = bloqueado
+      ? `<button type="button" class="btn-add" disabled>Indisponível hoje</button>`
+      : `
+          ${ehPizzaGrande ? `<button type="button" class="btn-metade-card" data-metade="${produto.id}">🍕 2 Sabores</button>` : ""}
+          <button type="button" class="btn-add" data-adicionar="${produto.id}">+ Adicionar</button>
+        `;
 
     card.innerHTML = `
       <span class="produto-categoria">${escapar(categoriaDoProduto(produto))}</span>
@@ -343,26 +392,27 @@ function renderizarProdutos() {
       <p class="produto-descricao">${escapar(produto.descricao)}</p>
       <div class="produto-rodape">
         <span class="produto-preco">${formatarPreco(produto.preco)}</span>
-        <div class="produto-acoes">
-          ${ehPizzaGrande ? `<button type="button" class="btn-metade-card" data-metade="${produto.id}">🍕 2 Sabores</button>` : ""}
-          <button type="button" class="btn-add" data-adicionar="${produto.id}">
-            + Adicionar
-          </button>
-        </div>
+        <div class="produto-acoes">${botoes}</div>
       </div>
     `;
 
     destino.appendChild(card);
   });
 
+  atualizarAvisoPizza();
   aplicarFiltro(categoriaAtual);
 }
 
 function aplicarFiltro(categoria) {
   categoriaAtual = categoria;
 
-  $$(".categoria-btn").forEach(botao => { botao.classList.toggle("ativa", botao.dataset.categoria === categoria); });    let encontrados = 0;    $$
-(".secao-produtos").forEach(secao => {
+  $$(".categoria-btn").forEach(botao => {
+    botao.classList.toggle("ativa", botao.dataset.categoria === categoria);
+  });
+
+  let encontrados = 0;
+
+  $$(".secao-produtos").forEach(secao => {
     const quantidade = secao.querySelectorAll(".produto-card").length;
     const corresponde = categoria === "todos" ||
       secao.dataset.secao === categoria;
@@ -375,6 +425,8 @@ function aplicarFiltro(categoria) {
 
   $("#sem-produtos").classList.toggle("escondido", encontrados > 0);
 }
+
+/* ============ ADICIONAIS ============ */
 
 function abrirModalAdicionais(produto) {
   produtoPersonalizando = produto;
@@ -411,7 +463,14 @@ function abrirModalAdicionais(produto) {
   });
 
   atualizarTotalAdicionais();
-  abrirModal($("#adicionais-modal")); }  function atualizarTotalAdicionais() { if (!produtoPersonalizando) return;    const precoBase = Number(produtoPersonalizando.preco); const selecionados = $$("#adicionais-modal-lista .checkbox-adicional:checked");
+  abrirModal($("#adicionais-modal"));
+}
+
+function atualizarTotalAdicionais() {
+  if (!produtoPersonalizando) return;
+
+  const precoBase = Number(produtoPersonalizando.preco);
+  const selecionados = $$("#adicionais-modal-lista .checkbox-adicional:checked");
 
   const totalExtras = [...selecionados].reduce(
     (soma, checkbox) => soma + Number(checkbox.dataset.preco || 0),
@@ -420,7 +479,14 @@ function abrirModalAdicionais(produto) {
 
   $("#adicionais-modal-total").textContent = formatarPreco(totalExtras);
   $("#adicionais-modal-preco-base").textContent = formatarPreco(precoBase);
-  $("#adicionais-modal-preco-final").textContent = formatarPreco(precoBase + totalExtras); }  function confirmarAdicionais() { if (!produtoPersonalizando) return;    const selecionados = [ ...$$("#adicionais-modal-lista .checkbox-adicional:checked")
+  $("#adicionais-modal-preco-final").textContent = formatarPreco(precoBase + totalExtras);
+}
+
+function confirmarAdicionais() {
+  if (!produtoPersonalizando) return;
+
+  const selecionados = [
+    ...$$("#adicionais-modal-lista .checkbox-adicional:checked")
   ].map(checkbox => ({
     nome: checkbox.dataset.nome,
     preco: Number(checkbox.dataset.preco)
@@ -431,15 +497,15 @@ function abrirModalAdicionais(produto) {
   produtoPersonalizando = null;
 }
 
-/* ============ FUNÇÕES DE METADE / METADE (PIZZAS GRANDES) ============ */
+/* ============ METADE / METADE (PIZZAS GRANDES) ============ */
 
 function abrirModalMetade(produto) {
   pizzaPersonalizandoMetade = produto;
   const saboresDisponiveis = produtos.filter(p => p.categoria === "pizzas_grandes");
 
-  $("#metade-produto-titulo").textContent = `Montar Pizza Grande Meio a Meio`;
+  $("#metade-produto-titulo").textContent = "Montar Pizza Grande Meio a Meio";
 
-  const optionsHTML = saboresDisponiveis.map(p => 
+  const optionsHTML = saboresDisponiveis.map(p =>
     `<option value="${p.id}" data-preco="${p.preco}">${escapar(p.nome)} (${formatarPreco(p.preco)})</option>`
   ).join("");
 
@@ -512,6 +578,11 @@ function fecharModalMetade() {
 /* ============ CARRINHO ============ */
 
 function adicionarAoCarrinho(produto, adicionais = []) {
+  if (semPizzaHoje() && ehPizza(produto)) {
+    mostrarAviso("Aos domingos não fazemos pizzas.");
+    return;
+  }
+
   const assinatura = adicionais
     .map(adicional => adicional.nome)
     .sort()
@@ -519,6 +590,7 @@ function adicionarAoCarrinho(produto, adicionais = []) {
 
   const existente = carrinho.find(item =>
     item.id === produto.id &&
+    item.nome === produto.nome &&
     item.assinatura === assinatura
   );
 
@@ -527,6 +599,7 @@ function adicionarAoCarrinho(produto, adicionais = []) {
   } else {
     carrinho.push({
       id: produto.id,
+      categoria: produto.categoria,
       nome: produto.nome,
       preco: Number(produto.preco),
       adicionais: adicionais.map(item => ({ ...item })),
@@ -593,7 +666,20 @@ function atualizarCarrinho() {
     `;
   }).join("");
 
-  $("#btn-finalizar").disabled = carrinho.length === 0; }  function abrirModal(modal) { modal.classList.remove("escondido"); document.body.classList.add("modal-aberto"); }  function fecharModal(modal) { modal.classList.add("escondido");    if ($$(".modal:not(.escondido)").length === 0) {
+  $("#btn-finalizar").disabled = carrinho.length === 0;
+}
+
+/* ============ MODAIS ============ */
+
+function abrirModal(modal) {
+  modal.classList.remove("escondido");
+  document.body.classList.add("modal-aberto");
+}
+
+function fecharModal(modal) {
+  modal.classList.add("escondido");
+
+  if ($$(".modal:not(.escondido)").length === 0) {
     document.body.classList.remove("modal-aberto");
   }
 }
@@ -603,9 +689,16 @@ function fecharModalAdicionais() {
   produtoPersonalizando = null;
 }
 
+/* ============ FINALIZAR PEDIDO ============ */
+
 function finalizarPedido() {
   if (carrinho.length === 0) {
     mostrarAviso("Adicione pelo menos um produto ao pedido.");
+    return;
+  }
+
+  if (semPizzaHoje() && carrinho.some(item => CATEGORIAS_PIZZA.includes(item.categoria))) {
+    mostrarAviso("Aos domingos não fazemos pizzas. Remova as pizzas do pedido.");
     return;
   }
 
@@ -669,6 +762,8 @@ function finalizarPedido() {
   const url = `https://wa.me/${WHATSAPP_NUMERO}?text=${encodeURIComponent(linhas.join("\n"))}`;
   window.open(url, "_blank", "noopener,noreferrer");
 }
+
+/* ============ EVENTOS ============ */
 
 function configurarEventos() {
   $("#categorias").addEventListener("click", evento => {

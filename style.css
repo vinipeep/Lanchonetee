@@ -772,6 +772,37 @@ textarea:focus-visible {
   transform: translate(-50%, 0);
 }
 
+/* PIZZAS INDISPONÍVEIS (domingo) */
+.aviso-pizza {
+  margin: 0 0 16px;
+  padding: 14px 16px;
+  background: #fff4e5;
+  border: 1.5px solid #f2c88b;
+  border-radius: 13px;
+  color: #6b4a14;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.produto-card.indisponivel {
+  opacity: .55;
+  filter: grayscale(.7);
+}
+
+.produto-card.indisponivel:hover {
+  transform: none;
+  box-shadow: 0 4px 14px rgba(37, 25, 17, .025);
+}
+
+.btn-add:disabled {
+  background: #cfc8c1;
+  color: #5f5851;
+  cursor: not-allowed;
+}
+
+.btn-add:disabled:hover { background: #cfc8c1; }
+.btn-add:disabled:active { transform: none; }
+
 /* TABLETS */
 @media (max-width: 850px) {
   .produtos-grid {
@@ -958,6 +989,11 @@ textarea:focus-visible {
     padding: 14px 14px;
     font-size: 14px;
     border-radius: 13px;
+  }
+
+  .aviso-pizza {
+    font-size: 16px;
+    padding: 16px;
   }
 
   .rodape p { font-size: 15px; }

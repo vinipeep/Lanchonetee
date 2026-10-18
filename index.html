@@ -5,12 +5,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#b6381c">
   <title>Pai & Filho | Cardápio</title>
-  <link rel="icon" type="image/png" href="logo.png.ico">
+
+  <!-- Ícone (arquivos na mesma pasta do index.html) -->
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png?v=10">
+  <link rel="shortcut icon" href="favicon.ico?v=10">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png?v=10">
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
-  <script src="script.js" defer></script>
+  <link rel="stylesheet" href="style.css?v=10">
+  <script src="script.js?v=10" defer></script>
 </head>
 <body>
   <header class="hero">
@@ -173,7 +178,7 @@
       <div class="modal-corpo">
         <h3 id="metade-produto-titulo">Pizza Grande</h3>
         <p class="produto-descricao-modal">Selecione os dois sabores para compor sua pizza meio a meio. O valor considerado será o maior entre os dois.</p>
-        
+
         <div class="formulario-entrega" style="margin-top: 0; margin-bottom: 15px;">
           <label for="primeiro-sabor">Primeiro Sabor (Metade 1)</label>
           <select id="primeiro-sabor" style="width:100%; padding:13px; border-radius:10px; border:1px solid #ded8d1; background:white; font-size:16px; color:var(--texto);"></select>
