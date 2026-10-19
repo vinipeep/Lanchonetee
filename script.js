@@ -4,14 +4,15 @@ const WHATSAPP_NUMERO = "5535988320463";
 
 const PLANILHA_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQWhv3boH7Ps-Sjil1GPXZQviqaMf-MYBgvEbq36MAu-lMtiSJtcZFhkda1UjV_DNpOAfB_SlC38BdL/pub?gid=0&single=true&output=csv";
 
-// Mudei para v2 para o celular esquecer o cardápio antigo e carregar as bebidas
-const CACHE_CHAVE = "paiefilho_cardapio_v2";
+// Mudei para v3 para o celular esquecer o cardápio antigo e carregar os fardos
+const CACHE_CHAVE = "paiefilho_cardapio_v3";
 
 // Categorias aceitas (cada uma precisa de uma lista no HTML com id "lista-NOME")
 const CATEGORIAS_VALIDAS = [
   "lanches", "pasteis", "porcoes",
   "pizzas_pequenas", "pizzas_grandes", "pizzas_doces",
-  "bebidas_alcoolicas", "refrigerantes_lata", "refrigerantes_garrafa",
+  "bebidas_alcoolicas", "cervejas_fardo",
+  "refrigerantes_lata", "refrigerantes_garrafa",
   "energeticos", "aguas", "cerveja_sem_alcool", "sucos"
 ];
 
@@ -123,7 +124,18 @@ const produtosReserva = [
   { id: 80, categoria: "sucos", nome: "Tampico 450ml", descricao: "", preco: 5.00, destaque: false },
   { id: 81, categoria: "sucos", nome: "Power Ade", descricao: "", preco: 6.40, destaque: false },
   { id: 82, categoria: "sucos", nome: "Gatorade", descricao: "", preco: 7.00, destaque: false },
-  { id: 83, categoria: "sucos", nome: "Todinho", descricao: "", preco: 2.00, destaque: false }
+  { id: 83, categoria: "sucos", nome: "Todinho", descricao: "", preco: 2.00, destaque: false },
+
+  // CERVEJAS FARDO
+  { id: 84, categoria: "cervejas_fardo", nome: "Skol Fardo 350ml", descricao: "", preco: 50.00, destaque: false },
+  { id: 85, categoria: "cervejas_fardo", nome: "Itaipava Fardo 350ml", descricao: "", preco: 40.00, destaque: false },
+  { id: 86, categoria: "cervejas_fardo", nome: "Amstel Fardo 350ml", descricao: "", preco: 50.00, destaque: false },
+  { id: 87, categoria: "cervejas_fardo", nome: "Império Fardo 350ml", descricao: "", preco: 45.00, destaque: false },
+  { id: 88, categoria: "cervejas_fardo", nome: "Original Fardo 350ml", descricao: "", preco: 66.00, destaque: false },
+  { id: 89, categoria: "cervejas_fardo", nome: "Heineken Fardo 350ml", descricao: "", preco: 75.00, destaque: false },
+
+  // LIMONETO
+  { id: 90, categoria: "sucos", nome: "Limoneto", descricao: "", preco: 6.00, destaque: false }
 ];
 
 const adicionaisPorCategoria = {
@@ -402,6 +414,7 @@ function categoriaDoProduto(produto) {
     porcoes: "Porções",
     pizzas_doces: "Pizzas doces",
     bebidas_alcoolicas: "Bebida alcoólica",
+    cervejas_fardo: "Fardo de cerveja",
     refrigerantes_lata: "Refrigerante lata",
     refrigerantes_garrafa: "Refrigerante",
     energeticos: "Energético",
